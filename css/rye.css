@@ -19,7 +19,7 @@ div.text-inner {
 	padding: 64px;
 }
 
-div.text-inner > p {
+div.text-inner p {
 	width: 50%;
 	padding-left: 25%;
 	padding-right: 25%;
@@ -27,9 +27,14 @@ div.text-inner > p {
 	text-justify: inter-word;
 }
 
+div.text-inner a,
+div.text-inner a:link {
+	text-decoration: none;
+}
+
 /* Specific rules */
 div.page-title {
-	z-index: -1;
+	z-index: +1;
 	position: relative;
 
 	background-color: #404040;
@@ -64,7 +69,7 @@ div.autobiography {
 }
 
 div.more-to-come {
-	z-index: 0;
+	z-index: +1;
 	position: relative;
 	
 	color: #101010;
@@ -72,6 +77,8 @@ div.more-to-come {
 
 	background-color: #b37010;
 	width: 100%;
+
+	box-shadow: 0px -16px 32px #111;
 }
 
 span.more-to-come-notice {
