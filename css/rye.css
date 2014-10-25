@@ -32,6 +32,10 @@ div.text-inner a:link {
 	text-decoration: none;
 }
 
+div.scroll-down-indicator {
+	text-align: center;
+}
+
 /* Specific rules */
 div.page-title {
 	z-index: +1;
