@@ -1,0 +1,3 @@
+[submodule "img/avatar"]
+	path = img/avatar
+	url = https://github.com/rye/avatar.git
