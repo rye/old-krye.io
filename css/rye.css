@@ -45,7 +45,7 @@ div.page-title {
 	height: 100%;
 	width: 100%;
 
-	box-shadow: 0px 16px 32px #111;
+	box-shadow: 0px 8px 16px #202020;
 }
 
 span.hipster-name {
@@ -82,7 +82,7 @@ div.more-to-come {
 	background-color: #b37010;
 	width: 100%;
 
-	box-shadow: 0px -16px 32px #111;
+	box-shadow: 0px -8px 16px #5a3708;
 }
 
 span.more-to-come-notice {
