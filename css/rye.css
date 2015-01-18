@@ -21,8 +21,8 @@ html[rye-redesigned-site],[rye-redesigned-site] body{margin:0px;padding:0px;font
 	left: 0;
 	right: 0;
 	z-index: -1;
-	
-	background: url(../Background.png);
+
+	background: url(../Background-960.png);
 	background-size: 100% 100%;
 
 	-webkit-filter: blur(10px) grayscale(20%) brightness(40%);
@@ -47,6 +47,8 @@ html[rye-redesigned-site],[rye-redesigned-site] body{margin:0px;padding:0px;font
 
 [rye-redesigned-site] div.landing div.author {
 	text-align: center;
+
+	width: 10%;
 }
 
 @-webkit-keyframes mugshotonload {
@@ -58,15 +60,15 @@ html[rye-redesigned-site],[rye-redesigned-site] body{margin:0px;padding:0px;font
 	}
 
 	25% {
-		width: 20%;
-		height: 20%;
+		width: 100%;
+		height: 100%;
 
 		opacity: 0.1;
 	}
 
 	100% {
-		width: 20%;
-		height: 20%;
+		width: 100%;
+		height: 100%;
 
 		opacity: 1;
 	}
@@ -81,15 +83,15 @@ html[rye-redesigned-site],[rye-redesigned-site] body{margin:0px;padding:0px;font
 	}
 
 	25% {
-		width: 20%;
-		height: 20%;
+		width: 100%;
+		height: 100%;
 
 		opacity: 0.1;
 	}
 
 	100% {
-		width: 20%;
-		height: 20%;
+		width: 100%;
+		height: 100%;
 
 		opacity: 1;
 	}
@@ -104,15 +106,16 @@ html[rye-redesigned-site],[rye-redesigned-site] body{margin:0px;padding:0px;font
 	}
 
 	25% {
-		width: 20%;
-		height: 20%;
+		width: 100%;
+		height: 100%;
 
 		opacity: 0.1;
 	}
 
 	100% {
-		width: 20%;
-		height: 20%;
+		width: 100%;
+		height: 100
+		%;
 
 		opacity: 1;
 	}
@@ -120,12 +123,12 @@ html[rye-redesigned-site],[rye-redesigned-site] body{margin:0px;padding:0px;font
 
 
 [rye-redesigned-site] div.landing div.author img.mugshot {
-	-webkit-animation: mugshotonload ease 2s;
-	-moz-animation: mugshotonload ease 2s;
-	animation: mugshotonload ease 2s;
+	-webkit-animation: mugshotonload 2s ease;
+	-moz-animation: mugshotonload 2s ease;
+	animation: mugshotonload 2s ease;
 
-	width: 20%;
-	height: 20%;
+	width: 100%;
+	height: 100%;
 
 	border-radius: 50%;
 }
