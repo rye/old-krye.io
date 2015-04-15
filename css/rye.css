@@ -22,9 +22,6 @@ html[rye-redesigned-site],[rye-redesigned-site] body{margin:0px;padding:0px;font
 	right: 0;
 	z-index: -1;
 
-	background: url(../Background-960.png);
-	background-size: 100% 100%;
-
 	-webkit-filter: blur(10px) grayscale(20%) brightness(40%);
 	-moz-filter: blur(10px) grayscale(20%) brightness(40%);
 	filter: blur(10px) grayscale(20%) brightness(40%);
@@ -123,9 +120,9 @@ html[rye-redesigned-site],[rye-redesigned-site] body{margin:0px;padding:0px;font
 
 
 [rye-redesigned-site] div.landing div.author img.mugshot {
-	-webkit-animation: mugshotonload 2s ease;
-	-moz-animation: mugshotonload 2s ease;
-	animation: mugshotonload 2s ease;
+	-webkit-animation: mugshotonload 1s ease;
+	-moz-animation: mugshotonload 1s ease;
+	animation: mugshotonload 1s ease;
 
 	width: 100%;
 	height: 100%;
@@ -138,7 +135,7 @@ html[rye-redesigned-site],[rye-redesigned-site] body{margin:0px;padding:0px;font
 	font-weight: bold;
 
 	line-height: 16px;
-	
+
 	color: #9ca09c;
 }
 
@@ -158,44 +155,14 @@ html[rye-redesigned-site],[rye-redesigned-site] body{margin:0px;padding:0px;font
 	text-decoration: initial;
 }
 
-@-webkit-keyframes if{0%{opacity:0;padding-left:0px;padding-right:0px;width:0px;}100%{opacity:1;padding-left:2px;padding-right:2px;}}
-@-moz-keyframes if{0%{opacity:0;padding-left:0px;padding-right:0px;width:0px;}100%{opacity:1;padding-left:2px;padding-right:2px;}}
-@keyframes if{0%{opacity:0;padding-left:0px;padding-right:0px;width:0px;}100%{opacity:1;padding-left:2px;padding-right:2px;}}
+@-webkit-keyframes if{0%{opacity:0;padding-left:0px;padding-right:0px;}100%{opacity:1;padding-left:2px;padding-right:2px;}}
+@-moz-keyframes if{0%{opacity:0;padding-left:0px;padding-right:0px;}100%{opacity:1;padding-left:2px;padding-right:2px;}}
+@keyframes if{0%{opacity:0;padding-left:0px;padding-right:0px;}100%{opacity:1;padding-left:2px;padding-right:2px;}}
 
-[rye-redesigned-site] div.landing div.author div.icons .first {
-	-webkit-animation: if 1s ease-in 3s backwards;
-	-moz-animation: if 1s ease-in 3s backwards;
-	animation: if 1s ease-in 3s backwards;
-
-	opacity: 1;
-	padding-left: 2px;
-	padding-right: 2px;
-}
-
-[rye-redesigned-site] div.landing div.author div.icons .second {
-	-webkit-animation: if 1s ease-in 4s backwards;
-	-moz-animation: if 1s ease-in 4s backwards;
-	animation: if 1s ease-in 4s backwards;
-
-	opacity: 1;
-	padding-left: 2px;
-	padding-right: 2px;
-}
-
-[rye-redesigned-site] div.landing div.author div.icons .third {
-	-webkit-animation: if 1s ease-in 5s backwards;
-	-moz-animation: if 1s ease-in 5s backwards;
-	animation: if 1s ease-in 5s backwards;
-
-	opacity: 1;
-	padding-left: 2px;
-	padding-right: 2px;
-}
-
-[rye-redesigned-site] div.landing div.author div.icons .fourth {
-	-webkit-animation: if 1s ease-in 6s backwards;
-	-moz-animation: if 1s ease-in 6s backwards;
-	animation: if 1s ease-in 6s backwards;
+[rye-redesigned-site] div.landing div.author div.icons * {
+	-webkit-animation: if 1s ease-in 1s backwards;
+	-moz-animation: if 1s ease-in 1s backwards;
+	animation: if 1s ease-in 1s backwards;
 
 	opacity: 1;
 	padding-left: 2px;
