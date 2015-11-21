@@ -9,7 +9,7 @@ Element.prototype.clearChildren = function() {
 };
 
 function Site(attrName) {
-	var bodies = document.getElementsByTagName("body").toArray();
+	var bodies = document.getElementsByTagName('body').toArray();
 
 	this.body = null;
 
@@ -18,76 +18,15 @@ function Site(attrName) {
 			this.body = body;
 	}.bind(this));
 
-	this.body.generateGreeting = function() {
-		var greeting = "Hi.";
+	this.generatePanel = function(minHeight, classList) {
+		var element = document.createElement('div');
+		element.classList.add('panel');
 
-		var element = document.createElement("div");
-		element.classList.add("greeting");
+		classList.forEach(function(cssClass) {
+			element.classList.add(cssClass);
+		});
 
-		{
-			var text = document.createElement("div");
-			text.classList.add("text");
-			var textNode = document.createTextNode(greeting);
-			text.appendChild(textNode);
-			element.appendChild(text);
-		}
-
-		return element;
-	}.bind(this);
-
-	this.body.generateTagline = function() {
-		var element = document.createElement("div");
-		element.classList.add("tagline");
-
-		{
-			var text = document.createElement("div");
-			text.classList.add("text");
-			text.classList.add("center");
-
-			{
-				var iam = document.createElement("span");
-				iam.innerHTML = "I am&nbsp;"
-				text.appendChild(iam);
-			}
-
-			{
-				var kristoferRye = document.createElement("span");
-				kristoferRye.innerHTML = "Kristofer Rye";
-				text.appendChild(kristoferRye);
-			}
-
-			element.appendChild(text);
-		}
-
-		return element;
-	}.bind(this);
-
-	this.body.generateActivity = function(klass, innerHTML) {
-		var element = document.createElement("div");
-		element.classList.add("activity");
-		element.classList.add(klass);
-
-		{
-			var text = document.createElement("div");
-			text.classList.add("text");
-
-			text.innerHTML = innerHTML;
-
-			element.appendChild(text);
-		}
-
-		return element;
-	}.bind(this);
-
-	this.body.generateActivities = function() {
-		var element = document.createElement("div");
-		element.classList.add("activities");
-
-		var codeActivity = this.body.generateActivity("code", "I write code.  <a href=\"https://github.com/rye\" class=\"mega-octicon octicon-mark-github\" />");
-		var celloActivity = this.body.generateActivity("cello", "I play the cello.");
-
-		element.appendChild(codeActivity);
-		element.appendChild(celloActivity);
+		element.style.minHeight = minHeight;
 
 		return element;
 	}.bind(this);
@@ -95,12 +34,37 @@ function Site(attrName) {
 	this.body.bootstrap = function() {
 		this.body.clearChildren();
 
-		this.body.appendChild(this.body.generateGreeting());
-		this.body.appendChild(this.body.generateTagline());
-		this.body.appendChild(this.body.generateActivities());
+		var headerPicture = this.generatePanel('20vh', ['header-picture']);
+
+		{
+			var headerText = document.createElement('div');
+			headerText.classList.add('header-text');
+
+			{
+				var headerNameText = document.createElement('div');
+				headerNameText.classList.add('name-text');
+
+				headerNameText.innerHTML = 'Kristofer Rye';
+
+				headerText.appendChild(headerNameText);
+			}
+
+			{
+				var headerTaglineText = document.createElement('div');
+				headerTaglineText.classList.add('tagline-text');
+
+				headerTaglineText.innerHTML = 'Software Engineer, Private Pilot, Cellist';
+
+				headerText.appendChild(headerTaglineText);
+			}
+
+			headerPicture.appendChild(headerText);
+		}
+
+		this.body.appendChild(headerPicture);
 	}.bind(this);
 
 	this.body.bootstrap();
 };
 
-var SITE = new Site("target");
+var SITE = new Site('target');

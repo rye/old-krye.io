@@ -1,4 +1,7 @@
-html[site],[site] body{margin:0px;padding:0px;font-family:Lato,sans-serif;width: 100vw;height: 100vh;overflow-x:hidden;}
+html[site],[site] body{margin:0px;padding:0px;font-family:Lato,sans-serif;width: 100vw;height:100vh;}
+::-webkit-scrollbar {
+	display: none;
+}
 
 @font-face {
 	font-family: 'Adequate Extra-Light';
@@ -19,77 +22,43 @@ html[site],[site] body{margin:0px;padding:0px;font-family:Lato,sans-serif;width:
 
 	display: flex;
 	flex-direction: row;
+
+	justify-contents: center;
 }
 
-[site] body > * > .text {
-	flex: 1 0 auto;
+[site] body > .panel {
+	width: 100vw;
+}
 
-	display: flex;
+[site] body > .panel.header-picture {
+	background:
+		linear-gradient(
+			rgba(0, 0, 0, 0.1),
+			rgba(0, 0, 0, 0.7)
+		), url('../Brainerd, Baxter from Air.jpg');
+	background-size: cover;
 
 	align-items: center;
-	justify-content: center;
-
-	flex-direction: row;
 }
 
-[site] body > * > .text.center {
-	text-align: center;
-}
+[site] body > .panel.header-picture > .header-text {
+	flex: 1 0 auto;
 
-[site] .greeting {
-	background-color: #3070a0;
-}
-
-[site] .greeting .text {
-	flex-direction: column;
-
-	font-size: 180px;
-
-	min-height: 100vh;
-	max-height: 100vh;
-}
-
-[site] .tagline {
-	background-color: #a0a0a0;
-}
-
-[site] .tagline .text {
-	flex-direction: row;
-
-	font-size: 80px;
-
-	min-height: 60vh;
-	max-height: 100vh;
-}
-
-[site] .activities {
-	background-color: #808080;
 	display: flex;
 	flex-direction: column;
 }
 
-[site] .activities .activity {
-	min-height: 20vh;
-	max-height: 50vh;
-
-	flex: 1 0 auto;
+[site] body > .panel.header-picture > .header-text > .name-text {
+	color: #ffffff;
+	font-style: italic;
+	font-size: 10vh;
+	font-family: 'Adequate Extra-Light', sans-serif;
 	text-align: center;
-
-	display: flex;
-	flex-direction: row;
-	vertical-align: center;
 }
 
-[site] .activities .activity:nth-child(odd) {
-	background-color: #707070;
-}
-
-[site] .activities .activity:nth-child(even) {
-	background-color: #505050;
-}
-
-[site] .activities .activity .text {
-	font-size: 60px;
-	flex: 1 0 auto;
-	align-self: center;
+[site] body > .panel.header-picture > .header-text > .tagline-text {
+	color: #bbbbbb;
+	font-size: 3vh;
+	font-family: 'Adequate Extra-Light', sans-serif;
+	text-align: center;
 }
