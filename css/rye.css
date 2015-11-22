@@ -23,42 +23,106 @@ html[site],[site] body{margin:0px;padding:0px;font-family:Lato,sans-serif;width:
 	display: flex;
 	flex-direction: row;
 
-	justify-contents: center;
+	justify-content: center;
 }
 
 [site] body > .panel {
 	width: 100vw;
 }
 
-[site] body > .panel.header-picture {
-	background:
-		linear-gradient(
-			rgba(0, 0, 0, 0.1),
-			rgba(0, 0, 0, 0.7)
-		), url('../Brainerd, Baxter from Air.jpg');
-	background-size: cover;
+[site] body > .panel.header {
+	background: linear-gradient(
+		rgba(0, 0, 0, 0.2),
+		rgba(0, 0, 0, 0.7));
 
 	align-items: center;
 }
 
-[site] body > .panel.header-picture > .header-text {
-	flex: 1 0 auto;
+[site] body > .panel.header.picture {
+	background:
+		linear-gradient(
+			rgba(0, 0, 0, 0.4),
+			rgba(0, 0, 0, 0.7)
+		), url('../Brainerd, Baxter from Air.jpg');
+	background-size: cover;
+}
+
+[site] body > .panel.header > .header-text {
+	flex: 0 1 auto;
 
 	display: flex;
 	flex-direction: column;
 }
 
-[site] body > .panel.header-picture > .header-text > .name-text {
+[site] body > .panel.header > .header-text > .name-text {
+	flex: 0 1 auto;
+	font-size: 80px;
 	color: #ffffff;
 	font-style: italic;
-	font-size: 10vh;
 	font-family: 'Adequate Extra-Light', sans-serif;
 	text-align: center;
 }
 
-[site] body > .panel.header-picture > .header-text > .tagline-text {
+[site] body > .panel.header > .header-text > .tagline-text {
+	flex: 0 1 auto;
 	color: #bbbbbb;
-	font-size: 3vh;
+	font-size: 24px;
 	font-family: 'Adequate Extra-Light', sans-serif;
 	text-align: center;
+}
+
+[site] body > .panel.about {
+	flex-direction: column;
+
+	justify-content: flex-start;
+}
+
+[site] body > .panel.about > .header {
+	flex: 0 1 auto;
+
+	display: flex;
+	flex-direction: row;
+
+	justify-content: center;
+}
+
+[site] body > .panel.about > .header > .text {
+	flex: 0 1 auto;
+
+	padding: 16px;
+
+	color: #bbbbbb;
+	font-size: 20px;
+	font-style: italic;
+	font-family: 'Adequate Extra-Light', sans-serif;
+}
+
+[site] body > .panel.about > .header > .ribbon {
+	flex: 0 1 auto;
+
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+}
+
+[site] body > .panel.about > .header > .ribbon > svg {
+	flex: 0 1 auto;
+}
+
+[site] body > .panel.about > .content {
+	flex: 1 0 auto;
+
+	display: flex;
+	flex-direction: row;
+
+	justify-content: center;
+	align-items: center;
+}
+
+[site] body > .panel.about > .content > .text {
+	flex: 0 1 auto;
+
+	color: #a08080;
+	font-size: 28px;
+	font-family: 'Adequate Extra-Light', sans-serif;
 }

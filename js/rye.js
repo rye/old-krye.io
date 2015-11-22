@@ -18,50 +18,14 @@ function Site(attrName) {
 			this.body = body;
 	}.bind(this));
 
-	this.generatePanel = function(minHeight, classList) {
-		var element = document.createElement('div');
-		element.classList.add('panel');
-
-		classList.forEach(function(cssClass) {
-			element.classList.add(cssClass);
-		});
-
-		element.style.minHeight = minHeight;
-
-		return element;
-	}.bind(this);
-
 	this.body.bootstrap = function() {
 		this.body.clearChildren();
 
-		var headerPicture = this.generatePanel('20vh', ['header-picture']);
+		var header = new Header('Kristofer Rye', 'Software Engineer, Private Pilot, Cellist', '80vh', ['header', 'picture']);
+		var about = new AboutSection('40vh', ['about']);
 
-		{
-			var headerText = document.createElement('div');
-			headerText.classList.add('header-text');
-
-			{
-				var headerNameText = document.createElement('div');
-				headerNameText.classList.add('name-text');
-
-				headerNameText.innerHTML = 'Kristofer Rye';
-
-				headerText.appendChild(headerNameText);
-			}
-
-			{
-				var headerTaglineText = document.createElement('div');
-				headerTaglineText.classList.add('tagline-text');
-
-				headerTaglineText.innerHTML = 'Software Engineer, Private Pilot, Cellist';
-
-				headerText.appendChild(headerTaglineText);
-			}
-
-			headerPicture.appendChild(headerText);
-		}
-
-		this.body.appendChild(headerPicture);
+		this.body.appendChild(header);
+		this.body.appendChild(about);
 	}.bind(this);
 
 	this.body.bootstrap();
