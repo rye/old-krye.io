@@ -21,9 +21,10 @@ html[site],[site] body{margin:0px;padding:0px;font-family:Lato,sans-serif;width:
 	flex: 1 0 auto;
 
 	display: flex;
-	flex-direction: row;
 
+	flex-direction: column;
 	justify-content: center;
+	align-items: center;
 }
 
 [site] body > .panel {
@@ -34,8 +35,6 @@ html[site],[site] body{margin:0px;padding:0px;font-family:Lato,sans-serif;width:
 	background: linear-gradient(
 		rgba(0, 0, 0, 0.2),
 		rgba(0, 0, 0, 0.7));
-
-	align-items: center;
 }
 
 [site] body > .panel.header.picture {
@@ -48,10 +47,12 @@ html[site],[site] body{margin:0px;padding:0px;font-family:Lato,sans-serif;width:
 }
 
 [site] body > .panel.header > .header-text {
-	flex: 0 1 auto;
+	flex: 1 0 auto;
 
 	display: flex;
 	flex-direction: column;
+
+	justify-content: flex-end;
 }
 
 [site] body > .panel.header > .header-text > .name-text {
@@ -71,9 +72,21 @@ html[site],[site] body{margin:0px;padding:0px;font-family:Lato,sans-serif;width:
 	text-align: center;
 }
 
-[site] body > .panel.about {
-	flex-direction: column;
+[site] body > .panel.header > .chevron {
+	flex: 1 0 auto;
 
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+
+[site] body > .panel.header > .chevron > svg {
+	flex: 0 1 auto;
+
+	margin: 16px;
+}
+
+[site] body > .panel.about {
 	justify-content: flex-start;
 }
 
