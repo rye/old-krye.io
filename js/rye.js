@@ -22,7 +22,7 @@ function Site(attrName) {
 		this.body.clearChildren();
 
 		var header = new Header('Kristofer Rye', 'Software Engineer, Private Pilot, Cellist', '80vh', ['header', 'picture']);
-		var about = new AboutSection('40vh', ['about']);
+		var about = new AboutSection('20vh', ['about']);
 
 		this.body.appendChild(header);
 		this.body.appendChild(about);
