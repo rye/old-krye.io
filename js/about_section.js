@@ -68,11 +68,31 @@ function AboutSection(minHeight, classList) {
 		panel.content = document.createElement('div');
 		panel.content.classList.add('content');
 
-		panel.content.text = document.createElement('div');
-		panel.content.text.classList.add('text');
-		panel.content.text.innerHTML = '[Coming soon, when I get around to stuff.]';
+		{
+			panel.content.programmerSection = document.createElement('div');
+			panel.content.programmerSection.classList.add('section');
 
-		panel.content.appendChild(panel.content.text);
+			{
+				panel.content.programmerSection.tile = document.createElement('div');
+				panel.content.programmerSection.tile.classList.add('tile');
+
+				panel.content.programmerSection.tile.innerHTML = 'I am a programmer.'
+
+				panel.content.programmerSection.appendChild(panel.content.programmerSection.tile);
+			}
+
+			{
+				panel.content.programmerSection.text = document.createElement('div');
+				panel.content.programmerSection.text.classList.add('text');
+
+				panel.content.programmerSection.text.innerHTML = 'I am a programmer.'
+
+				panel.content.programmerSection.appendChild(panel.content.programmerSection.text);
+			}
+
+			panel.content.appendChild(panel.content.programmerSection);
+		}
+
 		panel.appendChild(panel.content);
 	}
 

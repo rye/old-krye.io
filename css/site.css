@@ -1,0 +1,9 @@
+html[site],[site] body{margin:0px;padding:0px;font-family:Lato,sans-serif;width: 100vw;height:100vh;}
+::-webkit-scrollbar {
+	display: none;
+}
+
+@font-face {
+	font-family: 'Adequate Extra-Light';
+	src: url('../fonts/Adequate-ExtraLight.ttf');
+}
