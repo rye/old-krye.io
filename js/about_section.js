@@ -70,7 +70,7 @@ function AboutSection(minHeight, classList) {
 
 		panel.content.text = document.createElement('div');
 		panel.content.text.classList.add('text');
-		panel.content.text.innerHTML = '[Coming soon, when I get around to stuff.]';
+		panel.content.text.innerHTML = '[Coming soon, when I get around to it.]';
 
 		panel.content.appendChild(panel.content.text);
 		panel.appendChild(panel.content);
