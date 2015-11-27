@@ -76,7 +76,10 @@
 [site] body > .panel.about > .content > .section > .tile {
 	border: 1px solid #aaaaaa;
 	border-radius: 4px;
+
+	padding: 8px;
 }
 
 [site] body > .panel.about > .content > .section > .text {
+	padding: 16px;
 }
