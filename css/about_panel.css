@@ -81,5 +81,21 @@
 }
 
 [site] body > .panel.about > .content > .section > .text {
+	font-family: sans-serif;
 	padding: 16px;
+	line-height: 2em;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+[site] body > .panel.about > .content > .section > .text > hr {
+	border-color: #aaaaaa;
+}
+
+[site] body > .panel.about > .content > .section > .text > .title {
+	font-size: 32px;
+	line-height: 2em;
+	font-family: 'Adequate Extra-Light', sans-serif;
 }

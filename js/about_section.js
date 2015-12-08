@@ -217,7 +217,7 @@ function AboutSection(minHeight, classList) {
 				panel.content.programmerSection.text = document.createElement('div');
 				panel.content.programmerSection.text.classList.add('text');
 
-				panel.content.programmerSection.text.innerHTML = 'I am a programmer.'
+				panel.content.programmerSection.text.innerHTML = '<div class=\'title\'>Programmer</div>I make things!<br />Check out some of my work at:<br /><a href=\'https://github.com/rye\'>github.com/rye</a>';
 
 				panel.content.programmerSection.appendChild(panel.content.programmerSection.text);
 			}
