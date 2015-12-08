@@ -165,7 +165,7 @@ function AboutSection(minHeight, classList) {
 						{
 							var binaryG = new SiteSVGElement('g', 'tools', {
 								'stroke': '#444',
-								'stroke-width': 4,
+								'stroke-width': 8,
 								'stroke-linecap': 'round',
 								'fill': '#444',
 								'fill-opacity': 0.0,
