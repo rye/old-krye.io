@@ -31,18 +31,9 @@ function AboutSection(minHeight, classList) {
 			var element = document.createElement('div');
 			element.classList.add('ribbon');
 
-			var ns = 'http://www.w3.org/2000/svg';
-			var svg = document.createElementNS(ns, 'svg');
-			svg.setAttribute('width', '80');
-			svg.setAttribute('height', '8');
-
-			var g = document.createElementNS(ns, 'g');
-			g.setAttribute('transform', 'scale(80, 8)')
-
-			var path = document.createElementNS(ns, 'path');
-			path.setAttribute('d', generateRibbonData(side));
-			path.setAttribute('fill', '#aaaaaa');
-			path.setAttribute('stroke-width', '0');
+			var svg = new SiteSVGElement('svg', 'ribbon', {width: 80, height: 8});
+			var g = new SiteSVGElement('g', 'group', {transform: 'scale(80, 8)'});
+			var path = new SiteSVGElement('path', 'outline', {fill: '#aaaaaa', 'stroke-width': 0, d: generateRibbonData(side)})
 
 			g.appendChild(path);
 			svg.appendChild(g);
@@ -78,9 +69,9 @@ function AboutSection(minHeight, classList) {
 
 				{
 					var programmerSvg = new SiteSVGElement('svg', 'programmer', {
-						'height': '100%',
-						'width': '100%',
-						'viewBox': '0 0 512 512'
+						height: '100%',
+						width: '100%',
+						viewBox: '0 0 512 512'
 					});
 
 					var ns = 'http://www.w3.org/2000/svg';
@@ -88,36 +79,32 @@ function AboutSection(minHeight, classList) {
 					{
 						var g = new SiteSVGElement('g', 'background', null);
 
-						{
-							var circle = new SiteSVGElement('circle', 'outer', {'cx': 256, 'cy': 256, 'r': 224, 'fill': '#888888'});
-							g.appendChild(circle);
-						}
+						var outer = new SiteSVGElement('circle', 'outer', {cx: 256, cy: 256, r: 224, fill: '#888888'});
+						var inner = new SiteSVGElement('circle', 'inner', {cx: 256, cy: 256, r: 216, fill: '#999999'});
 
-						{
-							var circle = new SiteSVGElement('circle', 'outer', {'cx': 256, 'cy': 256, 'r': 216, 'fill': '#999999'});
-							g.appendChild(circle);
-						}
+						g.appendChild(outer);
+						g.appendChild(inner);
 
 						programmerSvg.appendChild(g);
 					}
 
 					{
-						var g = new SiteSVGElement('g', 'contents', {'transform': 'translate(256 256)'});
+						var g = new SiteSVGElement('g', 'contents', {transform: 'translate(256 256)'});
 
 						{
 							var branchG = new SiteSVGElement('g', 'branch', {
-								'stroke': '#444',
+								stroke: '#444',
 								'stroke-width': 8,
-								'fill': '#444',
+								fill: '#444',
 								'fill-opacity': 0.0,
-								'transform': 'rotate(-150) translate(128 0) rotate(150)'
+								transform: 'rotate(-150) translate(128 0) rotate(150) scale(1.75)'
 							});
 
-							var master = new SiteSVGElement('path', 'master', {'d': 'M0 32 L0 -32'});
-							var branch = new SiteSVGElement('path', 'branch', {'d': 'M0 32C0 16 32 16 32 0'});
-							var rootCommit = new SiteSVGElement('circle', 'rootCommit', {'cx': 0, 'cy': 36, 'r': 8});
-							var masterNextCommit = new SiteSVGElement('circle', 'masterNextCommit', {'cx': 0, 'cy': -36, 'r': 8});
-							var forkCommit = new SiteSVGElement('circle', 'forkCommit', {'cx': 32, 'cy': '-4', 'r': 8});
+							var master = new SiteSVGElement('path', 'master', {d: 'M0 32 L0 -32'});
+							var branch = new SiteSVGElement('path', 'branch', {d: 'M0 32C0 16 32 16 32 0'});
+							var rootCommit = new SiteSVGElement('circle', 'rootCommit', {cx: 0, cy: 36, r: 8});
+							var masterNextCommit = new SiteSVGElement('circle', 'masterNextCommit', {cx: 0, cy: -36, r: 8});
+							var forkCommit = new SiteSVGElement('circle', 'forkCommit', {cx: 32, cy: -4, r: 8});
 
 							branchG.appendChild(master);
 							branchG.appendChild(branch);
@@ -132,8 +119,8 @@ function AboutSection(minHeight, classList) {
 							var toolsG = new SiteSVGElement('g', 'tools', {
 								'stroke': '#444',
 								'stroke-width': 0,
-								'fill': '#444',
-								'transform': 'rotate(-30) translate(128 0) rotate(30)'
+								fill: '#444',
+								'transform': 'rotate(-30) translate(128 0) rotate(30) scale(1.5)'
 							});
 
 							var hammer = new SiteSVGElement('g', 'hammer', {
@@ -158,42 +145,45 @@ function AboutSection(minHeight, classList) {
 
 							hammer.appendChild(handle);
 							hammer.appendChild(head);
+
 							toolsG.appendChild(hammer);
+
+
 							g.appendChild(toolsG);
 						}
 
 						{
 							var binaryG = new SiteSVGElement('g', 'tools', {
-								'stroke': '#444',
+								stroke: '#444',
 								'stroke-width': 8,
 								'stroke-linecap': 'round',
-								'fill': '#444',
+								fill: '#444',
 								'fill-opacity': 0.0,
-								'transform': 'rotate(90) translate(128 0) rotate(-90)'
+								transform: 'rotate(90) translate(128 0) rotate(-90) scale(1.75)'
 							});
 
 							var topLeft = new SiteSVGElement('path', 'topLeft', {
 								transform: 'translate(-16 -16)',
-								d: 'M8 -8 L8 8'
+								d: 'M0 -8 L0 8'
 							});
 
 							var topRight = new SiteSVGElement('circle', 'topRight', {
 								transform: 'translate(16 -16)',
-								cx: 8,
+								cx: 0,
 								cy: 0,
 								r: 8
 							});
 
 							var bottomLeft = new SiteSVGElement('circle', 'bottomLeft', {
 								transform: 'translate(-16 16)',
-								cx: 8,
+								cx: 0,
 								cy: 0,
 								r: 8
 							});
 
 							var bottomRight = new SiteSVGElement('path', 'bottomRight', {
 								transform: 'translate(16 16)',
-								d: 'M8 -8 L8 8'
+								d: 'M0 -8 L0 8'
 							});
 
 							binaryG.appendChild(topLeft);
