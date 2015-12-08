@@ -68,11 +68,163 @@ function AboutSection(minHeight, classList) {
 		panel.content = document.createElement('div');
 		panel.content.classList.add('content');
 
-		panel.content.text = document.createElement('div');
-		panel.content.text.classList.add('text');
-		panel.content.text.innerHTML = '[Coming soon, when I get around to it.]';
+		{
+			panel.content.programmerSection = document.createElement('div');
+			panel.content.programmerSection.classList.add('section');
 
-		panel.content.appendChild(panel.content.text);
+			{
+				panel.content.programmerSection.tile = document.createElement('div');
+				panel.content.programmerSection.tile.classList.add('tile');
+
+				{
+					var programmerSvg = new SiteSVGElement('svg', 'programmer', {
+						'height': '100%',
+						'width': '100%',
+						'viewBox': '0 0 512 512'
+					});
+
+					var ns = 'http://www.w3.org/2000/svg';
+
+					{
+						var g = new SiteSVGElement('g', 'background', null);
+
+						{
+							var circle = new SiteSVGElement('circle', 'outer', {'cx': 256, 'cy': 256, 'r': 224, 'fill': '#888888'});
+							g.appendChild(circle);
+						}
+
+						{
+							var circle = new SiteSVGElement('circle', 'outer', {'cx': 256, 'cy': 256, 'r': 216, 'fill': '#999999'});
+							g.appendChild(circle);
+						}
+
+						programmerSvg.appendChild(g);
+					}
+
+					{
+						var g = new SiteSVGElement('g', 'contents', {'transform': 'translate(256 256)'});
+
+						{
+							var branchG = new SiteSVGElement('g', 'branch', {
+								'stroke': '#444',
+								'stroke-width': 8,
+								'fill': '#444',
+								'fill-opacity': 0.0,
+								'transform': 'rotate(-150) translate(128 0) rotate(150)'
+							});
+
+							var master = new SiteSVGElement('path', 'master', {'d': 'M0 32 L0 -32'});
+							var branch = new SiteSVGElement('path', 'branch', {'d': 'M0 32C0 16 32 16 32 0'});
+							var rootCommit = new SiteSVGElement('circle', 'rootCommit', {'cx': 0, 'cy': 36, 'r': 8});
+							var masterNextCommit = new SiteSVGElement('circle', 'masterNextCommit', {'cx': 0, 'cy': -36, 'r': 8});
+							var forkCommit = new SiteSVGElement('circle', 'forkCommit', {'cx': 32, 'cy': '-4', 'r': 8});
+
+							branchG.appendChild(master);
+							branchG.appendChild(branch);
+							branchG.appendChild(rootCommit);
+							branchG.appendChild(masterNextCommit);
+							branchG.appendChild(forkCommit);
+
+							g.appendChild(branchG);
+						}
+
+						{
+							var toolsG = new SiteSVGElement('g', 'tools', {
+								'stroke': '#444',
+								'stroke-width': 0,
+								'fill': '#444',
+								'transform': 'rotate(-30) translate(128 0) rotate(30)'
+							});
+
+							var hammer = new SiteSVGElement('g', 'hammer', {
+								transform: 'rotate(-45) translate(32 0)'
+							});
+
+							var handle = new SiteSVGElement('path', 'handle', {
+								d: 'M-88 -8 l0 16 l88 -4 l0 -8'
+							});
+
+							var head = new SiteSVGElement('path', 'head', {
+								d: 'M0 -4' +
+									 ' c   4   0   2 -18  -2 -24' +
+									 ' c   6   4   14  8  16  24' +
+									 ' c   1   7   0   8   0   8' +
+									 ' c  -2   4  -6   6  -4   8' +
+									 ' c   4   0   4   4   0   4' +
+									 ' l -10   0' +
+									 ' c  -4   0  -4  -4   0  -4' +
+									 ' c   3  -2   4  -6   0  -8'
+							});
+
+							hammer.appendChild(handle);
+							hammer.appendChild(head);
+							toolsG.appendChild(hammer);
+							g.appendChild(toolsG);
+						}
+
+						{
+							var binaryG = new SiteSVGElement('g', 'tools', {
+								'stroke': '#444',
+								'stroke-width': 8,
+								'stroke-linecap': 'round',
+								'fill': '#444',
+								'fill-opacity': 0.0,
+								'transform': 'rotate(90) translate(128 0) rotate(-90)'
+							});
+
+							var topLeft = new SiteSVGElement('path', 'topLeft', {
+								transform: 'translate(-16 -16)',
+								d: 'M8 -8 L8 8'
+							});
+
+							var topRight = new SiteSVGElement('circle', 'topRight', {
+								transform: 'translate(16 -16)',
+								cx: 8,
+								cy: 0,
+								r: 8
+							});
+
+							var bottomLeft = new SiteSVGElement('circle', 'bottomLeft', {
+								transform: 'translate(-16 16)',
+								cx: 8,
+								cy: 0,
+								r: 8
+							});
+
+							var bottomRight = new SiteSVGElement('path', 'bottomRight', {
+								transform: 'translate(16 16)',
+								d: 'M8 -8 L8 8'
+							});
+
+							binaryG.appendChild(topLeft);
+							binaryG.appendChild(topRight);
+							binaryG.appendChild(bottomLeft);
+							binaryG.appendChild(bottomRight);
+
+							g.appendChild(binaryG);
+						}
+
+						programmerSvg.appendChild(g);
+					}
+
+					panel.content.programmerSection.tile.appendChild(programmerSvg);
+				}
+
+				panel.content.programmerSection.appendChild(panel.content.programmerSection.tile);
+			}
+
+			{
+				panel.content.programmerSection.text = document.createElement('div');
+				panel.content.programmerSection.text.classList.add('text');
+
+				panel.content.programmerSection.text.innerHTML = '<div class=\'title\'>Programmer</div>I make things!<br />Check out some of my work at:<br /><a href=\'https://github.com/rye\'>github.com/rye</a>';
+
+				panel.content.programmerSection.appendChild(panel.content.programmerSection.text);
+			}
+
+			panel.content.appendChild(panel.content.programmerSection);
+		}
+
 		panel.appendChild(panel.content);
 	}
 
