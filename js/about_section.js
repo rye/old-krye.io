@@ -136,26 +136,40 @@ function AboutSection(minHeight, classList) {
 								'transform': 'rotate(-30) translate(128 0) rotate(30)'
 							});
 
-							/* Points:
-							 * (2, -6)
-							 */
-
-							var hammer = new SiteSVGElement('path', 'hammer', {
-								'transform': 'rotate(-45)',
-								'd': 'M-64 8 L-2 4 L-2 -4 L-64 -8 Z' +
-										 ' M-2 -6 L2 -6 L2 6 L-2 6 Z' +
-										 ' M2 -6' +
-										 ' C6 -6 6 -18 2 -26' +
-										 ' C8 -18 16 -10 16 0' +
-										 ' C16 6 12 10 16 10' +
-										 ' C18 10 18 12 16 12' +
-										 ' L6 12' +
-										 ' C4 12 4 10 6 10' +
-										 ' C8 10 8 6 2 6'
+							var hammer = new SiteSVGElement('g', 'hammer', {
+								transform: 'rotate(-90) scale(2.0)'
 							});
 
-							toolsG.appendChild(hammer);
+							var handle = new SiteSVGElement('path', 'handle', {
+								/* 'd': 'M-64 8 L-2 4 L-2 -4 L-64 -8 Z' +
+									 ' M-2 -6 L2 -6 L2 6 L-2 6 Z' +
+									 ' M2 -6' +
+									 ' C6 -6 6 -18 2 -26' +
+									 ' C8 -18 16 -10 16 0' +
+									 ' C16 6 12 10 16 10' +
+									 ' C18 10 18 12 16 12' +
+									 ' L6 12' +
+									 ' C4 12 4 10 6 10' +
+									 ' C8 10 8 6 2 6' */
 
+								'd': 'M-64 -8 l0 16 l64 -4 l0 -8'
+							});
+
+							var head = new SiteSVGElement('path', 'head', {
+								'd': 'M0 -4' +
+										 ' c   4   0   2 -18  -2 -24' +
+										 ' c   6   4   14  8  16  24' +
+										 ' c   1   7   0   8   0   8' +
+										 ' c  -2   4  -6   6  -4   8' +
+										 ' c   4   0   4   4   0   4' +
+										 ' l-10   0' +
+										 ' c  -4   0  -4  -4   0  -4' +
+										 ' c   3  -2   4  -6   0  -8'
+							});
+
+							hammer.appendChild(handle);
+							hammer.appendChild(head);
+							toolsG.appendChild(hammer);
 							g.appendChild(toolsG);
 						}
 
