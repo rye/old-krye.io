@@ -137,21 +137,10 @@ function AboutSection(minHeight, classList) {
 							});
 
 							var hammer = new SiteSVGElement('g', 'hammer', {
-								transform: 'rotate(-90) scale(2.0)'
+								transform: 'rotate(-45)'
 							});
 
 							var handle = new SiteSVGElement('path', 'handle', {
-								/* 'd': 'M-64 8 L-2 4 L-2 -4 L-64 -8 Z' +
-									 ' M-2 -6 L2 -6 L2 6 L-2 6 Z' +
-									 ' M2 -6' +
-									 ' C6 -6 6 -18 2 -26' +
-									 ' C8 -18 16 -10 16 0' +
-									 ' C16 6 12 10 16 10' +
-									 ' C18 10 18 12 16 12' +
-									 ' L6 12' +
-									 ' C4 12 4 10 6 10' +
-									 ' C8 10 8 6 2 6' */
-
 								'd': 'M-64 -8 l0 16 l64 -4 l0 -8'
 							});
 
