@@ -129,7 +129,7 @@ function AboutSection(minHeight, classList) {
 						}
 
 						{
-							var toolsG = new SiteSVGElement('g', 'branch', {
+							var toolsG = new SiteSVGElement('g', 'tools', {
 								'stroke': '#444',
 								'stroke-width': 0,
 								'fill': '#444',
@@ -137,23 +137,23 @@ function AboutSection(minHeight, classList) {
 							});
 
 							var hammer = new SiteSVGElement('g', 'hammer', {
-								transform: 'rotate(-45)'
+								transform: 'rotate(-45) translate(32 0)'
 							});
 
 							var handle = new SiteSVGElement('path', 'handle', {
-								'd': 'M-64 -8 l0 16 l64 -4 l0 -8'
+								d: 'M-88 -8 l0 16 l88 -4 l0 -8'
 							});
 
 							var head = new SiteSVGElement('path', 'head', {
-								'd': 'M0 -4' +
-										 ' c   4   0   2 -18  -2 -24' +
-										 ' c   6   4   14  8  16  24' +
-										 ' c   1   7   0   8   0   8' +
-										 ' c  -2   4  -6   6  -4   8' +
-										 ' c   4   0   4   4   0   4' +
-										 ' l-10   0' +
-										 ' c  -4   0  -4  -4   0  -4' +
-										 ' c   3  -2   4  -6   0  -8'
+								d: 'M0 -4' +
+									 ' c   4   0   2 -18  -2 -24' +
+									 ' c   6   4   14  8  16  24' +
+									 ' c   1   7   0   8   0   8' +
+									 ' c  -2   4  -6   6  -4   8' +
+									 ' c   4   0   4   4   0   4' +
+									 ' l -10   0' +
+									 ' c  -4   0  -4  -4   0  -4' +
+									 ' c   3  -2   4  -6   0  -8'
 							});
 
 							hammer.appendChild(handle);
@@ -163,17 +163,43 @@ function AboutSection(minHeight, classList) {
 						}
 
 						{
-							var binaryG = document.createElementNS(ns, 'g');
-							binaryG.setAttribute('id', 'branch');
-							binaryG.setAttribute('transform', 'rotate(90) translate(128 0)');
+							var binaryG = new SiteSVGElement('g', 'tools', {
+								'stroke': '#444',
+								'stroke-width': 4,
+								'stroke-linecap': 'round',
+								'fill': '#444',
+								'fill-opacity': 0.0,
+								'transform': 'rotate(90) translate(128 0) rotate(-90)'
+							});
 
-							var circle = document.createElementNS(ns, 'circle');
-							circle.setAttribute('id', 'inner');
-							circle.setAttribute('cx', '0');
-							circle.setAttribute('cy', '0');
-							circle.setAttribute('r', '8');
-							circle.setAttribute('fill', '#444');
-							binaryG.appendChild(circle);
+							var topLeft = new SiteSVGElement('path', 'topLeft', {
+								transform: 'translate(-16 -16)',
+								d: 'M8 -8 L8 8'
+							});
+
+							var topRight = new SiteSVGElement('circle', 'topRight', {
+								transform: 'translate(16 -16)',
+								cx: 8,
+								cy: 0,
+								r: 8
+							});
+
+							var bottomLeft = new SiteSVGElement('circle', 'bottomLeft', {
+								transform: 'translate(-16 16)',
+								cx: 8,
+								cy: 0,
+								r: 8
+							});
+
+							var bottomRight = new SiteSVGElement('path', 'bottomRight', {
+								transform: 'translate(16 16)',
+								d: 'M8 -8 L8 8'
+							});
+
+							binaryG.appendChild(topLeft);
+							binaryG.appendChild(topRight);
+							binaryG.appendChild(bottomLeft);
+							binaryG.appendChild(bottomRight);
 
 							g.appendChild(binaryG);
 						}
