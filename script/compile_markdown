@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'logger'
+require 'github/markup'
+
+$logger = Logger.new(STDOUT)
+$logger.level = Logger::INFO
+$files = []
+
+option_parser = OptionParser.new do |opts|
+	opts.banner = 'Usage: $0 [options] <filename> [...]'
+
+	opts.separator ''
+	opts.separator 'Options:'
+
+	# Allow user to specify verbosity
+	opts.on '-v', '--verbosity VERBOSITY', 'Use given level (e.g. fatal, error, warn, info, debug) (default: warn)' do |verbosity|
+		case verbosity
+		when /^fa?t?a?l?/i
+			$logger.debug 'Changing logger level to Logger::FATAL'
+			$logger.level = Logger::FATAL
+		when /^er?r?o?r?/i
+			$logger.debug 'Changing logger level to Logger::ERROR'
+			$logger.level = Logger::ERROR
+		when /^wa?r?n?/i
+			$logger.debug 'Changing logger level to Logger::WARN'
+			$logger.level = Logger::WARN
+		when /^in?f?o?/i
+			$logger.debug 'Changing logger level to Logger::INFO'
+			$logger.level = Logger::INFO
+		when /^de?b?u?g?/i
+			$logger.debug 'Changing logger level to Logger::DEBUG'
+			$logger.level = Logger::DEBUG
+		else
+			$logger.debug 'Changing logger level to Logger::UNKNOWN'
+			$logger.level = Logger::UNKNOWN
+		end
+	end
+
+	opts.on '-h', '--help', 'Print this help banner' do
+		puts opts
+		exit
+	end
+end
+
+option_parser.parse!
+
+if ARGV.count == 0
+	puts option_parser
+	exit
+end
+
+while value = ARGV.shift
+	# Check if the shifted argument value is a file and is readable.
+	# If so, assume that it is a filename that we should use.
+	#
+	# TODO: Add logic to ensure that value also has appropriate extension
+	#   e.g. using File.extname
+	if File.exist? value and File.readable? value
+		$files.push value
+	else
+		$logger.warn "File '#{value}' either does not exist or is not readable.  Skipping."
+	end
+end
+
+$logger.info "Compiling #{$files.count} files..."
+
+$files.each do |file|
+	$logger.debug "Current file: #{file}"
+end
