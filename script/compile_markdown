@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 
+require 'uri'
+require 'net/http'
 require 'optparse'
-require 'logger'
 require 'github/markup'
 
-$logger = Logger.new(STDOUT)
-$logger.level = Logger::INFO
+$output_dir = 'posts'
 $files = []
 
 option_parser = OptionParser.new do |opts|
@@ -14,28 +14,8 @@ option_parser = OptionParser.new do |opts|
 	opts.separator ''
 	opts.separator 'Options:'
 
-	# Allow user to specify verbosity
-	opts.on '-v', '--verbosity VERBOSITY', 'Use given level (e.g. fatal, error, warn, info, debug) (default: warn)' do |verbosity|
-		case verbosity
-		when /^fa?t?a?l?/i
-			$logger.debug 'Changing logger level to Logger::FATAL'
-			$logger.level = Logger::FATAL
-		when /^er?r?o?r?/i
-			$logger.debug 'Changing logger level to Logger::ERROR'
-			$logger.level = Logger::ERROR
-		when /^wa?r?n?/i
-			$logger.debug 'Changing logger level to Logger::WARN'
-			$logger.level = Logger::WARN
-		when /^in?f?o?/i
-			$logger.debug 'Changing logger level to Logger::INFO'
-			$logger.level = Logger::INFO
-		when /^de?b?u?g?/i
-			$logger.debug 'Changing logger level to Logger::DEBUG'
-			$logger.level = Logger::DEBUG
-		else
-			$logger.debug 'Changing logger level to Logger::UNKNOWN'
-			$logger.level = Logger::UNKNOWN
-		end
+	opts.on '-o', '--output DIR', "Output compiled files into DIR. (default: #{$output_dir})" do |dir|
+		$output_dir = dir
 	end
 
 	opts.on '-h', '--help', 'Print this help banner' do
@@ -59,13 +39,50 @@ while value = ARGV.shift
 	#   e.g. using File.extname
 	if File.exist? value and File.readable? value
 		$files.push value
-	else
-		$logger.warn "File '#{value}' either does not exist or is not readable.  Skipping."
 	end
 end
 
-$logger.info "Compiling #{$files.count} files..."
+puts "Have #{$files.count} files to handle..."
 
 $files.each do |file|
-	$logger.debug "Current file: #{file}"
+	matched, prefix, year, month, day, basename = file.match(/^(?<prefix>.+)\/(?<year>\d{4})\/(?<month>\d{1,2})\/(?<day>\d{1,2})\/(?<filename>.+)$/).to_a
+
+	raise RuntimeError, 'RegExp-matched portion of filename does not equal entire filename!' unless matched == file
+
+	file_without_extension = File.basename(basename, File.extname(basename))
+	post_date = Date.new(year.to_i, month.to_i, day.to_i)
+	output_filename = File.join($output_dir, year, month, day, "#{file_without_extension}.html")
+
+	data = nil
+
+	open(file, 'rb') do |io|
+		data = io.read
+	end
+
+	output_io = open(output_filename, 'wb')
+
+	raw_markdown_uri = URI('https://api.github.com/markdown/raw')
+
+	transport = Net::HTTP.new(raw_markdown_uri.host, raw_markdown_uri.port)
+	transport.use_ssl = true
+
+	transport.start do |_transport|
+		request = Net::HTTP::Post.new(raw_markdown_uri)
+
+		request.body = data
+		request.content_type = 'text/x-markdown'
+
+		body = ""
+
+		_transport.request(request) do |response|
+			response.read_body do |chunk|
+				body << chunk
+				output_io.write(chunk)
+			end
+		end
+
+		puts body
+	end
+
+	output_io.close
 end
