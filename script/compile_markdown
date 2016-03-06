@@ -11,7 +11,7 @@ $files = []
 
 option_parser = OptionParser.new do |opts|
 
-	opts.banner = 'Usage: $0 [options] <filename> [...]'
+	opts.banner = 'Usage: $0 [options] <filename> [ <filename> ... ]'
 
 	opts.separator ''
 	opts.separator 'Options:'
