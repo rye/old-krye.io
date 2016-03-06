@@ -10,6 +10,7 @@ $output_dir = 'posts'
 $files = []
 
 option_parser = OptionParser.new do |opts|
+
 	opts.banner = 'Usage: $0 [options] <filename> [...]'
 
 	opts.separator ''
@@ -23,16 +24,20 @@ option_parser = OptionParser.new do |opts|
 		puts opts
 		exit
 	end
+
 end
 
 option_parser.parse!
 
 if ARGV.count == 0
+
 	puts option_parser
 	exit
+
 end
 
 while value = ARGV.shift
+
 	# Check if the shifted argument value is a file and is readable.
 	# If so, assume that it is a filename that we should use.
 	#
@@ -41,11 +46,13 @@ while value = ARGV.shift
 	if File.exist? value and File.readable? value
 		$files.push value
 	end
+
 end
 
 puts "Have #{$files.count} files to handle..."
 
 $files.each do |file|
+
 	matched, prefix, year, month, day, basename = file.match(/^(?<prefix>.+)\/(?<year>\d{4})\/(?<month>\d{1,2})\/(?<day>\d{1,2})\/(?<filename>.+)$/).to_a
 
 	raise RuntimeError, 'RegExp-matched portion of filename does not equal entire filename!' unless matched == file
@@ -68,6 +75,7 @@ $files.each do |file|
 	transport.use_ssl = true
 
 	transport.start do |_transport|
+
 		request = Net::HTTP::Post.new(raw_markdown_uri)
 
 		request.body = data
@@ -83,7 +91,9 @@ $files.each do |file|
 		end
 
 		puts body
+
 	end
 
 	output_io.close
+
 end
