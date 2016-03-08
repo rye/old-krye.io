@@ -9,3 +9,23 @@ html,body {
 	overflow-y: auto;
 	overflow-x: hidden;
 }
+
+.panel-container {
+	width: 100%;
+	height: 100%;
+
+	display: flex;
+	flex-direction: column;
+}
+
+.panel.p25 { flex: 1 0 auto; height: 25vh; }
+.panel.p40 { flex: 1 0 auto; height: 40vh; }
+.panel.p50 { flex: 1 0 auto; height: 50vh; }
+.panel.p75 { flex: 1 0 auto; height: 75vh; }
+.panel.p80 { flex: 1 0 auto; height: 80vh; }
+
+.panel {
+	flex: 1 0 auto;
+	display: flex;
+	flex-direction: column;
+}
