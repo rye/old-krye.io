@@ -1,0 +1,42 @@
+@keyframes opacity-fade-in {
+	from {
+		opacity: 0.0;
+	}
+
+	to {
+		opacity: 1.0;
+	}
+}
+
+@-webkit-keyframes opacity-fade-in {
+	from {
+		opacity: 0.0;
+	}
+
+	to {
+		opacity: 1.0;
+	}
+}
+
+.landing .title * {
+	-webkit-animation-timing-function: ease;
+	animation-timing-function: ease;
+
+	-webkit-animation-name: opacity-fade-in;
+	animation-name: opacity-fade-in;
+}
+
+.landing .title * .main {
+	-webkit-animation-duration: 1s;
+	animation-duration: 1s;
+}
+
+.landing .title .top .aux {
+	-webkit-animation-duration: 1.5s;
+	animation-duration: 1.5s;
+}
+
+.landing .title .tagline {
+	-webkit-animation-duration: 4s;
+	animation-duration: 4s;
+}
