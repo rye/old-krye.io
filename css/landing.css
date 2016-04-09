@@ -54,7 +54,7 @@
 
 }
 
-@media (min-width: 500pt) {
+@media (min-width: 300pt) {
 
 	.landing .tagline {
 		word-spacing: 0.35em;
