@@ -1,11 +1,11 @@
 @keyframes introduction-background-fade-in {
 	from { background: #010814; }
-	to { background: #10203f; }
+	to { background: #051128; }
 }
 
 @-webkit-keyframes introduction-background-fade-in {
 	from { background: #010814; }
-	to { background: #10203f; }
+	to { background: #051128; }
 }
 
 .panel.introduction {
