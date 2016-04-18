@@ -1,11 +1,8 @@
 .panel.landing {
 	background-color: #000;
+	color: #bbb;
 	justify-content: center;
 	align-items: center;
-}
-
-.panel.landing > * {
-	color: #bbb;
 }
 
 .panel.landing .centered {
