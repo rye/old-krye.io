@@ -23,6 +23,7 @@ html,body {
 .panel.p50 { flex: 1 0 auto; height: 50vh; }
 .panel.p75 { flex: 1 0 auto; height: 75vh; }
 .panel.p80 { flex: 1 0 auto; height: 80vh; }
+.panel.p95 { flex: 1 0 auto; height: 95vh; }
 .panel.p100 { flex: 1 0 auto; height: 100vh; }
 
 .panel {
