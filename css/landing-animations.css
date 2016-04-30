@@ -1,48 +1,47 @@
 @keyframes opacity-fade-in {
-	from { opacity: 0.0; }
-	to { opacity: 1.0; }
-}
-
+  from {
+    opacity: 0.0; }
+  to {
+    opacity: 1.0; } }
 @-webkit-keyframes opacity-fade-in {
-	from { opacity: 0.0; }
-	to { opacity: 1.0; }
-}
-
+  from {
+    opacity: 0.0; }
+  to {
+    opacity: 1.0; } }
 @keyframes expand-word-spacing-fade-in {
-	from { word-spacing: initial; opacity: 0.0; }
-	to { word-spacing: 0.35em; opacity: 1.0; }
-}
-
+  from {
+    word-spacing: initial;
+    opacity: 0.0; }
+  to {
+    word-spacing: 0.35em;
+    opacity: 1.0; } }
 @-webkit-keyframes expand-word-spacing-fade-in {
-	from { word-spacing: initial; opacity: 0.0; }
-	to { word-spacing: 0.35em; opacity: 1.0; }
-}
-
+  from {
+    word-spacing: initial;
+    opacity: 0.0; }
+  to {
+    word-spacing: 0.35em;
+    opacity: 1.0; } }
 .landing .title * {
-	-webkit-animation-timing-function: ease;
-	animation-timing-function: ease;
-
-	-webkit-animation-name: opacity-fade-in;
-	animation-name: opacity-fade-in;
-}
+  -webkit-animation-timing-function: ease;
+  animation-timing-function: ease;
+  -webkit-animation-name: opacity-fade-in;
+  animation-name: opacity-fade-in; }
 
 .landing .title * .main {
-	-webkit-animation-duration: 1s;
-	animation-duration: 1s;
-}
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s; }
 
 .landing .title .top .aux {
-	-webkit-animation-duration: 1.5s;
-	animation-duration: 1.5s;
-}
+  -webkit-animation-duration: 1.5s;
+  animation-duration: 1.5s; }
 
 .landing .title .tagline {
-	-webkit-animation-timing-function: ease;
-	animation-timing-function: ease;
+  -webkit-animation-timing-function: ease;
+  animation-timing-function: ease;
+  -webkit-animation-name: expand-word-spacing-fade-in;
+  animation-name: expand-word-spacing-fade-in;
+  -webkit-animation-duration: 4s;
+  animation-duration: 4s; }
 
-	-webkit-animation-name: expand-word-spacing-fade-in;
-	animation-name: expand-word-spacing-fade-in;
-
-	-webkit-animation-duration: 4s;
-	animation-duration: 4s;
-}
+/*# sourceMappingURL=landing-animations.css.map */
