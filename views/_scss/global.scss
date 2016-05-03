@@ -1,0 +1,48 @@
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+@mixin fill($width, $height) {
+	width: $width;
+	height: $height;
+}
+
+html,
+body {
+	@include fill(100%, 100%);
+
+	overflow: {
+		x: hidden;
+		y: auto;
+	}
+}
+
+.panel-container {
+	@include fill(100%, 100%);
+
+	display: flex;
+
+	flex: {
+		direction: column;
+	}
+}
+
+.panel {
+	display: flex;
+
+	flex: {
+		grow: 1;
+		shrink: 0;
+		basis: auto;
+		direction: column;
+	}
+}
+
+.panel.p25 { height: 25vh; }
+.panel.p40 { height: 40vh; }
+.panel.p50 { height: 50vh; }
+.panel.p75 { height: 75vh; }
+.panel.p80 { height: 80vh; }
+.panel.p95 { height: 95vh; }
+.panel.p100 { height: 100vh; }
