@@ -1,0 +1,12 @@
+static:
+  default: '../_default/'
+
+  directories:
+    - '../static/'
+
+views:
+  directories:
+    - '../views/'
+
+custom_routes:
+  - '/': '/index.html'
