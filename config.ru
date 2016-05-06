@@ -7,12 +7,6 @@ server_configuration = Site::ServerConfiguration.new 'config/server.yml'
 
 pp server_configuration
 
-require 'sinatra'
+Site::Server.setup!(server_configuration)
 
-disable :run
-
-map '/' do
-	server = Site::Server.setup!(server_configuration)
-
-	run server
-end
+run Site::Server
