@@ -1,12 +1,15 @@
-static:
-  default: '../_default/'
-
-  directories:
-    - '../static/'
-
-views:
-  directories:
-    - '../views/'
+settings:
+  sinatra:
+    environment: development
+    sessions: false
+    logging: true
+    method_override: false
+    root: '..'
+    public_folder: 'static'
+    views_folder: 'views'
+    bind: 0.0.0.0
+    port: 9292
+    show_exceptions: true
 
 custom_routes:
   - '/': '/index.html'
