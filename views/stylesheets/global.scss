@@ -18,6 +18,10 @@ body {
 	}
 }
 
+body {
+	background-color: #000;
+}
+
 .panel-container {
 	@include fill(100%, 100%);
 

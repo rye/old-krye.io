@@ -1,8 +1,30 @@
 .panel.landing {
-  background-color: #000;
   color: #bbb;
   justify-content: center;
   align-items: center; }
+
+.panel.landing .landing-background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+  -webkit-filter: brightness(0.275) contrast(0.9975);
+  -moz-filter: brightness(0.275) contrast(0.9975);
+  -ms-filter: brightness(0.275) contrast(0.9975);
+  -o-filter: brightness(0.275) contrast(0.9975);
+  filter: brightness(0.275) contrast(0.9975);
+  z-index: -1;
+  -webkit-transition: opacity 1s ease-out;
+  -moz-transition: opacity 1s ease-out;
+  -o-transition: opacity 1s ease-out;
+  transition: opacity 1s ease-out;
+  opacity: 0.0; }
 
 .panel.landing .centered {
   flex: 0 1 auto; }
