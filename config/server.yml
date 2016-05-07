@@ -1,14 +1,22 @@
 settings:
-  sinatra:
-    environment: development
-    sessions: false
-    logging: true
-    method_override: false
-    root: '..'
-    public_folder: 'static'
-    views_folder: 'views'
+  root_folder: '..'
+  public_folder: 'static'
+  views_folder: 'views'
+
+  environment: development
+
+  bind: 0.0.0.0
+  port: 9292
+
+environments:
+  production:
     bind: 0.0.0.0
-    port: 9292
+    port: 80
+    show_exceptions: false
+
+  development:
+    bind: localhost
+    port: 8157
     show_exceptions: true
 
 custom_routes:
