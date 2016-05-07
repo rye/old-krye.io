@@ -9,14 +9,20 @@
   position: absolute;
   top: 0px;
   left: 0px;
-  background: url("../Header Background.jpg") no-repeat center center fixed;
+  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
   background-size: cover;
-  -webkit-filter: brightness(0.3) contrast(0.9975);
-  -moz-filter: brightness(0.3) contrast(0.9975);
-  -ms-filter: brightness(0.3) contrast(0.9975);
-  -o-filter: brightness(0.3) contrast(0.9975);
-  filter: brightness(0.3) contrast(0.9975);
-  z-index: -1; }
+  -webkit-filter: brightness(0.275) contrast(0.9975);
+  -moz-filter: brightness(0.275) contrast(0.9975);
+  -ms-filter: brightness(0.275) contrast(0.9975);
+  -o-filter: brightness(0.275) contrast(0.9975);
+  filter: brightness(0.275) contrast(0.9975);
+  z-index: -1;
+  -webkit-transition: opacity 0.5s ease-out;
+  transition: opacity 0.5s ease-out;
+  opacity: 0.0; }
 
 .panel.landing .centered {
   flex: 0 1 auto; }
