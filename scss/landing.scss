@@ -26,8 +26,8 @@
 	@include filter(brightness(0.2750) contrast(0.9975));
 	z-index: -1;
 
-	-webkit-transition: opacity 0.5s ease-out;
-	transition: opacity 0.5s ease-out;
+	-webkit-transition: opacity 1s ease-out;
+	transition: opacity 1s ease-out;
 
 	opacity: 0.0;
 }
