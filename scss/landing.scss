@@ -27,6 +27,8 @@
 	z-index: -1;
 
 	-webkit-transition: opacity 1s ease-out;
+	-moz-transition: opacity 1s ease-out;
+	-o-transition: opacity 1s ease-out;
 	transition: opacity 1s ease-out;
 
 	opacity: 0.0;
