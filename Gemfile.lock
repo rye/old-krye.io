@@ -78,7 +78,6 @@ DEPENDENCIES
   github-markup
   guard
   guard-rspec
-  rack
   rake
   rspec
   sass

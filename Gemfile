@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'rack'
 gem 'thin'
 gem 'sass'
 gem 'sinatra'
