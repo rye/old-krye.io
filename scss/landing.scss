@@ -1,8 +1,27 @@
+@mixin filter($filter-text) {
+	-webkit-filter: $filter-text;
+	-moz-filter: $filter-text;
+	-ms-filter: $filter-text;
+	-o-filter: $filter-text;
+	filter: $filter-text;
+}
+
 .panel.landing {
-	background-color: #000;
 	color: #bbb;
 	justify-content: center;
 	align-items: center;
+}
+
+.panel.landing .landing-background {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background: url('../Header Background.jpg') no-repeat center center fixed;
+	background-size: cover;
+	@include filter(brightness(0.3000) contrast(0.9975));
+	z-index: -1;
 }
 
 .panel.landing .centered {
