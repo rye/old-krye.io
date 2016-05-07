@@ -6,8 +6,6 @@ var landingBackgroundDiv = document.querySelector('.landing-background');
 landingBackgroundDiv.style.opacity = 0.0;
 
 internalImage.onload = function() {
-	console.log('Image has loaded! Setting the landing background now.');
-
 	landingBackgroundDiv.style.backgroundImage = "url('" + internalImage.src + "')";
 	landingBackgroundDiv.style.opacity = 1.0;
 };
