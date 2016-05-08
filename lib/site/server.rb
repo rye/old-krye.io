@@ -1,36 +1,40 @@
 require 'sinatra/base'
 
+require 'site/logger'
+require 'site/compiler'
+
 module Site
 
 	class Server < Sinatra::Base
 
 		def self.start(server_configuration)
-			run!(server_configuration)
+			setup!(server_configuration)
+			run!
 		end
 
 		protected
 
 		def self.setup!(configuration)
-			set :environment, configuration.environment
+			set :environment, configuration.environment if configuration.environment
 
-			set :root, File.expand_path(configuration.root_folder)
-			set :public_folder, configuration.public_folder
-			set :views, configuration.views_folder
+			set :root, configuration.root_folder if configuration.root_folder
+			set :public_folder, configuration.public_folder if configuration.public_folder
 
-			set :sessions, configuration.sessions?
-			set :show_exceptions, configuration.show_exceptions
+			set :show_exceptions, configuration.show_exceptions? if configuration.show_exceptions?
 
-			set :bind, configuration.bind
-			set :port, configuration.port
+			set :logging, true
 
-			p settings.public_folder
-			p settings.views
+			set :bind, configuration.bind if configuration.bind
+			set :port, configuration.port if configuration.port
+
+			@@compiler ||= Compiler.new(configuration.root_folder, configuration.public_folder, configuration.skeleton_folder, erb: configuration.erb_folder, scss: configuration.scss_folder, coffee: configuration.coffee_folder)
 		end
 
-		def self.run!(configuration)
-			setup!(configuration)
+		def self.run!
+			@@compiler.compile!
+			@@compiler.run!
 
-			super()
+			super
 		end
 
 	end
