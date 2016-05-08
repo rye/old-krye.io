@@ -5,6 +5,5 @@ $LOAD_PATH.unshift(File.expand_path(File.join('..', 'lib'), File.dirname(__FILE_
 require 'site'
 
 configuration = Site::Configuration::ServerConfigurationFile.new(File.expand_path(File.join('..', 'config/server.yml'), File.dirname(__FILE__)))
-configuration['port'] = ARGV[0]
 
 Site::Server.start(configuration)
