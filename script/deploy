@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+
+require 'pp'
+require 'logger'
+
+L = Logger.new(STDOUT)
+L.level = Logger::DEBUG
+
+admin = ARGV[0]
+host = ARGV[1]
+user = ARGV[2]
+password = ARGV[3]
+
+admin_at_host = "#{admin}@#{host}"
+user_at_host = "#{user}@#{host}"
+user_key = "#{password}"
+
+L.info "Deploying to #{admin_at_host}.  First, will acquire information about target platform."
+
+kernel_name = `ssh #{admin_at_host} "uname -s"`.chomp
+
+os = case kernel_name
+     when "Linux"
+	     :linux
+     else
+	     raise RuntimeError, "Unknown target kernel name #{kernel_name}"
+     end
+
+L.info "Running a deploy to a #{os} system."
+
+case os
+when :linux
+	L.info "Creating a new user for the server, and setting password."
+
+	output = `ssh #{admin_at_host} "useradd -m -b /home -d /home/#{user} -U #{user} && echo '#{password}' | passwd #{user} --stdin"`
+
+	L.debug output
+
+	L.info "Adding GPG key for RVM."
+
+	output = `ssh #{user_at_host} "/usr/bin/gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3"`
+
+	L.debug output
+
+	L.info "Running RVM install script."
+
+	output = `ssh #{user_at_host} "\curl -sSL https://get.rvm.io | bash -s stable"`
+end
