@@ -28,8 +28,6 @@ if pid
 	L.info "Killing process with PID #{pid}."
 
 	output = `ssh #{username}@#{hostname} "kill #{pid}"`
-
-	puts output
 end
 
 L.warn "Server is down!"
@@ -37,7 +35,5 @@ L.warn "Server is down!"
 L.info "Starting back up."
 
 output = `ssh #{username}@#{hostname} "nohup ./run_server.sh > server.log 2>&1 &"`
-
-puts output
 
 L.info "Done."
