@@ -8,7 +8,13 @@ module Site
 	class Server < Sinatra::Base
 
 		get '/' do
-			redirect to '/index.html'
+			if File.exist?(filename = File.join(settings.public_folder, 'index.html'))
+				open(filename, 'rb') do |io|
+					io.read
+				end
+			else
+				redirect to '/index.html'
+			end
 		end
 
 		def self.start(server_configuration)
