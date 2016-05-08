@@ -1,31 +1,5 @@
-require 'yaml'
+require 'site/configuration/readable'
 
-module Site
-
-	class Configuration < Hash
-		attr_reader :filename
-
-		def initialize(filename)
-			@filename = filename
-
-			read!
-		end
-
-		protected
-
-		def read(filename)
-			data = open filename, 'rb' do |io|
-				io.read
-			end
-
-			hash = YAML.load(data).to_h
-
-			hash
-		end
-
-		def read!
-			merge!(read(@filename))
-		end
-	end
-
-end
+require 'site/configuration/hash_configuration'
+require 'site/configuration/hash_configuration_file'
+require 'site/configuration/server_configuration_file'

@@ -1,1 +1,10 @@
 #!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.expand_path(File.join('..', 'lib'), File.dirname(__FILE__)))
+
+require 'pry'
+require 'site'
+
+configuration = Site::Configuration::ServerConfigurationFile.new(File.expand_path(File.join('..', 'config/server.yml'), File.dirname(__FILE__)))
+
+Site::Server.start(configuration)
