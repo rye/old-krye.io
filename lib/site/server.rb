@@ -7,6 +7,10 @@ module Site
 
 	class Server < Sinatra::Base
 
+		get '/' do
+			redirect to '/index.html'
+		end
+
 		def self.start(server_configuration)
 			setup!(server_configuration)
 			run!
