@@ -5,8 +5,18 @@ require 'logger'
 L = Logger.new(STDOUT)
 L.level = Logger::DEBUG
 
-username = ARGV[0]
-hostname = ARGV[1]
+username = nil
+hostname = nil
+
+if ARGV[0] && ARGV[1]
+	username = ARGV[0]
+	hostname = ARGV[1]
+elsif ARGV[0]
+	output = `git remote get-url #{ARGV[0]}`.chomp
+	match = output.match(/(.+)@(.+)\:.+$/)
+	username = match[1]
+	hostname = match[2]
+end
 
 L.info "Running post-deploy #{username}@#{hostname}. (You should have run git push already, this is for post-deploying)"
 
