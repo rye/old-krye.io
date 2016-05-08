@@ -1,1 +1,6 @@
+# Ignore cached SASS files
 .sass-cache/
+
+# Ignore built tmp/_server directory
+/tmp/_static
+

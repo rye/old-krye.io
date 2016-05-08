@@ -1,3 +1,0 @@
-# Ayy Lmao
-
-Baked potatoes
