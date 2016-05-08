@@ -39,4 +39,4 @@ environments:
 
     show_exceptions: true
 
-environment: development
+environment: production

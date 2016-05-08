@@ -1,1 +1,1 @@
-web: bundle exec bin/server 
+web: bundle exec bin/server
