@@ -3,6 +3,6 @@ require 'logger'
 module Site
 
 	Logger = Logger.new(STDOUT)
-	self::Logger.level = ::Logger::INFO
+	self::Logger.level = ::Logger::DEBUG
 
 end
