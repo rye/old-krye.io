@@ -1,6 +1,7 @@
 require 'digest'
 
 require 'pp'
+require 'erb'
 require 'sass'
 require 'listen'
 require 'fileutils'
@@ -83,6 +84,31 @@ module Site
 
 					FileUtils.mkdir_p(File.dirname(output_file))
 					FileUtils.cp(original_file, output_file)
+
+				when :erb
+					original_file = different_file
+					output_directory = File.join(@output_directory, File.dirname(different_file_pathname.relative_path_from(Pathname.new(@templates[type]))))
+
+					output_file = File.basename(different_file)
+					output_symlinks = []
+
+					while (reduced = File.basename(output_symlinks.last || output_file, File.extname(output_symlinks.last || output_file))) != output_symlinks.last
+						output_symlinks << reduced
+					end
+
+					output = File.join(output_directory, File.basename(output_file, '.erb'))
+
+					Site::Logger.debug 'Compiler#compile!' do
+						"Compiling #{original_file} ~> #{output}"
+					end
+
+					erb = ERB.new(open(original_file, 'rb') do |io|
+						              io.read
+					              end)
+
+					open(output, 'wb') do |io|
+						io.write erb.result(binding)
+					end
 				when :scss
 					original_file = different_file
 					output_file = File.join(@output_directory, different_file_pathname.relative_path_from(Pathname.new(@templates[type])))
