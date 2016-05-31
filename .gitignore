@@ -7,5 +7,9 @@
 # Ignore log files
 *.log
 
-# Ignore Phusion Passenger PID lock files
+# Ignore Phusion Passenger PID files
+passenger.*.pid
 passenger.*.pid.lock
+
+# Ignore Phusion Passenger configurations (should only be present in production)
+Passengerfile.json
