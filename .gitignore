@@ -3,3 +3,9 @@
 
 # Ignore built tmp/_server directory
 /tmp/_static
+
+# Ignore log files
+*.log
+
+# Ignore Phusion Passenger PID lock files
+passenger.*.pid.lock

@@ -17,33 +17,45 @@ module Site
 			end
 		end
 
-		def self.start(server_configuration)
-			setup!(server_configuration)
+		def self.prepare!
+			setup!
+			compile!
+			run_compiler!
+		end
+
+		def self.start
+			prepare!
 			run!
 		end
 
-		protected
+		def self.setup!
+			@@root_folder = File.expand_path(File.join('..', '..'), File.dirname(__FILE__))
+			@@public_folder = File.expand_path(File.join(@@root_folder, 'tmp', '_static'))
+			@@skeleton_folder = File.expand_path(File.join(@@root_folder, 'static'))
+			@@views_folder = File.expand_path(File.join(@@root_folder, 'views'))
+			@@__erb_folder__ = File.expand_path(File.join(@@views_folder, '__erb__'))
+			@@__scss_folder__ = File.expand_path(File.join(@@views_folder, '__scss__'))
+			@@__coffee_folder__ = File.expand_path(File.join(@@views_folder, '__coffee__'))
 
-		def self.setup!(configuration)
-			set :environment, configuration.environment if configuration.environment
+			set :root, @@root_folder
+			set :public_folder, @@public_folder
 
-			set :root, configuration.root_folder if configuration.root_folder
-			set :public_folder, configuration.public_folder if configuration.public_folder
-
-			set :show_exceptions, configuration.show_exceptions? if configuration.show_exceptions?
+			set :show_exceptions, false
 
 			set :logging, true
 
-			set :bind, configuration.bind if configuration.bind
-			set :port, configuration.port if configuration.port
+			@@compiler ||= Compiler.new(@@root_folder, @@public_folder, @@skeleton_folder, erb: @@__erb_folder__, scss: @@__scss_folder__, coffee: @@__coffee_folder__)
+		end
 
-			@@compiler ||= Compiler.new(configuration.root_folder, configuration.public_folder, configuration.skeleton_folder, erb: configuration.erb_folder, scss: configuration.scss_folder, coffee: configuration.coffee_folder)
+		def self.compile!
+			@@compiler.compile!
+		end
+
+		def self.run_compiler!
+			@@compiler.run!
 		end
 
 		def self.run!
-			@@compiler.compile!
-			@@compiler.run!
-
 			super
 		end
 
