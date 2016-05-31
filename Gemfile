@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'thin'
 gem 'sass'
 gem 'coffee-script'
 gem 'sinatra'
 gem 'github-markup'
 gem 'listen'
+gem 'passenger'
 
 group :development do
 	gem 'rake'
