@@ -16,4 +16,6 @@ group :development do
 
 	gem 'pry'
 	gem 'pry-doc'
+
+	gem 'scientist'
 end
