@@ -42,8 +42,6 @@ namespace :documentation do
 
 		configuration = YAML.load(data)
 
-		p configuration.to_h
-
 		file_rules = configuration['files']
 
 		raise RuntimeError, 'No file rules. :(' unless file_rules
