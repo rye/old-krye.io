@@ -4,8 +4,6 @@ namespace :update do
 	task :to_production do
 		require 'site/logger'
 
-		Site::Logger.level = ::Logger::DEBUG
-
 		Site::Logger.info 'update:production' do
 			"Running `bundle install --deployment --without development test`"
 		end
