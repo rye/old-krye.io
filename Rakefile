@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift(File.expand_path(File.join('..', 'lib'), __FILE__))
 
 namespace :update do
-	task :production do
+	task :to_production do
 		require 'site/logger'
 
 		Site::Logger.level = ::Logger::DEBUG

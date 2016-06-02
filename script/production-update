@@ -4,6 +4,4 @@ dirname=$(dirname $0)
 
 cd $dirname/..
 
-echo "[script/production-update] Running rake update-production"
-
-rake update:production
+rake update:to_production
