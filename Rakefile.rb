@@ -94,3 +94,15 @@ namespace :documentation do
 		Site::Logger.info "Done."
 	end
 end
+
+__END__
+
+		docco_files = lib_files.join(' ')
+
+		raise RuntimeError, 'Executable `docco` could not be found! Ensure you have it installed!' unless find_executable 'docco'
+
+		IO.popen("docco #{docco_files}").each do |line|
+			Site::Logger.debug 'documentation:generate' do line.strip end
+		end
+	end
+end
