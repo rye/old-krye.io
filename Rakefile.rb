@@ -69,7 +69,7 @@ namespace :documentation do
 
 				type == :file
 			end.tap do |_files|
-				Site::Logger.info "Have #{_files} to add to the list"
+				Site::Logger.info "Have #{_files.count} to add to the list"
 			end
 
 			Site::Logger.info "Currently have #{files_to_document.count} files to document"
@@ -92,17 +92,5 @@ namespace :documentation do
 		end
 
 		Site::Logger.info "Done."
-	end
-end
-
-__END__
-
-		docco_files = lib_files.join(' ')
-
-		raise RuntimeError, 'Executable `docco` could not be found! Ensure you have it installed!' unless find_executable 'docco'
-
-		IO.popen("docco #{docco_files}").each do |line|
-			Site::Logger.debug 'documentation:generate' do line.strip end
-		end
 	end
 end
