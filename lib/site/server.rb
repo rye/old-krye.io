@@ -14,10 +14,14 @@ module Site
 
 		# Default route to /
 		get '/' do
-			if File.exist?(filename = File.join(settings.public_folder, 'index.html'))
+			if File.readable?(filename = File.join(settings.public_folder, 'index.html'))
 				# If we have an index.html file in our static folder, read it.
 				open(filename, 'rb') do |io|
 					io.read
+				end
+			elsif File.readable?(filename = File.join(settings.views, 'index.html.erb'))
+				open(filename, 'rb') do |io|
+					erb io.read
 				end
 			else
 				# Otherwise try to redirect to the /index.html file. This should
