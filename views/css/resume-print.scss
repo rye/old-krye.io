@@ -1,0 +1,13 @@
+// Portrait
+@media print and (max-aspect-ratio: 1.0 / 1) {
+	.resume-container {
+		margin: 0;
+	}
+}
+
+// Landscape
+@media print and (min-aspect-ratio: 1.0 / 1) {
+	.resume-container {
+		margin: 0;
+	}
+}

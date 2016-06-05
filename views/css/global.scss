@@ -50,3 +50,15 @@ body {
 .panel.p80 { height: 80vh; }
 .panel.p95 { height: 95vh; }
 .panel.p100 { height: 100vh; }
+
+p.sha1-marker {
+	font-size: 10px;
+
+	position: absolute;
+	bottom: 0;
+	right: 0;
+
+	text-align: right;
+
+	margin: 4pt;
+}

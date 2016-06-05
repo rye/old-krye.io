@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+
+require 'logger'
+
+L = Logger.new(STDOUT)
+L.level = Logger::DEBUG
+
+username = nil
+hostname = nil
+
+if ARGV[0] && ARGV[1]
+	username = ARGV[0]
+	hostname = ARGV[1]
+elsif ARGV[0]
+	output = `git remote get-url #{ARGV[0]}`.chomp
+	match = output.match(/(.+)@(.+)\:.+$/)
+	username = match[1]
+	hostname = match[2]
+end
+
+L.info "Running post-deploy #{username}@#{hostname}. (You should have run git push already, this is for post-deploying)"
+
+output = `ssh #{username}@#{hostname} "cd krye.io.git && git checkout -f"`
+
+puts output
+
+L.info "Looking for existing processes (bin/server)."
+
+output = `ssh #{username}@#{hostname} "ps -ef | grep bin/server"`
+
+puts output
+
+pid = output.match(/\s+(\d+)\s+(\d+).+(\d{2}):(\d{2}):(\d{2})\s(bin\/server)$/)
+
+if pid
+	pid = pid[1].to_i
+
+	L.info "Killing process with PID #{pid}."
+
+	output = `ssh #{username}@#{hostname} "kill #{pid}"`
+end
+
+L.warn "Server is down!"
+
+L.info "Starting back up."
+
+output = `ssh #{username}@#{hostname} "nohup ./run_server.sh > server.log 2>&1 &"`
+
+L.info "Done."
