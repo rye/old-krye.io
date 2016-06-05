@@ -1,13 +1,11 @@
 // Portrait
 @media print and (max-aspect-ratio: 1.0 / 1) {
 	body {
-		color: #f00;
 	}
 }
 
 // Landscape
 @media print and (min-aspect-ratio: 1.0 / 1) {
 	body {
-		color: #0f0;
 	}
 }

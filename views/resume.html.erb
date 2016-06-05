@@ -2,8 +2,10 @@
 <html>
 	<head>
 		<!-- Load all of the stylesheets -->
+		<link rel="stylesheet" href="css/roboto.css" />
 		<link rel="stylesheet" href="css/global.css" />
 		<link rel="stylesheet" href="css/resume.css" />
+		<link rel="stylesheet" href="css/resume-header.css" />
 		<link rel="stylesheet" href="css/resume-print.css" />
 		<link rel="stylesheet" href="css/resume-animations.css" />
 
@@ -22,11 +24,186 @@
 	</head>
 
 	<body class="computer-modern">
-		<div class="">
-			[resume goes here]
+		<div class="resume-container">
+			<div class="header-container">
+				<div class="header">
+					<div class="name">
+						Kristofer Rye
+					</div>
 
-			<p class="version-marker">(SHA1 <%= `git rev-parse HEAD`[0..8].chomp %>)</p>
+					<div class="tagline">
+						Ruby, Web Developer.
+					</div>
+				</div>
+			</div>
+
+			<div class="body-container">
+				<div class="pane minor">
+					<div class="container skills">
+						<div class="header">
+							Skills
+						</div>
+
+						<div class="languages">
+							<span class="label">Languages</span>
+
+							<span class="language">Ruby</span>
+							<span class="language">HTML</span>
+							<span class="language">JS</span>
+							<span class="language">CSS</span>
+							<span class="language">Java</span>
+							<span class="language">PHP</span>
+							<span class="language">C</span>
+							<span class="language">Go</span>
+							<span class="language">Python</span>
+							<span class="language">C++</span>
+						</div>
+
+						<div class="frameworks">
+							<span class="label">Frameworks</span>
+
+							<span class="framework">Sinatra</span>
+							<span class="framework">WebSockets</span>
+							<span class="framework">Ruby on Rails</span>
+							<span class="framework">Bootstrap</span>
+							<span class="framework">AngularJS</span>
+						</div>
+
+						<div class="services">
+							<span class="label">Services</span>
+
+							<span class="service">Git</span>
+							<span class="service">SSH</span>
+							<span class="service">S/FTP</span>
+							<span class="service">MongoDB</span>
+							<span class="service">RSpec</span>
+							<span class="service">Guard</span>
+							<span class="service">Google Analytics</span>
+							<span class="service">SQL</span>
+							<span class="service">Redis</span>
+						</div>
+
+						<div class="other">
+							<span class="label">Other</span>
+
+							<span class="item">GitHub</span>
+							<span class="item">Slack</span>
+							<span class="item">BitBucket</span>
+
+							<span class="item">Private Pilot</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="pane major">
+					<div class="container education">
+						<div class="header">
+							Education
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">St. Olaf College</div>
+								<div class="date">Sep. 2016 - Jun. 2020 (anticipated)</div>
+							</div>
+
+							<div class="description">
+								Will pursue a Computer Science major and a possible dual-major or triple-major with Mathematics and/or Physics.
+								Will also participate in the St. Olaf Orchestra, if possible.
+							</div>
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">Brainerd High School</div>
+								<div class="date">Sep. 2014 - Jun. 2016</div>
+							</div>
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">West Lafayette High School</div>
+								<div class="date">Aug. 2012 - May 2014</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="container experience">
+						<div class="header">
+							Experience
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">FReCon</div>
+								<div class="date">Summer 2013 - current</div>
+								<div class="position">Head Maintainer and Developer</div>
+							</div>
+
+							<div class="description">
+								A Ruby JSON API, using the Sinatra framework and MongoDB; designed for scouting at <i>FIRST</i> robotics competitions.
+								Also helped to design WeBCa, the web interface to the FReCon API.
+							</div>
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">Warrior Robotics</div>
+								<div class="date">Sep. 2014 - Jun. 2016</div>
+								<div class="position">Lead Software Engineer</div>
+							</div>
+
+							<div class="description">
+								<i>FIRST</i> Robotics Team.
+								Designed r2015 and r2016, the two main code bases for the 2015 and 2016 seasons.
+								Won Rockwell Collins' Innovation in Control Award at the Lake Superior Regional in Duluth. (March 2016)
+							</div>
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">Brainerd Guide Service</div>
+								<div class="date">Jan. 2016 - Jun. 2016</div>
+								<div class="position">Web Developer</div>
+							</div>
+
+							<div class="description">
+								Assisted with rollover to new cloud hosting service and wrote deployment framework.
+								Worked on securing servers from fraud.
+							</div>
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">Spensa Technologies, Inc.</div>
+								<div class="date">Fall 2014 - Summer 2015</div>
+								<div class="position">Software Developer Intern</div>
+							</div>
+
+							<div class="description">
+								Built a marketing dashboard in HTML, CSS, and JavaScript.
+								Worked on API.
+							</div>
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">West Lafayette High School</div>
+								<div class="date">Fall 2012 - Summer 2014</div>
+								<div class="position">Student Technology Volunteer</div>
+							</div>
+
+							<div class="description">
+								Assisted with IT rollover process between school seasons, managed inventory.
+								Designed and wrote in-house applications to be used by IT staff and school faculty.
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
+
+		<p class="sha1-marker">(SHA1 <%= `git rev-parse HEAD`[0..8].chomp %>)</p>
 
 		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-77379897-1','auto');ga('send','pageview');</script>
 	</body>

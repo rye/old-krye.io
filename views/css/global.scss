@@ -51,4 +51,14 @@ body {
 .panel.p95 { height: 95vh; }
 .panel.p100 { height: 100vh; }
 
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,100italic,100,300,300italic,400italic,500,500italic,700,700italic,900,900italic&subset=latin,latin-ext');
+p.sha1-marker {
+	font-size: 10px;
+
+	position: absolute;
+	bottom: 0;
+	right: 0;
+
+	text-align: right;
+
+	margin: 4pt;
+}

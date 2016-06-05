@@ -6,3 +6,166 @@ body {
 	background-color: #fff;
 	color: #000;
 }
+
+.resume-container {
+	display: flex;
+	flex-direction: column;
+
+	.body-container {
+		flex: 8 0 auto;
+		display: flex;
+		flex-direction: row;
+		font-family: 'Roboto', sans-serif;
+
+		> * {
+			font-size: 12pt;
+			padding: 0.85em;
+
+			border-right: 1pt solid #000;
+		}
+
+		> *:last-child {
+			border-right: none;
+		}
+
+		> .pane {
+			display: flex;
+			flex-direction: column;
+
+			> .container {
+				flex: 1 0 auto;
+
+				display: flex;
+				flex-direction: column;
+
+				> .header {
+					font-size: 16pt;
+					font-weight: bold;
+					text-align: center;
+					text-transform: uppercase;
+
+					padding: 0.125em;
+					border-bottom: 2pt solid #000;
+				}
+
+				.resume-item {
+					font-size: 12pt;
+
+					border-bottom: none;
+
+					div.header {
+						display: block;
+
+						div.title {
+							font-size: 13pt;
+							float: left;
+							font-weight: bold;
+						}
+
+						div.date {
+							font-size: 11pt;
+							float: right;
+							font-weight: 500;
+						}
+
+						div.position {
+							clear: both;
+							font-size: 10pt;
+							float: left;
+							margin-left: 2em;
+							font-style: italic;
+							line-height: 110%;
+						}
+					}
+
+					div.description {
+						font-size: 10pt;
+						display: block;
+						clear: both;
+
+						font-weight: 300;
+						line-height: 130%;
+						padding: 4pt;
+					}
+				}
+
+				> * {
+					border-bottom: 1pt solid #000;
+
+					padding: 3pt 2pt 2pt 2pt;
+
+					line-height: 150%;
+					font-weight: 300;
+					font-size: 11pt;
+
+					span.label {
+						font-size: 12pt;
+						font-weight: 400;
+						text-transform: uppercase;
+
+						border: 1pt solid #444;
+						padding: 1pt 3pt 1pt 3pt;
+					}
+				}
+
+				> *:last-child {
+					border-bottom: none;
+				}
+			}
+		}
+
+		> .pane.minor {
+			flex: 1 1 auto;
+
+			> .container {
+			}
+
+			> .container.skills {
+				> .languages {
+					> span.language:after {
+						content: ", ";
+					}
+
+					> span.language:last-child:after {
+						content: none;
+					}
+				}
+
+				> .frameworks {
+					> span.framework:after {
+						content: ", ";
+					}
+
+					> span.framework:last-child:after {
+						content: none;
+					}
+				}
+
+				> .services {
+					> span.service:after {
+						content: ", ";
+					}
+
+					> span.service:last-child:after {
+						content: none;
+					}
+				}
+
+				> .other {
+					> span.item:after {
+						content: ", ";
+					}
+
+					> span.item:last-child:after {
+						content: none;
+					}
+				}
+			}
+
+		}
+
+		> .pane.major {
+			flex: 1 1 auto;
+		}
+	}
+}
