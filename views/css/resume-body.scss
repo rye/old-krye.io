@@ -20,6 +20,10 @@
 			display: flex;
 			flex-direction: column;
 
+			> .container:not(:first-child) {
+				padding-top: 16pt;
+			}
+
 			> .container {
 				flex: 1 0 auto;
 
