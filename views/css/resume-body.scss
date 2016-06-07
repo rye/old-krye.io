@@ -25,6 +25,11 @@
 			}
 
 			> .container {
+				a {
+					text-decoration: none;
+					color: initial;
+				}
+
 				flex: 0 1 auto;
 
 				display: flex;
