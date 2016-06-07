@@ -112,43 +112,13 @@
 			> .container {
 			}
 
-			> .container.skills {
-				> .languages {
-					> span.language:after {
+			> .container {
+				> div {
+					> span:not(.label):after {
 						content: ", ";
 					}
 
-					> span.language:last-child:after {
-						content: none;
-					}
-				}
-
-				> .frameworks {
-					> span.framework:after {
-						content: ", ";
-					}
-
-					> span.framework:last-child:after {
-						content: none;
-					}
-				}
-
-				> .services {
-					> span.service:after {
-						content: ", ";
-					}
-
-					> span.service:last-child:after {
-						content: none;
-					}
-				}
-
-				> .other {
-					> span.item:after {
-						content: ", ";
-					}
-
-					> span.item:last-child:after {
+					> span:not(.label):last-child:after {
 						content: none;
 					}
 				}
