@@ -14,7 +14,7 @@ gem 'github-markup'
 gem 'listen'
 
 group :development do
-	# We should always have Rake,
+	# We should always have Rake available,
 	# but explicitly specify dependency
 	# just in case.
 	gem 'rake'
