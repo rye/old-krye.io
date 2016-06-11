@@ -9,11 +9,26 @@ end
 require 'site/listener'
 
 describe Site::Listener do
+
+	it 'has an attr_reader for @targets' do
+		expect(subject).to respond_to(:targets)
+	end
+
 	describe '#initialize' do
 		context 'taking no arguments' do
 			it 'does not raise an error' do
 				expect { Site::Listener.new }.not_to raise_error
 			end
+
+			subject do
+				Site::Listener.new
+			end
+
+			it 'creates an empty Array of targets' do
+				expect(subject.targets).to be_a(Array)
+				expect(subject.targets.count).to be(0)
+			end
 		end
 	end
+
 end
