@@ -5,7 +5,7 @@ module Site
 	class Listener
 		attr_reader :targets
 
-		def initialize
+		def initialize(commands: [], directories: [])
 			@targets = []
 		end
 	end
