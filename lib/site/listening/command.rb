@@ -1,7 +1,6 @@
 require 'digest'
 
 require 'site/listening/target'
-require 'site/listening/listenable'
 
 module Site
 	module Listening
