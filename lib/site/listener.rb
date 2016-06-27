@@ -1,3 +1,4 @@
+require 'digest'
 require 'listen'
 
 module Site
@@ -7,6 +8,10 @@ module Site
 
 		def initialize(commands: [], directories: [])
 			@targets = []
+		end
+
+		def encode(data)
+			Digest::SHA256.base64digest(data)
 		end
 	end
 
