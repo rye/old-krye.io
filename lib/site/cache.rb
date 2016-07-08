@@ -16,7 +16,6 @@ module Site
 		def initialize(root:, static:, views:)
 			register_mimes!
 
-			@listeners ||= []
 			@workers ||= []
 			@queue ||= Queue.new
 			@entries ||= {}
@@ -26,16 +25,11 @@ module Site
 			@static_directory = static
 			@views_directory = views
 
-			@listeners << { directory: @static_directory, type: :static }
-			@listeners << { directory: @views_directory, type: :views }
-
-			@listeners.each do |listener|
-				listener[:listener] = Listen.to(listener[:directory]) do |modified, added, removed|
-					on(listener[:type], listener[:directory], modified, added, removed)
-				end
-
-				listener[:listener].start
+			@listener = Listen.to(@static_directory, @views_directory) do |modified, added, removed|
+				on(modified, added, removed)
 			end
+
+			@listener.start
 
 			spawn_workers!
 
@@ -57,17 +51,21 @@ module Site
 		end
 
 
-		def on(type, base_directory, modified, added, removed)
+		def on(modified, added, removed)
+			Site::Logger.warn('listener') do
+				"~ #{modified.count}; + #{added.count}; - #{removed.count}"
+			end
+
 			modified.each do |_modified|
-				@queue << {type: type, listening: base_directory, nature: :modified, file: _modified}
+				@queue << { nature: :modified, file: _modified }
 			end
 
 			added.each do |_added|
-				@queue << {type: type, listening: base_directory, nature: :added, file: _added}
+				@queue << { nature: :added, file: _added }
 			end
 
 			removed.each do |_removed|
-				@queue << {type: type, listening: base_directory, nature: :removed, file: _removed}
+				@queue << { nature: :removed, file: _removed }
 			end
 		end
 
