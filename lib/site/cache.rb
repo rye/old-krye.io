@@ -7,6 +7,8 @@ require 'tilt'
 require 'digest'
 require 'colorize'
 
+require 'site/logger'
+
 module Site
 
 	class Cache
