@@ -7,11 +7,21 @@ require 'tilt/erb'
 require 'site/cache'
 require 'site/logger'
 
+require 'thread'
+
 module Site
 
 	class Server < Sinatra::Base
 
+		@@printing_semaphore = Mutex.new
+
 		Tilt.register :"html.erb", Tilt[:erb]
+
+		after do
+			@@printing_semaphore.synchronize {
+				Site::Logger.warn "Handling request for #{request.path_info}"
+			}
+		end
 
 		# Default route to /
 		get '/' do
