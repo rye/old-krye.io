@@ -4,6 +4,7 @@ require 'tilt/sass'
 require 'tilt/coffee'
 require 'tilt/erb'
 
+require 'site/cache'
 require 'site/logger'
 
 module Site
@@ -82,9 +83,9 @@ module Site
 		# Sets up the server
 		def self.setup!
 			# Do a little bit of analysis to generate file paths.
-			@@root_folder = File.expand_path(File.join('..', '..'), File.dirname(__FILE__))
-			@@public_folder = File.expand_path(File.join(@@root_folder, 'static'))
-			@@views_folder = File.expand_path(File.join(@@root_folder, 'views'))
+			@@root_folder = File.expand_path(File.join('..', '..', '..'), __FILE__)
+			@@public_folder = File.join(@@root_folder, 'static')
+			@@views_folder = File.join(@@root_folder, 'views')
 
 			# Assert that all of the folders exist.
 			#
@@ -103,6 +104,10 @@ module Site
 
 			# Do log to the console.
 			set :logging, true
+
+			@@cache = Cache.new(root: @@root_folder, static: @@public_folder, views: @@views_folder)
+
+			@@cache.dump!
 		end
 
 		# Starts the Sinatra application.

@@ -8,6 +8,6 @@ module Site
 
 	# This is the logger that we use in our app.
 	Logger = Logger.new MultiDelegator.delegate(:write, :close).to(STDOUT, LOG_FILE)
-	self::Logger.level = ::Logger::DEBUG
+	self::Logger.level = ::Logger::INFO
 
 end

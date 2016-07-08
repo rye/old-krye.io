@@ -6,6 +6,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
+    colorize (0.8.1)
     diff-lcs (1.2.5)
     execjs (2.7.0)
     ffi (1.9.10)
@@ -31,6 +32,9 @@ GEM
       ruby_dep (~> 1.2)
     lumberjack (1.0.10)
     method_source (0.8.2)
+    mime-types (3.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2016.0521)
     nenv (0.3.0)
     notiffany (0.1.0)
       nenv (~> 0.1)
@@ -83,10 +87,12 @@ PLATFORMS
 
 DEPENDENCIES
   coffee-script
+  colorize
   github-markup
   guard
   guard-rspec
   listen
+  mime-types
   passenger
   pry
   pry-doc

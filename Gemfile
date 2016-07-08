@@ -12,6 +12,8 @@ gem 'github-markup'
 # Internal dependencies related
 # to the file system
 gem 'listen'
+gem 'mime-types'
+gem 'colorize'
 
 group :development do
 	# We should always have Rake available,
