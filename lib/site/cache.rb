@@ -15,13 +15,17 @@ module Site
 
 		WORKER_COUNT = 4
 
-		def initialize(root:, static:, views:)
+		attr_reader :entries, :root_directory, :static_directory, :views_directory, :application
+
+		def initialize(application:,root:, static:, views:)
 			register_mimes!
 
 			@workers ||= []
 			@queue ||= Queue.new
 			@entries ||= {}
 			@semaphore = Mutex.new
+
+			@application = application
 
 			@root_directory = root
 			@static_directory = static
@@ -173,9 +177,61 @@ module Site
 
 								encoded = Digest::SHA1.base64digest(contents)
 
+								file_type, parent = case readable_file
+								                    when /^static/
+									                    [:static, @static_directory]
+								                    when /^views/
+									                    [:view, @views_directory]
+								                    else
+									                    [nil, @root_directory]
+								                    end
+
+								relative_path = Pathname.new(file).relative_path_from(Pathname.new(parent))
+
 								@semaphore.synchronize {
+									Site::Logger.info("Worker [#{worker_number}]") do
+										"Registering routes for #{readable_file}..."
+									end
+
+									routes = case file_type
+									         when :static
+										         [File.join('', relative_path)]
+									         when :view
+										         case primary_mime_type
+										         when 'application/x-sass', 'application/x-scss'
+											         [File.join('', File.join(File.dirname(relative_path), File.basename(relative_path, File.extname(relative_path)) + '.css'))]
+										         when 'application/x-coffee'
+											         [File.join('', File.join(File.dirname(relative_path), File.basename(relative_path, File.extname(relative_path)) + '.js'))]
+										         when 'application/x-eruby'
+											         filename = File.basename(relative_path, File.extname(relative_path))
+											         dirname = File.dirname(relative_path)
+											         base = Pathname.new(File.join(dirname, filename)).relative_path_from(Pathname.new(dirname))
+
+											         ary = [File.join('', base)]
+											         ary
+										         end
+									         else
+
+									         end
+
+									routes = routes.map do |_route|
+										Site::Logger.warn _route
+
+										@application.get(_route) {
+											entry = self.class.class_variable_get(:@@cache).entries[file]
+
+											content_type MIME::Types.type_for(_route).first.to_s
+
+											entry[:contents]
+										}
+									end
+
+									Site::Logger.info("Worker [#{worker_number}]") do
+										"#{@application.each_route.count} routes"
+									end
+
 									@entries[file] = {
-										readable: readable_file, encoded: encoded, contents: contents, mime_types: mime_types
+										readable: readable_file, encoded: encoded, contents: contents, mime_types: mime_types, type: file_type
 									}
 								}
 							end
