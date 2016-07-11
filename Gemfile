@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 # Server dependencies
 gem 'sinatra'
 gem 'sinatra-advanced-routes'
-gem 'passenger'
 
 # Template-related dependencies
 gem 'sass'
