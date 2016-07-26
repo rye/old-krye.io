@@ -16,20 +16,20 @@ gem 'mime-types'
 gem 'colorize'
 
 group :development do
-  # We should always have Rake available,
-  # but explicitly specify dependency
-  # just in case.
-  gem 'rake'
+	# We should always have Rake available,
+	# but explicitly specify dependency
+	# just in case.
+	gem 'rake'
 
-  # Spec-related dependencies
-  gem 'rspec'
-  gem 'guard'
-  gem 'guard-rspec'
+	# Spec-related dependencies
+	gem 'rspec'
+	gem 'guard'
+	gem 'guard-rspec'
 
-  # Inspection dependencies
-  gem 'pry'
-  gem 'pry-doc'
+	# Inspection dependencies
+	gem 'pry'
+	gem 'pry-doc'
 
-  # Rollout dependencies
-  gem 'scientist'
+	# Rollout dependencies
+	gem 'scientist'
 end
