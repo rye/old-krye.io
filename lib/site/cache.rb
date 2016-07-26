@@ -59,7 +59,7 @@ module Site
 
 		def on(modified, added, removed)
 			Site::Logger.warn('listener') do
-				"~ #{modified.count}; + #{added.count}; - #{removed.count}"
+				"Received event with #{modified.count} modified; #{added.count} added; #{removed.count} removed files."
 			end
 
 			modified.each do |_modified|
@@ -77,7 +77,7 @@ module Site
 
 		def dump!
 			@semaphore.synchronize {
-				{ hash: @entries }
+				{ hash: @entries, queue: @queue }
 			}
 		end
 
@@ -194,7 +194,7 @@ module Site
 								end
 
 								@semaphore.synchronize {
-									Site::Logger.info("Worker [#{worker_number}]") do
+									Site::Logger.debug("Worker [#{worker_number}]") do
 										"Now registering routes for #{readable_file}"
 									end
 
