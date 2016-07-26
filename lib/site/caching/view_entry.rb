@@ -3,39 +3,39 @@ require 'tilt'
 require 'site/caching/entry'
 
 module Site
-	module Caching
+  module Caching
 
-		class ViewEntry < Entry
+    class ViewEntry < Entry
 
-			def initialize(filename:, mime_type:)
-				@filename, @mime_type = filename, mime_type
+      def initialize(filename:, mime_type:)
+        @filename, @mime_type = filename, mime_type
 
-				encode!
-			end
+        encode!
+      end
 
-			def read!
-				begin
-					@contents = Tilt.new(@filename, default_encoding: 'UTF-8').render
-				rescue RuntimeError, /No template engine/
-					@contents = read_file(@filename)
-				end
-			end
+      def read!
+        begin
+          @contents = Tilt.new(@filename, default_encoding: 'UTF-8').render
+        rescue RuntimeError, /No template engine/
+          @contents = read_file(@filename)
+        end
+      end
 
-			def encode!
-				read!
+      def encode!
+        read!
 
-				@sha1 = encode(@contents || '')
-			end
+        @sha1 = encode(@contents || '')
+      end
 
-			protected
+      protected
 
-			def read_file(filename)
-				open(filename, 'rb') do |io|
-					io.read
-				end
-			end
+      def read_file(filename)
+        open(filename, 'rb') do |io|
+          io.read
+        end
+      end
 
-		end
+    end
 
-	end
+  end
 end

@@ -1,32 +1,32 @@
 require 'site/caching/encodable'
 
 module Site
-	module Caching
+  module Caching
 
-		class Entry
+    class Entry
 
-			include Encodable
+      include Encodable
 
-			attr_reader :filename, :mime_type, :contents, :sha1
+      attr_reader :filename, :mime_type, :contents, :sha1
 
-			def initialize(filename:, mime_type:)
-				@filename, @mime_type = filename, mime_type
+      def initialize(filename:, mime_type:)
+        @filename, @mime_type = filename, mime_type
 
-				encode!
-			end
+        encode!
+      end
 
-			def read!
-				@contents = open(@filename, 'rb') do |io|
-					io.read
-				end
-			end
+      def read!
+        @contents = open(@filename, 'rb') do |io|
+          io.read
+        end
+      end
 
-			def encode!
-				read!
+      def encode!
+        read!
 
-				@sha1 = encode(@contents || '')
-			end
-		end
+        @sha1 = encode(@contents || '')
+      end
+    end
 
-	end
+  end
 end
