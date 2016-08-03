@@ -13,6 +13,8 @@ gem 'github-markup'
 # to the file system
 gem 'listen'
 gem 'mime-types'
+
+# Colored output
 gem 'colorize'
 
 group :development do
