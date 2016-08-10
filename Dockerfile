@@ -19,7 +19,8 @@ RUN apt-get update \
 RUN rm -rfv /var/lib/apt/lists/*
 
 # Fetch all of the commits and tags from the repository
-RUN git fetch --tags
+RUN git fetch \
+  && git fetch --tags
 
 # Print out current Git HEAD information
 RUN git describe --tags --dirty
