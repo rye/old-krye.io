@@ -18,6 +18,9 @@ RUN apt-get update \
 # Clean up
 RUN rm -rfv /var/lib/apt/lists/*
 
+# Print out all of the commits that we have at our disposal
+RUN git log --pretty=oneline
+
 # Print out current Git HEAD information
 RUN git describe --tags --dirty
 
