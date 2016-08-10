@@ -1,3 +1,78 @@
 .computer-modern {
 	font-family: 'Computer Modern Serif';
 }
+
+.index .hero {
+	width: 100%;
+	height: 100%;
+
+	color: #b0b0b0;
+
+	.name {
+		font-size: 56px;
+		font-weight: normal;
+
+		> .first {
+			> .aux {
+				color: #808080;
+				font-weight: normal;
+			}
+		}
+	}
+
+	.tagline {
+		font-size: 15px;
+		font-weight: normal;
+		letter-spacing: 0.130em;
+
+		> .item {
+			text-transform: capitalize;
+			font-variant: small-caps;
+			display: inline;
+		}
+
+		> .item:after {
+			content: ' · ';
+		}
+
+		> .item:nth-child(3n):after {
+			content: '\A';
+			white-space: pre;
+		}
+
+		> .item:last-child:after {
+			content: none;
+		}
+	}
+}
+
+.center-contents {
+	display: table;
+
+	> * {
+		display: table-cell;
+		text-align: center;
+		vertical-align: middle;
+	}
+}
+
+.trianglify-me {
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.hero-space-top-padding {
+	margin-top: 120px;
+}
+
+.social-link {
+	color: rgba(255, 255, 255, 0.3500);
+}
+
+.social-link.no-decorate,
+.social-link.no-decorate:link,
+.social-link.no-decorate:hover,
+.social-link.no-decorate:active,
+.social-link.no-decorate:visited {
+	text-decoration: none;
+}
