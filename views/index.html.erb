@@ -1,4 +1,4 @@
-<% @git_describe = `git describe --tags`.chomp %>
+<% @git_describe = `git describe --tags --dirty`.chomp %>
 
 <!doctype html>
 <html>
