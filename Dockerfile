@@ -13,7 +13,7 @@ WORKDIR /krye.io
 RUN apt-get update \
   && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
   && apt-get update \
-  && apt-get install -y nodejs
+  && apt-get install -y nodejs git \
 
 # Clean up
 RUN rm -rfv /var/lib/apt/lists/*
