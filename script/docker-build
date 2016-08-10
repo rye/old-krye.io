@@ -1,0 +1,6 @@
+#!/bin/sh
+
+REPO_NAME=kryestofer/krye.io
+TAG=$1
+
+docker build -t $REPO_NAME:$TAG
