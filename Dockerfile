@@ -6,6 +6,7 @@ MAINTAINER Kristofer Rye
 
 # Add the current directory, containing everything, to /krye.io in the image.
 ADD . /krye.io/
+ADD .git /krye.io/.git/
 
 WORKDIR /krye.io
 
@@ -18,15 +19,11 @@ RUN apt-get update \
 # Clean up
 RUN rm -rfv /var/lib/apt/lists/*
 
-# Fetch all of the commits and tags from the repository
-RUN git fetch origin \
-  && git fetch origin --tags
-
-# Print out current Git HEAD information
-RUN git describe --tags --dirty
-
 # Install app dependencies
 RUN bundle install
+
+# Print the difference between this tag and the latest tags.
+RUN git describe --tags --dirty
 
 EXPOSE 80
 
