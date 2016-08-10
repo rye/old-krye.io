@@ -10,16 +10,20 @@
 
 	.name {
 		font-size: 48px;
+		font-weight: normal;
 
 		> .first {
 			> .aux {
-				color: #5f5f5f;
+				color: #707070;
+				font-weight: normal;
 			}
 		}
 	}
 
 	.tagline {
 		font-size: 16px;
+		font-weight: normal;
+		letter-spacing: 0.125em;
 
 		> .item {
 			text-transform: capitalize;
@@ -50,4 +54,9 @@
 		text-align: center;
 		vertical-align: middle;
 	}
+}
+
+.trianglify-me {
+	background-size: cover;
+	background-repeat: no-repeat;
 }
