@@ -21,9 +21,9 @@ RUN rm -rfv /var/lib/apt/lists/*
 # Install app dependencies
 RUN bundle install
 
-# Print the difference between this tag and the latest tags.
-RUN git pull --tags \
-  && git describe --tags --dirty
+# Fetch the tags and do the things?
+RUN git fetch --prune --tags \
+  && git describe --abbrev=0 --tags --dirty
 
 EXPOSE 80
 
