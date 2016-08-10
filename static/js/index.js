@@ -2,7 +2,6 @@ var trianglifyPattern = Trianglify({
 	width: 2048,
 	height: 2048,
 	cell_size: 128,
-	seed: '19sadgwje',
 	x_colors: 'Blues'
 });
 
