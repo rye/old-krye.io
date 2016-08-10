@@ -1,42 +1,26 @@
 environments:
   __default__:
-    root_folder: '..'
+    root_directory: '..'
 
-    # This folder is what the site will
-    # be built into.
-    public_folder: 'tmp/_static'
+    'views':
+      'index.html.erb':
+        cache: true
+        aliases:
+          - '/'
+          - '/index.html'
 
-    # Any files in this folder will get
-    # copied into the public_folder key
-    skeleton_folder: 'static'
+      'resume.html.erb':
+        cache: true
+        aliases:
+          - '/resume'
+          - '/resume.html'
 
-    # This folder contains the views.
-    views_folder: 'views'
+      'css':
+        !ruby/regexp '/(.+).scss':
+          cache: true
+          format: 'scss'
+          aliases:
+            - '/css/$1.css'
 
-    # These folders are nested under the
-    # views_folder key above.
-    erb_folder: '__erb__'
-    scss_folder: '__scss__'
-    coffee_folder: '__coffee__'
-
-    bind: localhost
-    port: 4567
-
-    show_exceptions: true
-
-    custom_routes:
-      '/': '/index.html'
-
-  production:
-    bind: 0.0.0.0
-    port: 80
-
-    show_exceptions: false
-
-  development:
-    bind: localhost
-    port: 8157
-
-    show_exceptions: true
 
 environment: production
