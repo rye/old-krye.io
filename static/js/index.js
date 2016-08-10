@@ -14,5 +14,5 @@ var svg = trianglifyPattern.svg();
 svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 
 trianglifyTargets.forEach(function(e) {
-	e.style.backgroundImage = "linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.5)), url('data:image/svg+xml;base64," + window.btoa(svg.outerHTML) + "')";
+	e.style.backgroundImage = "linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.6)), url('data:image/svg+xml;base64," + window.btoa(svg.outerHTML) + "')";
 });
