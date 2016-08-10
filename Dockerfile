@@ -18,6 +18,9 @@ RUN apt-get update \
 # Clean up
 RUN rm -rfv /var/lib/apt/lists/*
 
+# Print out current Git HEAD information
+RUN git describe --tags --dirty
+
 # Install app dependencies
 RUN bundle install
 
