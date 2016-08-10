@@ -20,6 +20,10 @@ module Site
 
 		Tilt.register :"html.erb", Tilt[:erb]
 
+		before '/' do
+			request.path_info = '/index.html'
+		end
+
 		after do
 			@@printing_semaphore.synchronize {
 				Site::Logger.warn "Handled request for #{request.path_info.to_s.inspect}"
