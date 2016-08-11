@@ -13,7 +13,7 @@ WORKDIR /krye.io
 RUN apt-get update \
   && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
   && apt-get update \
-  && apt-get install -y nodejs
+  && apt-get install -y nodejs git
 
 # Clean up
 RUN rm -rfv /var/lib/apt/lists/*
@@ -21,6 +21,14 @@ RUN rm -rfv /var/lib/apt/lists/*
 # Install app dependencies
 RUN bundle install
 
+# Print out our status
+RUN git status
+
+# Fetch the tags and do the things?
+RUN git fetch origin --unshallow --tags \
+  && git describe --tags --dirty
+
+# Expose port 80
 EXPOSE 80
 
 CMD ["bundle", "exec", "rackup", "-o", "0.0.0.0", "-p", "80"]
