@@ -22,9 +22,9 @@ RUN rm -rfv /var/lib/apt/lists/*
 RUN bundle install
 
 # Fetch the tags and do the things?
-RUN git fetch --prune --tags \
-  && git pull --tags \
-  && git describe --abbrev=0 --tags --dirty
+RUN git fetch origin --tags \
+  && git pull origin --tags \
+  && git describe --tags --dirty
 
 EXPOSE 80
 
