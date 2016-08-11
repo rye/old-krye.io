@@ -21,9 +21,13 @@ RUN rm -rfv /var/lib/apt/lists/*
 # Install app dependencies
 RUN bundle install
 
+CACHE OFF
+
 # Fetch the tags and do the things?
 RUN git fetch --prune --tags \
   && git describe --abbrev=0 --tags --dirty
+
+CACHE ON
 
 EXPOSE 80
 
