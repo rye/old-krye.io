@@ -21,6 +21,9 @@ RUN rm -rfv /var/lib/apt/lists/*
 # Install app dependencies
 RUN bundle install
 
+# Print out our status
+RUN git status
+
 # Fetch the tags and do the things?
 RUN git fetch origin --tags \
   && git pull origin --tags \
