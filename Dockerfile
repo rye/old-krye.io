@@ -25,7 +25,9 @@ RUN bundle install
 RUN git status
 
 # Fetch the tags and do the things?
-RUN git fetch origin --tags \
+RUN git fetch origin \
+  && git pull origin \
+  && git fetch origin --tags \
   && git pull origin --tags \
   && git describe --tags --dirty
 
