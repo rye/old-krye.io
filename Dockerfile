@@ -29,6 +29,7 @@ RUN git fetch origin --tags \
   && git pull origin --tags \
   && git describe --tags --dirty
 
+# Expose port 80
 EXPOSE 80
 
 CMD ["bundle", "exec", "rackup", "-o", "0.0.0.0", "-p", "80"]
