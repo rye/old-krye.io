@@ -1,3 +1,5 @@
+<% @git_describe = `git describe --tags --dirty`.chomp %>
+
 <!doctype html>
 <html>
 	<head>
@@ -5,16 +7,13 @@
 		<link rel="stylesheet" href="css/roboto.css" />
 		<link rel="stylesheet" href="css/global.css" />
 		<link rel="stylesheet" href="css/index.css" />
-		<link rel="stylesheet" href="css/landing.css" />
-		<link rel="stylesheet" href="css/landing-animations.css" />
-		<link rel="stylesheet" href="css/introduction.css" />
-		<link rel="stylesheet" href="css/introduction-animations.css" />
 
 		<!-- Load the CMU Serif font -->
 		<link rel="stylesheet" href="fonts/Computer Modern/Serif/cmun-serif.css" />
+		<link rel="stylesheet" href="css/font-awesome.min.css" />
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="version" content="<%= `git rev-parse HEAD`.chomp %>" />
+		<meta name="version" content="<%= @git_describe %>" />
 
 		<meta name="author" content="Kristofer Rye" />
 
@@ -24,65 +23,35 @@
 		<title>Kristofer Rye</title>
 	</head>
 
-	<body class="computer-modern panel-container">
-		<div class="panel p95 landing">
-			<div class="landing-background"></div>
-			<div class="centered title name">
-				<div class="top">
-					<span class="main">kris</span><span class="aux">tofer</span>
-				</div>
-
-				<div class="bottom">
-					<span class="main">rye</span>
+	<body class="index computer-modern">
+		<div class="hero center-contents trianglify-me">
+			<div class="container">
+				<div class="name hero-space-top-padding">
+					<span class="first full">kris<span class="aux">tofer</span></span>&nbsp;<span class="last">rye</span>
 				</div>
 
 				<div class="tagline">
-					Programmer. Pilot.
+					<span class="item">Rubyist</span>
+					<span class="item">Cellist</span>
+					<span class="item">Pilot</span>
+				</div>
+
+				<div class="social-links hero-space-top-padding">
+					<a class="social-link no-decorate fa fa-2x fa-fw fa-github" aria-hidden="true" href="https://github.com/rye"></a>
+					<a class="social-link no-decorate fa fa-2x fa-fw fa-envelope" aria-hidden="true" href="mailto:kristofer.rye+w@gmail.com"></a>
+					<a class="social-link no-decorate fa fa-2x fa-fw fa-file-text" aria-hidden="true" href="/resume.html"></a>
+					<a class="social-link no-decorate fa fa-2x fa-fw fa-twitter" aria-hidden="true" href="https://twitter.com/krstfrye"></a>
 				</div>
 			</div>
 		</div>
 
-		<div class="panel p40 introduction">
-			<div class="container hp15">
-				<div class="languages">
-					<div class="container">
-						<p class="title">Languages:</p>
-						<ul class="list">
-							<li>Ruby</li>
-							<li>JS</li>
-							<li>HTML</li>
-							<li>CSS</li>
-							<li>SCSS</li>
-							<li>Java</li>
-							<li>C/C++</li>
-						</ul>
-					</div>
-				</div>
-
-				<div class="github">
-					<a href="https://github.com/rye">
-						<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 256 256" height="256" width="256" class="octicon">
-							<!-- TODO: Get rid of this stupid transform and just spit out raw values -->
-							<g transform="translate(0,-796.36216)" id="octicon" class="octicon-group">
-								<path
-id="region" class="octicon-region" d="M 127.99997,799.5223 C 57.313925,799.5223 0,856.82795 0,927.5223 c 0,56.55209 36.671974,104.5345 87.53579,121.4588 6.392149,1.1839 8.743644,-2.7737 8.743644,-6.1603 0,-3.0471 -0.115988,-13.132 -0.173813,-23.8297 -35.612138,7.7417 -43.122065,-15.1027 -43.122065,-15.1027 -5.829096,-14.79632 -14.216703,-18.72924 -14.216703,-18.72924 -11.616782,-7.94046 0.87768,-7.78327 0.87768,-7.78327 12.850498,0.90264 19.623509,13.19012 19.623509,13.19012 11.409817,19.57369 29.940356,13.91859 37.243301,10.64799 1.150897,-8.27175 4.471187,-13.92686 8.130927,-17.12299 -28.433409,-3.2375 -58.32408,-14.20841 -58.32408,-63.25892 0,-13.97659 5.001085,-25.39466 13.189968,-34.35358 -1.324794,-3.22919 -5.704883,-16.24531 1.242009,-33.87335 0,0 10.747394,-3.44446 35.206416,13.11548 10.217477,-2.83177 21.163597,-4.25591 32.043457,-4.3056 10.8799,0.0495 21.83429,1.47383 32.06832,4.3056 24.42591,-16.55994 35.16501,-13.11548 35.16501,-13.11548 6.96346,17.62804 2.58333,30.64416 1.25028,33.87335 8.20544,8.95892 13.17342,20.37699 13.17342,34.35358 0,49.1665 -29.94036,59.98835 -58.44827,63.15955 4.59538,3.97447 8.68568,11.76587 8.68568,23.70556 0,17.123 -0.14905,30.909 -0.14905,35.1236 0,3.4113 2.30181,7.4022 8.79331,6.1437 C 219.36944,1032.0154 256,984.05795 256,927.5223 c 2e-5,-70.69435 -57.30562,-128 -127.99997,-128"" />
-							</g>
-						</svg>
-					</a>
-				</div>
-
-				<div class="resume">
-					<a href="/resume">
-						R&eacute;sum&eacute;
-					</a>
-				</div>
-			</div>
-		</div>
+		<!-- VERSION: <%= @git_describe %> -->
 
 		<script src="js/global.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js"></script>
 		<script src="js/index.js"></script>
 		<script src="js/landing.js"></script>
 
-		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-77379897-1','auto');ga('send','pageview');</script>
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-77379897-1','auto');ga('set','appVersion','<%= @git_describe %>');ga('send','pageview');</script>
 	</body>
 </html>

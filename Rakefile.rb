@@ -55,13 +55,13 @@ namespace :documentation do
 				Site::Logger.debug "Have #{_matches.count} matches to the file_rule"
 			end.select do |match|
 				type = case File.ftype match
-				       when 'file'
-					       :file
-				       when 'directory'
-					       :directory
-				       else
-					       :unknown
-				       end
+							 when 'file'
+								 :file
+							 when 'directory'
+								 :directory
+							 else
+								 :unknown
+							 end
 
 				Site::Logger.debug "#{match} is a #{type}"
 
