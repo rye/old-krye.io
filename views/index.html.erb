@@ -50,35 +50,15 @@
 
 		<!-- VERSION: <%= @git_describe %> -->
 
-		<script src="js/global.js"></script>
+		<!-- Load the Trianglify source and our trianglify generator -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js"></script>
-
 		<script src="js/trianglify.js"></script>
 
-		<!-- <script>
-				 /* Generate a 2048x2048 Blues triangle pattern */
-				 var trianglifyParameter = {
-				 width: 2048,
-				 height: 2048,
-				 cell_size: 128,
-				 x_colors: 'Blues'
-				 };
-
-				 window.__Trianglifier__ = Trianglify(trianglifyParameter);
-
-				 /* Grab the SVG element so we can tweak it */
-				 var svg = window.__Trianglifier__.svg();
-
-				 /* Make the SVG element standards-conformant so that people won't whine */
-				 svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-
-				 /* Set the background image of all .trianglify-me elements */
-				 [].slice.call(document.querySelectorAll('.trianglify-target')).forEach(function (e) {
-				 e.style.backgroundImage = "linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.6)),url('data:image/svg+xml;base64," + window.btoa(svg.outerHTML) + "')";
-				 });
-				 </script> -->
+		<!-- Load page scripts -->
+		<script src="js/global.js"></script>
 		<script src="js/index.js"></script>
 
+		<!-- Load Google Analytics -->
 		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-77379897-1','auto');ga('set','appVersion','<%= @git_describe %>');ga('send','pageview');</script>
 	</body>
 </html>
