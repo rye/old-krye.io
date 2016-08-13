@@ -179,13 +179,13 @@ module Site
 								encoded = Digest::SHA1.base64digest(contents)
 
 								file_type, parent = case readable_file
-																		when /^static/
-																			[:static, @static_directory]
-																		when /^views/
-																			[:view, @views_directory]
-																		else
-																			[nil, @root_directory]
-																		end
+								                    when /^static/
+									                    [:static, @static_directory]
+								                    when /^views/
+									                    [:view, @views_directory]
+								                    else
+									                    [nil, @root_directory]
+								                    end
 
 								relative_path = Pathname.new(file).relative_path_from(Pathname.new(parent))
 
@@ -199,34 +199,40 @@ module Site
 									end
 
 									routes = case file_type
-													 when :static
-														 [File.join('', relative_path)]
-													 when :view
-														 case primary_mime_type
-														 when 'application/x-sass', 'application/x-scss'
-															 [File.join('', File.join(File.dirname(relative_path), File.basename(relative_path, File.extname(relative_path)) + '.css'))]
-														 when 'application/x-coffee'
-															 [File.join('', File.join(File.dirname(relative_path), File.basename(relative_path, File.extname(relative_path)) + '.js'))]
-														 when 'application/x-eruby'
-															 filename = File.basename(relative_path, File.extname(relative_path))
-															 dirname = File.dirname(relative_path)
-															 base = Pathname.new(File.join(dirname, filename)).relative_path_from(Pathname.new(dirname))
+									         when :static
+										         [File.join('', relative_path)]
+									         when :view
+										         case primary_mime_type
+										         when 'application/x-sass', 'application/x-scss'
+											         [File.join('', File.join(File.dirname(relative_path), File.basename(relative_path, File.extname(relative_path)) + '.css'))]
+										         when 'application/x-coffee'
+											         [File.join('', File.join(File.dirname(relative_path), File.basename(relative_path, File.extname(relative_path)) + '.js'))]
+										         when 'application/x-eruby'
+											         filename = File.basename(relative_path, File.extname(relative_path))
+											         dirname = File.dirname(relative_path)
+											         base = Pathname.new(File.join(dirname, filename)).relative_path_from(Pathname.new(dirname))
 
-															 ary = [File.join('', base)]
-															 ary
-														 end
-													 else
+											         ary = [File.join('', base)]
+											         ary
+										         end
+									         else
 
-													 end
+									         end
 
-									routes = routes.map do |_route|
-										@application.get(_route) {
-											entry = self.class.class_variable_get(:@@cache).entries[file]
+									if !routes
+										Site::Logger.warn("Worker [#{worker_number}]") do
+											"#{readable_file} did not generate any routes!"
+										end
+									else
+										completed_routes = routes.map do |_route|
+											@application.get(_route) {
+												entry = self.class.class_variable_get(:@@cache).entries[file]
 
-											content_type MIME::Types.type_for(_route).first.to_s
+												content_type MIME::Types.type_for(_route).first.to_s
 
-											entry[:contents]
-										}
+												entry[:contents]
+											}
+										end
 									end
 
 									@entries[file] = {
