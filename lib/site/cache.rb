@@ -165,7 +165,13 @@ module Site
 										"#{readable_file} is a recognized view format; rendering"
 									end
 
-									contents = Tilt.new(file, default_encoding: 'UTF-8').render
+									begin
+										contents = Tilt.new(file, default_encoding: 'UTF-8').render
+									rescue => error
+										Site::Logger.error("Worker [#{worker_number}] (Tilt)") do
+											"#{error.class}: #{error.message}\n\t" + error.backtrace.join("\n\t")
+										end
+									end
 								else
 									Site::Logger.debug("Worker [#{worker_number}]") do
 										"#{readable_file} is not a recognized view; storing statically"
@@ -216,7 +222,6 @@ module Site
 											         ary
 										         end
 									         else
-
 									         end
 
 									if !routes
