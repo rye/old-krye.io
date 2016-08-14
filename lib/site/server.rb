@@ -30,60 +30,6 @@ module Site
 			}
 		end
 
-		# # Default route to /
-		# get '/' do
-		# if File.readable?(filename = File.join(settings.public_folder, 'index.html'))
-		# # If we have an index.html file in our static folder, read it.
-		# open(filename, 'rb') do |io|
-		# io.read
-		# end
-		# elsif File.readable?(filename = File.join(settings.views, 'index.html.erb'))
-		# open(filename, 'rb') do |io|
-		# erb io.read
-		# end
-		# else
-		# # Otherwise try to redirect to the /index.html file. This should
-		# # never really get hit; you should always have an index.html file.
-		# redirect to '/index.html'
-		# end
-		# end
-
-		# get '/:__route__.?:__extension__?' do
-		# if File.readable?(filename = File.join(settings.views, params['__route__'] + (params['__extension__'] ? '.' + params['__extension__'] : '.html') + '.erb'))
-		# @data = open(filename, 'rb') do |io|
-		# io.read
-		# end
-
-		# erb @data
-		# else
-		# 404
-		# end
-		# end
-
-		# get '/js/:__script__.js' do
-		# if File.readable?(filename = File.join(settings.views, 'js', params['__script__'] + '.coffee'))
-		# @data = open(filename, 'rb') do |io|
-		# io.read
-		# end
-
-		# coffee @data
-		# else
-		# 404
-		# end
-		# end
-
-		# get '/css/:__stylesheet__.css' do
-		# if File.readable?(filename = File.join(settings.views, 'css', params['__stylesheet__'] + '.scss') || File.join(settings.views, 'css', params['__stylesheet__'] + '.sass'))
-		# @data = open(filename, 'rb') do |io|
-		# io.read
-		# end
-
-		# scss @data
-		# else
-		# 404
-		# end
-		# end
-
 		get '/' do
 			redirect '/index.html'
 		end
