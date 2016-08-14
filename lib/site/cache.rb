@@ -233,8 +233,13 @@ module Site
 											@application.get(_route) {
 												entry = self.class.class_variable_get(:@@cache).entries[file]
 
+												# Use the etag helper to set the current contents of the file.
+												etag entry[:encoded]
+
+												# Set the content type of the response.
 												content_type MIME::Types.type_for(_route).first.to_s
 
+												# Return the contents of the entry.
 												entry[:contents]
 											}
 										end

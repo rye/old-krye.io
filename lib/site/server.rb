@@ -24,6 +24,11 @@ module Site
 			request.path_info = '/index.html'
 		end
 
+		# Before all requests, set the Cache Control headers.
+		before do
+			cache_control :public, :must_revalidate, :max_age => 60
+		end
+
 		after do
 			@@printing_semaphore.synchronize {
 				Site::Logger.warn "Handled request for #{request.path_info.to_s.inspect}"
@@ -68,6 +73,10 @@ module Site
 
 			# Don't show exceptions. (This could get ugly and bad in production)
 			set :show_exceptions, false
+
+			# Disable builtin static file serving and static cache control.
+			set :static, false
+			set :static_cache_control, false
 
 			# Do log to the console.
 			set :logging, true
