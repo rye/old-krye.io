@@ -1,5 +1,14 @@
 // Portrait
 @media print and (max-aspect-ratio: 1.0 / 1) {
+	::-webkit-scrollbar {
+		width: 0px;
+		background: transparent;
+	}
+
+	.sha1-marker {
+		display: none;
+	}
+
 	.resume-container {
 		margin: 0;
 	}
@@ -7,6 +16,15 @@
 
 // Landscape
 @media print and (min-aspect-ratio: 1.0 / 1) {
+	::-webkit-scrollbar {
+		width: 0px;
+		background: transparent;
+	}
+
+	.sha1-marker {
+		display: none;
+	}
+
 	.resume-container {
 		margin: 0;
 	}
