@@ -56,7 +56,6 @@ module Site
 			end
 		end
 
-
 		def on(modified, added, removed)
 			Site::Logger.warn('listener') do
 				"Received event with #{modified.count} modified; #{added.count} added; #{removed.count} removed files."
@@ -87,7 +86,6 @@ module Site
 			types = []
 
 			types << MIME::Type.new('application/x-eruby') do |t|
-
 				t.add_extensions 'html.erb'
 				t.add_extensions 'rhtml'
 				t.add_extensions 'erb'
@@ -261,6 +259,7 @@ module Site
 				end
 			end
 		end
+
 	end
 
 end
