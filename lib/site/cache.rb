@@ -226,7 +226,7 @@ module Site
 											"#{readable_file} did not generate any routes!"
 										end
 									else
-										completed_routes = routes.map do |_route|
+										routes.each do |_route|
 											@application.get(_route) {
 												entry = self.class.class_variable_get(:@@cache).entries[file]
 
@@ -241,14 +241,6 @@ module Site
 											}
 										end
 									end
-
-									# @entries[file] = {
-									# 	readable: readable_file,
-									# 	encoded: encoded,
-									# 	contents: contents,
-									# 	mime_types: mime_types,
-									# 	type: file_type
-									# }
 
 									@entries[file] = FileEntry.new(readable_file, encoded, contents, mime_types, file_type)
 								}
