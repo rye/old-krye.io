@@ -15,9 +15,9 @@ module Site
 
 		WORKER_COUNT = 4
 
-		attr_reader :entries, :root_directory, :static_directory, :views_directory, :application
+		attr_reader :entries, :static_directory, :views_directory, :application
 
-		def initialize(application:,root:, static:, views:)
+		def initialize(application:,static:, views:)
 			register_mimes!
 
 			@workers ||= []
@@ -27,7 +27,6 @@ module Site
 
 			@application = application
 
-			@root_directory = root
 			@static_directory = static
 			@views_directory = views
 
@@ -39,7 +38,7 @@ module Site
 
 			spawn_workers!
 
-			until @workers.map{|t|t.stop?}.uniq == [true]
+			until @workers.map { |t| t.stop? }.uniq == [true]
 				Site::Logger.info "Waiting until all cache workers are sleepy to warm things up."
 				sleep 0.1
 			end
@@ -48,6 +47,8 @@ module Site
 
 			warm(static)
 			warm(views)
+
+			Site::Logger.warn "Cache warmed.  FS should eventually notify listeners."
 		end
 
 		def fetch(file)
@@ -85,21 +86,21 @@ module Site
 		def register_mimes!
 			types = []
 
-			types << MIME::Type.new('application/x-eruby') do |t|
+			types << MIME::Type.new('x-krye-io/x-eruby') do |t|
 				t.add_extensions 'html.erb'
 				t.add_extensions 'rhtml'
 				t.add_extensions 'erb'
 			end
 
-			types << MIME::Type.new('application/x-sass') do |t|
+			types << MIME::Type.new('x-krye-io/x-sass') do |t|
 				t.add_extensions 'sass'
 			end
 
-			types << MIME::Type.new('application/x-scss') do |t|
+			types << MIME::Type.new('x-krye-io/x-scss') do |t|
 				t.add_extensions 'scss'
 			end
 
-			types << MIME::Type.new('application/x-coffee') do |t|
+			types << MIME::Type.new('x-krye-io/x-coffee') do |t|
 				t.add_extensions 'coffee'
 			end
 
@@ -128,8 +129,8 @@ module Site
 							event = @queue.pop
 
 							file = event[:file]
-							readable_file = Pathname.new(file).relative_path_from(Pathname.new(@root_directory)).to_s
-							mime_types = MIME::Types.type_for(file)
+							readable_file = Pathname.new(file).relative_path_from(Pathname.new(Site::ROOT_DIRECTORY)).to_s
+							mime_types = MIME::Types.type_for(file).sort_by { |e| [e.media_type == 'x-krye-io' ? 0 : 1] }
 
 							primary_mime_type = mime_types.first
 
@@ -154,7 +155,7 @@ module Site
 								contents = nil
 
 								case primary_mime_type
-								when 'application/x-sass', 'application/x-scss', 'application/x-coffee', 'application/x-eruby'
+								when 'x-krye-io/x-sass', 'x-krye-io/x-scss', 'x-krye-io/x-coffee', 'x-krye-io/x-eruby'
 									Site::Logger.debug("Worker [#{worker_number}]") do
 										"#{readable_file} is a recognized view format; rendering"
 									end
@@ -184,7 +185,7 @@ module Site
 								                    when /^views/
 									                    [:view, @views_directory]
 								                    else
-									                    [nil, @root_directory]
+									                    [nil, Site::ROOT_DIRECTORY]
 								                    end
 
 								relative_path = Pathname.new(file).relative_path_from(Pathname.new(parent))
@@ -203,11 +204,11 @@ module Site
 										         [File.join('', relative_path)]
 									         when :view
 										         case primary_mime_type
-										         when 'application/x-sass', 'application/x-scss'
+										         when 'x-krye-io/x-sass', 'x-krye-io/x-scss'
 											         [File.join('', File.join(File.dirname(relative_path), File.basename(relative_path, File.extname(relative_path)) + '.css'))]
-										         when 'application/x-coffee'
+										         when 'x-krye-io/x-coffee'
 											         [File.join('', File.join(File.dirname(relative_path), File.basename(relative_path, File.extname(relative_path)) + '.js'))]
-										         when 'application/x-eruby'
+										         when 'x-krye-io/x-eruby'
 											         filename = File.basename(relative_path, File.extname(relative_path))
 											         dirname = File.dirname(relative_path)
 											         base = Pathname.new(File.join(dirname, filename)).relative_path_from(Pathname.new(dirname))
