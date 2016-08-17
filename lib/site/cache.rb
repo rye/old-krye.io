@@ -7,6 +7,8 @@ require 'tilt'
 require 'digest'
 require 'colorize'
 
+require 'site/cache/file_entry'
+
 require 'site/logger'
 
 module Site
@@ -229,24 +231,26 @@ module Site
 												entry = self.class.class_variable_get(:@@cache).entries[file]
 
 												# Use the etag helper to set the current contents of the file.
-												etag entry[:encoded]
+												etag entry.encoded_contents
 
 												# Set the content type of the response.
 												content_type MIME::Types.type_for(_route).first.to_s
 
 												# Return the contents of the entry.
-												entry[:contents]
+												entry.contents
 											}
 										end
 									end
 
-									@entries[file] = {
-										readable: readable_file,
-										encoded: encoded,
-										contents: contents,
-										mime_types: mime_types,
-										type: file_type
-									}
+									# @entries[file] = {
+									# 	readable: readable_file,
+									# 	encoded: encoded,
+									# 	contents: contents,
+									# 	mime_types: mime_types,
+									# 	type: file_type
+									# }
+
+									@entries[file] = FileEntry.new(readable_file, encoded, contents, mime_types, file_type)
 								}
 							end
 						end
