@@ -8,6 +8,7 @@ require 'digest'
 require 'colorize'
 
 require 'site/cache/file_entry'
+require 'site/cache/worker_pool'
 
 require 'site/logger'
 
@@ -22,8 +23,7 @@ module Site
 		def initialize(application:,static:, views:)
 			register_mimes!
 
-			@workers ||= []
-			@queue ||= Queue.new
+			@worker_pool = CacheWorkerPool.new
 			@entries ||= {}
 			@semaphore = Mutex.new
 
@@ -40,7 +40,7 @@ module Site
 
 			spawn_workers!
 
-			until @workers.map { |t| t.stop? }.uniq == [true]
+			until @worker_pool.workers.map { |t| t.stop? }.uniq == [true]
 				Site::Logger.info "Waiting until all cache workers are sleepy to warm things up."
 				sleep 0.1
 			end
@@ -65,21 +65,21 @@ module Site
 			end
 
 			modified.each do |_modified|
-				@queue << { nature: :modified, file: _modified }
+				@worker_pool.dispatch({ nature: :modified, file: _modified })
 			end
 
 			added.each do |_added|
-				@queue << { nature: :added, file: _added }
+				@worker_pool.dispatch({ nature: :added, file: _added })
 			end
 
 			removed.each do |_removed|
-				@queue << { nature: :removed, file: _removed }
+				@worker_pool.dispatch({ nature: :removed, file: _removed })
 			end
 		end
 
 		def dump!
 			@semaphore.synchronize {
-				{ hash: @entries, queue: @queue }
+				{ hash: @entries, queue: @worker_pool.queue }
 			}
 		end
 
@@ -116,7 +116,8 @@ module Site
 		end
 
 		def spawn_workers!
-			@workers = spawn_workers(WORKER_COUNT)
+			# @workers = spawn_workers(WORKER_COUNT)
+			@worker_pool.spawn_workers!(WORKER_COUNT)
 		end
 
 		def spawn_workers(n)
