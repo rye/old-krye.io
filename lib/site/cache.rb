@@ -20,7 +20,7 @@ module Site
 
 		attr_reader :entries, :static_directory, :views_directory, :application
 
-		def initialize(application:,static:, views:)
+		def initialize(application:)
 			register_mimes!
 
 			@worker_pool = CacheWorkerPool.new
@@ -29,10 +29,8 @@ module Site
 
 			@application = application
 
-			@static_directory = static
-			@views_directory = views
 
-			@listener = Listen.to(@static_directory, @views_directory) do |modified, added, removed|
+			@listener = Listen.to(Site::STATIC_DIRECTORY, Site::VIEWS_DIRECTORY) do |modified, added, removed|
 				on(modified, added, removed)
 			end
 

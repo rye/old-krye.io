@@ -54,21 +54,10 @@ module Site
 
 		# Sets up the server
 		def self.setup!
-			# Do a little bit of analysis to generate file paths.
-			@@public_folder = File.join(Site::ROOT_DIRECTORY, 'static')
-			@@views_folder = File.join(Site::ROOT_DIRECTORY, 'views')
-
-			# Assert that all of the folders exist.
-			#
-			# * This should get cleaned up and made a bit more magical.
-			[@@public_folder, @@views_folder].each do |folder|
-				raise RuntimeError, "Folder #{folder} does not exist!" unless File.directory? folder
-			end
-
 			# Set some settings so that Sinatra can find our static files.
 			set :root, Site::ROOT_DIRECTORY
-			set :public_folder, @@public_folder
-			set :views, @@views_folder
+			set :public_folder, Site::STATIC_DIRECTORY
+			set :views, Site::VIEWS_DIRECTORY
 
 			# Don't show exceptions. (This could get ugly and bad in production)
 			set :show_exceptions, false
@@ -80,7 +69,7 @@ module Site
 			# Do log to the console.
 			set :logging, true
 
-			@@cache = Cache.new(application: self, static: @@public_folder, views: @@views_folder)
+			@@cache = Cache.new(application: self)
 
 			@@cache.dump!
 		end
