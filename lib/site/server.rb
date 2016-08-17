@@ -66,7 +66,7 @@ module Site
 			end
 
 			# Set some settings so that Sinatra can find our static files.
-			set :root, @@root_folder
+			set :root, Site::ROOT_DIRECTORY
 			set :public_folder, @@public_folder
 			set :views, @@views_folder
 
