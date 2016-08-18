@@ -7,8 +7,12 @@ require 'tilt'
 require 'digest'
 require 'colorize'
 
+require 'site/cache/event/modified_event'
+require 'site/cache/event/added_event'
+require 'site/cache/event/removed_event'
 require 'site/cache/file_entry'
 require 'site/cache/worker_pool'
+require 'site/cache/registry'
 
 require 'site/logger'
 
@@ -18,17 +22,15 @@ module Site
 
 		WORKER_COUNT = 4
 
-		attr_reader :entries, :static_directory, :views_directory, :application
+		attr_reader :registry, :application
 
 		def initialize(application:)
 			register_mimes!
 
-			@worker_pool = CacheWorkerPool.new
-			@entries ||= {}
-			@semaphore = Mutex.new
-
+			@registry = Registry.new
 			@application = application
 
+			@worker_pool = CacheWorkerPool.new(@registry, @application)
 
 			@listener = Listen.to(Site::STATIC_DIRECTORY, Site::VIEWS_DIRECTORY) do |modified, added, removed|
 				on(modified, added, removed)
@@ -39,45 +41,45 @@ module Site
 			spawn_workers!
 
 			until @worker_pool.workers.map { |t| t.stop? }.uniq == [true]
-				Site::Logger.info "Waiting until all cache workers are sleepy to warm things up."
+				Site::Logger.info "waiting until all cache workers are sleepy to warm things up."
 				sleep 0.1
 			end
 
-			Site::Logger.warn "Warming the cache."
+			Site::Logger.warn "warming the cache."
 
-			warm(static)
-			warm(views)
+			warm(Site::STATIC_DIRECTORY)
+			warm(Site::VIEWS_DIRECTORY)
 
-			Site::Logger.warn "Cache warmed.  FS should eventually notify listeners."
+			Site::Logger.warn "cache warmed; fs should eventually notify listeners."
 		end
 
 		def fetch(file)
-			@semaphore.synchronize do
-				@entries[file] || nil
+			@registry.semaphore.synchronize do
+				@registry[file] || nil
 			end
 		end
 
 		def on(modified, added, removed)
-			Site::Logger.warn('listener') do
-				"Received event with #{modified.count} modified; #{added.count} added; #{removed.count} removed files."
+			Site::Logger.info 'listener' do
+				"received event with #{modified.count} modified; #{added.count} added; #{removed.count} removed files."
 			end
 
 			modified.each do |_modified|
-				@worker_pool.dispatch({ nature: :modified, file: _modified })
+				@worker_pool.dispatch(ModifiedEvent.new(File.expand_path(_modified)))
 			end
 
 			added.each do |_added|
-				@worker_pool.dispatch({ nature: :added, file: _added })
+				@worker_pool.dispatch(AddedEvent.new(File.expand_path(_added)))
 			end
 
 			removed.each do |_removed|
-				@worker_pool.dispatch({ nature: :removed, file: _removed })
+				@worker_pool.dispatch(RemovedEvent.new(File.expand_path(_removed)))
 			end
 		end
 
 		def dump!
-			@semaphore.synchronize {
-				{ hash: @entries, queue: @worker_pool.queue }
+			@registry.semaphore.synchronize {
+				{ registry: @registry, queue: @worker_pool.queue }
 			}
 		end
 
@@ -86,21 +88,21 @@ module Site
 		def register_mimes!
 			types = []
 
-			types << MIME::Type.new('x-krye-io/x-eruby') do |t|
+			types << MIME::Type.new('application/x-eruby') do |t|
 				t.add_extensions 'html.erb'
 				t.add_extensions 'rhtml'
 				t.add_extensions 'erb'
 			end
 
-			types << MIME::Type.new('x-krye-io/x-sass') do |t|
+			types << MIME::Type.new('application/x-sass') do |t|
 				t.add_extensions 'sass'
 			end
 
-			types << MIME::Type.new('x-krye-io/x-scss') do |t|
+			types << MIME::Type.new('application/x-scss') do |t|
 				t.add_extensions 'scss'
 			end
 
-			types << MIME::Type.new('x-krye-io/x-coffee') do |t|
+			types << MIME::Type.new('application/x-coffee') do |t|
 				t.add_extensions 'coffee'
 			end
 
@@ -114,146 +116,7 @@ module Site
 		end
 
 		def spawn_workers!
-			# @workers = spawn_workers(WORKER_COUNT)
 			@worker_pool.spawn_workers!(WORKER_COUNT)
-		end
-
-		def spawn_workers(n)
-			n.times.map do |worker_number|
-				Thread.new do
-					begin
-						loop do
-							Site::Logger.debug("Worker [#{worker_number}]") do
-								"Waiting for an event..."
-							end
-
-							event = @queue.pop
-
-							file = event[:file]
-							readable_file = Pathname.new(file).relative_path_from(Pathname.new(Site::ROOT_DIRECTORY)).to_s
-							mime_types = MIME::Types.type_for(file).sort_by { |e| [e.media_type == 'x-krye-io' ? 0 : 1] }
-
-							primary_mime_type = mime_types.first
-
-							case event[:nature]
-							when :removed
-								Site::Logger.debug("Worker [#{worker_number}]") do
-									"#{readable_file} was deleted; waiting to remove from the cache"
-								end
-
-								@semaphore.synchronize {
-									Site::Logger.debug("Worker [#{worker_number}]") do
-										"#{readable_file} being removed from the cache"
-									end
-
-									@entries.delete(event[:file])
-
-									Site::Logger.debug("Worker [#{worker_number}]") do
-										"#{readable_file} removed"
-									end
-								}
-							else
-								contents = nil
-
-								case primary_mime_type
-								when 'x-krye-io/x-sass', 'x-krye-io/x-scss', 'x-krye-io/x-coffee', 'x-krye-io/x-eruby'
-									Site::Logger.debug("Worker [#{worker_number}]") do
-										"#{readable_file} is a recognized view format; rendering"
-									end
-
-									begin
-										contents = Tilt.new(file, default_encoding: 'UTF-8').render
-									rescue => error
-										Site::Logger.error("Worker [#{worker_number}] (Tilt)") do
-											"#{error.class}: #{error.message}\n\t" + error.backtrace.join("\n\t")
-										end
-									end
-								else
-									Site::Logger.debug("Worker [#{worker_number}]") do
-										"#{readable_file} is not a recognized view; storing statically"
-									end
-
-									contents = open(file, 'rb') do |io|
-										io.read
-									end
-								end
-
-								encoded = Digest::SHA1.base64digest(contents)
-
-								file_type, parent = case readable_file
-								                    when /^static/
-									                    [:static, @static_directory]
-								                    when /^views/
-									                    [:view, @views_directory]
-								                    else
-									                    [nil, Site::ROOT_DIRECTORY]
-								                    end
-
-								relative_path = Pathname.new(file).relative_path_from(Pathname.new(parent))
-
-								Site::Logger.debug("Worker [#{worker_number}]") do
-									"Waiting for Mutex lock to register routes for #{readable_file}"
-								end
-
-								@semaphore.synchronize {
-									Site::Logger.debug("Worker [#{worker_number}]") do
-										"Now registering routes for #{readable_file}"
-									end
-
-									routes = case file_type
-									         when :static
-										         [File.join('', relative_path)]
-									         when :view
-										         case primary_mime_type
-										         when 'x-krye-io/x-sass', 'x-krye-io/x-scss'
-											         [File.join('', File.join(File.dirname(relative_path), File.basename(relative_path, File.extname(relative_path)) + '.css'))]
-										         when 'x-krye-io/x-coffee'
-											         [File.join('', File.join(File.dirname(relative_path), File.basename(relative_path, File.extname(relative_path)) + '.js'))]
-										         when 'x-krye-io/x-eruby'
-											         filename = File.basename(relative_path, File.extname(relative_path))
-											         dirname = File.dirname(relative_path)
-											         base = Pathname.new(File.join(dirname, filename)).relative_path_from(Pathname.new(dirname))
-
-											         ary = [File.join('', base)]
-											         ary
-										         end
-									         else
-									         end
-
-									if !routes
-										Site::Logger.warn("Worker [#{worker_number}]") do
-											"#{readable_file} did not generate any routes!"
-										end
-									else
-										routes.each do |_route|
-											@application.get(_route) {
-												entry = self.class.class_variable_get(:@@cache).entries[file]
-
-												# Use the etag helper to set the current contents of the file.
-												etag entry.encoded_contents
-
-												# Set the content type of the response.
-												content_type MIME::Types.type_for(_route).first.to_s
-
-												# Return the contents of the entry.
-												entry.contents
-											}
-										end
-									end
-
-									@entries[file] = FileEntry.new(readable_file, encoded, contents, mime_types, file_type)
-								}
-							end
-						end
-					rescue => e
-						Site::Logger.fatal "Worker [#{worker_number}] EXITING" do
-							"#{e.class}: #{e.message}\n\t" + e.backtrace.join("\n\t")
-						end
-
-						Thread.exit
-					end
-				end
-			end
 		end
 
 	end

@@ -9,7 +9,9 @@ module Site
 		attr_accessor :workers
 		attr_accessor :queue
 
-		def initialize
+		def initialize(registry, application)
+			@registry, @application = registry, application
+
 			@workers = []
 			@queue ||= Queue.new
 		end
@@ -26,7 +28,7 @@ module Site
 
 		def spawn_workers(n)
 			n.times.map do |worker_number|
-				CacheWorker.new(worker_number, @queue)
+				CacheWorker.new(worker_number, @registry, @queue, @application)
 			end
 		end
 
