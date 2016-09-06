@@ -26,19 +26,32 @@ describe Site::MultiDelegator do
 			expect(Site::MultiDelegator.method(:delegate).arity).to be(-1)
 		end
 
-		# TODO: Test invalid method names
-		context 'splatting an Array of valid method names' do
+		{
+			"valid": [:write, :close],
+			"invalid": [:completely_fucking_invalid]
+		}.each do |type_of_values, values|
 
-			let :valid_method_names do [:write, :close] end
+			context "splatting an array of #{type_of_values} method names" do
+				let :method_names do values end
 
-			it 'iterates over each method name and defines a method for each name' do
-				allow(Site::MultiDelegator).to receive(:define_method)
+				it 'does not raise an error' do
+					allow(Site::MultiDelegator).to receive(:define_method)
 
-				valid_method_names.each do |method_name|
-					expect(Site::MultiDelegator).to receive(:define_method).with(method_name)
+					expect do
+						Site::MultiDelegator.delegate(*method_names)
+					end.not_to raise_error
 				end
 
-				Site::MultiDelegator.delegate(*valid_method_names)
+				it 'iterates over each method name and defines a method for each name' do
+					allow(Site::MultiDelegator).to receive(:define_method)
+
+					method_names.each do |expected_method_name|
+						expect(Site::MultiDelegator).to receive(:define_method).with(expected_method_name)
+					end
+
+					Site::MultiDelegator.delegate(*method_names)
+				end
+
 			end
 
 		end
