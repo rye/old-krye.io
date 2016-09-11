@@ -2,7 +2,7 @@
 FROM ruby:onbuild
 
 # That's me!
-MAINTAINER Kristofer Rye
+MAINTAINER Kristofer Rye <kristofer.rye@gmail.com>
 
 # Add the current directory, containing everything, to /krye.io in the image.
 ADD . /krye.io/
