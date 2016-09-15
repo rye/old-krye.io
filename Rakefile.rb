@@ -51,8 +51,8 @@ namespace :documentation do
 		file_rules.each do |file_rule|
 			Site::Logger.debug "Finding files for file_rule #{file_rule}"
 
-			file_rule_files = Dir.glob(File.join(root_directory, file_rule)).tap do |_matches|
-				Site::Logger.debug "Have #{_matches.count} matches to the file_rule"
+			file_rule_files = Dir.glob(File.join(root_directory, file_rule)).tap do |matches|
+				Site::Logger.debug "Have #{matches.count} matches to the file_rule"
 			end.select do |match|
 				type = case File.ftype match
 				       when 'file'
@@ -66,8 +66,8 @@ namespace :documentation do
 				Site::Logger.debug "#{match} is a #{type}"
 
 				type == :file
-			end.tap do |_files|
-				Site::Logger.info "Have #{_files.count} to add to the list"
+			end.tap do |files|
+				Site::Logger.info "Have #{files.count} to add to the list"
 			end
 
 			Site::Logger.info "Currently have #{files_to_document.count} files to document"
