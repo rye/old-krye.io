@@ -34,6 +34,5 @@ ratings:
     - "**.rb"
 exclude_paths:
   - config/
-  - script/
   - spec/
   - vendor/
