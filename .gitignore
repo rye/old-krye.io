@@ -9,3 +9,6 @@
 
 # Ignore documentation
 /docs/*
+
+# Ignore .patch files
+*.patch
