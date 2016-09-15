@@ -88,11 +88,11 @@ module Site
 				else
 					Site::Logger.debug "routes for #{entry.relative_path_from_root}: #{routes}"
 
-					routes.each do |_route|
-						@application.get(_route) {
+					routes.each do |route|
+						@application.get(route) {
 							etag entry.encoded_contents
 
-							content_type MIME::Types.type_for(_route).first.to_s
+							content_type MIME::Types.type_for(route).first.to_s
 
 							entry.contents
 						}
