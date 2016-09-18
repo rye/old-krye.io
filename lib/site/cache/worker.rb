@@ -10,8 +10,6 @@ module Site
 
 	class CacheWorker < Thread
 
-		NOOP = false
-
 		attr_reader :id
 
 		def initialize(id, registry, queue, application)
@@ -21,28 +19,20 @@ module Site
 			super do
 				begin
 					loop do
-						if NOOP
-							Site::Logger.warn @program_string do
-								"NOOP"
-							end
+						Site::Logger.debug @program_string do
+							"waiting for event"
+						end
 
-							sleep rand
-						else
-							Site::Logger.debug @program_string do
-								"waiting for event"
-							end
+						event = @queue.pop
 
-							event = @queue.pop
+						Site::Logger.debug @program_string do
+							"popped event: #{event.inspect}"
+						end
 
-							Site::Logger.debug @program_string do
-								"popped event: #{event.inspect}"
-							end
+						handle_event(event)
 
-							handle_event(event)
-
-							Site::Logger.debug @program_string do
-								"event handling finished"
-							end
+						Site::Logger.debug @program_string do
+							"event handling finished"
 						end
 					end
 				rescue => e
