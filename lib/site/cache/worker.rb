@@ -89,8 +89,6 @@ module Site
 				end
 
 				@registry[entry.filename] = entry
-			else
-				raise "invalid event"
 			end
 		end
 
