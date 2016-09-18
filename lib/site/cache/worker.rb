@@ -46,9 +46,10 @@ module Site
 		end
 
 		def handle_event(event)
+			entry = FileEntry.new(event.filename)
+
 			case event
 			when RemovedEvent
-				entry = FileEntry.new(event.filename)
 				relative_path_from_root = entry.relative_path_from_root
 
 				Site::Logger.debug @program_string do
@@ -67,8 +68,6 @@ module Site
 					end
 				end
 			when ModifiedEvent, AddedEvent
-				entry = FileEntry.new(event.filename)
-
 				routes = entry.routes
 
 				if !routes
