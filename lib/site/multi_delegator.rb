@@ -13,7 +13,7 @@ module Site
 			methods.each do |method|
 				define_method(method) do |*arguments|
 					@targets.map do |target|
-						target.send(_method, *arguments)
+						target.send(method, *arguments)
 					end
 				end
 			end
