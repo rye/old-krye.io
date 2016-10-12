@@ -52,30 +52,20 @@ module Site
 			when RemovedEvent
 				relative_path_from_root = entry.relative_path_from_root
 
-				Site::Logger.debug @program_string do
-					"#{relative_path_from_root} was deleted; waiting to remove from registry"
-				end
+				Site::Logger.debug(@program_string) { "#{relative_path_from_root} was deleted; queuing #{relative_path_from_root} for registy deletion" }
 
 				@registry.semaphore.synchronize do
-					Site::Logger.debug @program_string do
-						"removing #{relative_path_from_root} from the registry"
-					end
-
 					@registry.delete(entry.filename)
 
-					Site::Logger.debug @program_string do
-						"#{relative_path_from_root} was removed from the registry"
-					end
+					Site::Logger.debug(@program_string) { "#{relative_path_from_root} was removed from the registry" }
 				end
 			when ModifiedEvent, AddedEvent
 				routes = entry.routes
 
 				if !routes
-					Site::Logger.warn @program_string do
-						"#{relative_path_from_root} did not generate any routes"
-					end
+					Site::Logger.warn(@program_string) { "#{relative_path_from_root} did not generate any routes" }
 				else
-					Site::Logger.debug "routes for #{entry.relative_path_from_root}: #{routes}"
+					Site::Logger.debug(@program_string) { "routes for #{entry.relative_path_from_root}: #{routes}" }
 
 					routes.each do |route|
 						@application.get(route) {
