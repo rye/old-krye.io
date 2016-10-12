@@ -43,6 +43,7 @@ trianglifyTargets.forEach (element) ->
 
   linear_gradient = "linear-gradient(#{first_stop}, #{last_stop})"
 
-  svg_data_url = "url('data:image/svg+xml;base64,#{window.btoa(svg.outerHTML)}')"
+  svg_data_url =
+    "url('data:image/svg+xml;base64,#{window.btoa(svg.outerHTML)}')"
 
   element.style.backgroundImage = "#{linear_gradient}, #{svg_data_url}"
