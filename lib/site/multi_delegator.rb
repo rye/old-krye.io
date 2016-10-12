@@ -10,10 +10,10 @@ module Site
 		end
 
 		def self.delegate(*methods)
-			methods.each do |_method|
-				define_method(_method) do |*arguments|
-					@targets.map do |_target|
-						_target.send(_method, *arguments)
+			methods.each do |method|
+				define_method(method) do |*arguments|
+					@targets.map do |target|
+						target.send(method, *arguments)
 					end
 				end
 			end
