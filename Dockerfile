@@ -25,8 +25,8 @@ RUN bundle install
 RUN git status
 
 # Fetch the tags and do the things?
-RUN git fetch origin --unshallow --tags \
-  && git describe --tags --dirty
+RUN git fetch origin --unshallow --tags; \
+  git describe --tags --dirty || exit 0
 
 # Expose port 80
 EXPOSE 80
