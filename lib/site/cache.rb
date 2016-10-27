@@ -20,7 +20,7 @@ module Site
 
 	class Cache
 
-		WORKER_COUNT = 4
+		WORKER_COUNT = 2
 
 		attr_reader :registry, :application
 
