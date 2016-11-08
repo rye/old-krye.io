@@ -29,12 +29,6 @@ module Site
 			cache_control :public, :must_revalidate, :max_age => 60
 		end
 
-		after do
-			@@printing_semaphore.synchronize {
-				Site::Logger.warn "Handled request for #{request.path_info.to_s.inspect}"
-			}
-		end
-
 		get '/' do
 			redirect '/index.html'
 		end
