@@ -1,34 +1,3 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH.unshift(File.expand_path(File.join('..', '..', 'lib'), __FILE__))
-
-require 'site/logger'
-require 'optparse'
-
-defaults = {
-	image: nil,
-	host: nil,
-	name: nil,
-	args: nil,
-	port: nil
-}
-
-Site::Logger.info "#{$0}" do
-	"Deploying!"
-end
-
-__END__
-
-raise NotImplementedError, 'script/deploy not yet written.'
-
-DOCKER='/usr/bin/docker'
-
-NAME=ARGV[1]
-IMAGE=ARGV[2]
-PORT=ARGV[3]
-
-DOCKER pull $IMAGE
-
-$DOCKER stop $NAME
-$DOCKER rm $NAME
-$DOCKER run --name=$NAME -dp $PORT:80 $2
+raise NotImplementedError, "Not implemented yet! Sorry."
