@@ -55,6 +55,7 @@ GEM
     rb-fsevent (0.9.8)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    redis (3.3.2)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
@@ -101,6 +102,7 @@ DEPENDENCIES
   pry
   pry-doc
   rake
+  redis (~> 3.2)
   rspec
   sass
   scientist
