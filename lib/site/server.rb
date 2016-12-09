@@ -8,6 +8,8 @@ require 'tilt/erb'
 require 'site/cache'
 require 'site/logger'
 
+require 'base64'
+
 require 'thread'
 
 module Site
@@ -63,9 +65,35 @@ module Site
 			# Do log to the console.
 			set :logging, true
 
-			@@cache = Cache.new(application: self)
+			@@cache = Cache.new(env: ENV, application: self)
 
-			@@cache.dump!
+			@@routes = {}
+
+			# @@cache.dump!
+		end
+
+		def self.routes_update(routes, entry_filename)
+			routes.each do |route|
+				Logger.debug "Server.routes_update" do "adding #{route}" end
+
+				@@routes[route] = self.get route do
+					entry = @@cache.get(entry_filename)
+
+					etag entry["sha"]
+
+					content_type MIME::Types.type_for(route).first.to_s
+
+					Base64.decode64(entry["data"])
+				end
+			end
+		end
+
+		def self.routes_delete(routes)
+			routes.each do |route|
+				Logger.debug "Server.routes_delete" do "deleting #{route}" end
+
+				@@routes[route].deactivate if @@routes[route]
+			end
 		end
 
 		# Starts the Sinatra application.

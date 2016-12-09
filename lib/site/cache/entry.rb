@@ -2,11 +2,12 @@ require 'site'
 require 'pathname'
 require 'digest'
 require 'mime-types'
+require 'base64'
 require 'tilt'
 
 module Site
 
-	class FileEntry
+	class Entry
 
 		attr_reader :filename
 
@@ -54,12 +55,12 @@ module Site
 			@contents ||= case type
 			              when :view
 				              begin
-					              Tilt.new(@filename, default_encoding: 'UTF-8').render
+					              Base64.encode64(Tilt.new(@filename, default_encoding: 'UTF-8').render)
 				              rescue => error
 					              Site::Logger.error("tilt") { "#{error.class}: #{error.message}\n\t" + error.backtrace.join("\n\t") }
 				              end
 			              else
-				              open(@filename, 'rb') { |io| io.read }
+				              Base64.encode64(open(@filename, 'rb') { |io| io.read })
 			              end
 		end
 

@@ -1,86 +1,153 @@
+require 'fileutils'
+require 'digest'
+
+require 'redis'
 require 'listen'
 require 'mime-types'
-require 'thread'
-require 'fileutils'
-require 'pathname'
 require 'tilt'
-require 'digest'
-require 'colorize'
 
-require 'site/cache/event/modified_event'
-require 'site/cache/event/added_event'
-require 'site/cache/event/removed_event'
-require 'site/cache/file_entry'
-require 'site/cache/worker_pool'
-require 'site/cache/registry'
-
+require 'site/cache/event'
+require 'site/cache/entry'
 require 'site/logger'
 
 module Site
 
 	class Cache
 
-		WORKER_COUNT = 2
-
-		attr_reader :registry, :application
-
-		def initialize(application:)
+		def initialize(env: ENV, application:)
 			register_mimes!
 
-			@registry = Registry.new
-			@application = application
+			@env, @application = env, application
 
-			@worker_pool = CacheWorkerPool.new(@registry, @application)
+			redis_host = ENV["REDIS_HOST"]
+			redis_port = ENV["REDIS_PORT"]
+			redis_password = ENV["REDIS_PASSWORD"]
+
+			redis_opts = {}
+
+			redis_opts[:host] = redis_host if redis_host
+			redis_opts[:port] = redis_port if redis_port
+			redis_opts[:password] = redis_password if redis_password
+
+			redis_opts[:timeout] = 120.0
+
+			redis_opts.tap do |hash|
+				filter_keys = [:password]
+
+				printable_opts = hash.map do |key, value|
+					filter_keys.include?(key) ? [key, "[FILTERED]"] : [key, value]
+				end.to_h
+
+				Logger.info "cache" do
+					"Connecting to redis with opts #{printable_opts}"
+				end
+			end
 
 			@listener = Listen.to(Site::STATIC_DIRECTORY, Site::VIEWS_DIRECTORY) do |modified, added, removed|
-				on(modified, added, removed)
+				dispatch(modified, added, removed)
 			end
 
 			@listener.start
 
-			spawn_workers!
-
-			until @worker_pool.workers.map { |t| t.stop? }.uniq == [true]
-				Site::Logger.info "waiting until all cache workers are sleepy to warm things up."
-				sleep 0.1
-			end
-
-			Site::Logger.warn "warming the cache."
+			sleep(0.1)
 
 			warm(Site::STATIC_DIRECTORY)
 			warm(Site::VIEWS_DIRECTORY)
 
-			Site::Logger.warn "cache warmed; fs should eventually notify listeners."
+			@redis = Redis.new redis_opts
 		end
 
-		def fetch(file)
-			@registry.semaphore.synchronize do
-				@registry[file] || nil
+		def dispatch(modified, added, removed)
+
+			modified.each do |file|
+				entry = Entry.new(file)
+				Logger.info "cache#dispatch" do "modified: #{entry.relative_path_from_root}" end
+				handle_event ModifiedEvent.new(entry.filename)
+			end
+
+			added.each do |file|
+				entry = Entry.new(file)
+				Logger.info "cache#dispatch" do "added: #{entry.relative_path_from_root}" end
+				handle_event AddedEvent.new(entry.filename)
+			end
+
+			removed.each do |file|
+				entry = Entry.new(file)
+				Logger.info "cache#dispatch" do "removed: #{entry.relative_path_from_root}" end
+				handle_event RemovedEvent.new(entry.filename)
 			end
 		end
 
-		def on(modified, added, removed)
-			Site::Logger.info 'listener' do
-				"received event with #{modified.count} modified; #{added.count} added; #{removed.count} removed files."
-			end
+		def handle_event(event)
+			entry = Entry.new(event.filename)
 
-			modified.each do |_modified|
-				@worker_pool.dispatch(ModifiedEvent.new(File.expand_path(_modified)))
-			end
+			case event
+			when RemovedEvent
+				if contains?(entry.filename)
+					Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: removing from cache, route delete" end
+					t0 = Time.now
+					@redis.delete entry.filename
+					@application.routes_delete(entry.routes)
+					t1 = Time.now
+					Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
+				else
+					Logger.warn "cache#handle_event" do "attempting to remove #{entry.relative_path_from_root} but not in cache. skip, no route delete" end
+				end
+			when AddedEvent, ModifiedEvent
+				if slug = get(entry.filename)
+					if slug["sha"] == entry.encoded_contents
+						Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: already in cache; no change" end
+					else
+						Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: already in cache; updating" end
+						set_entry(entry)
+						Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
+					end
+				else
+					Logger.warn "cache#handle_event" do "#{entry.relative_path_from_root}: not in cache, adding" end
+					t0 = Time.now
+					set_entry(entry)
+					t1 = Time.now
+					Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
+				end
 
-			added.each do |_added|
-				@worker_pool.dispatch(AddedEvent.new(File.expand_path(_added)))
+				@application.routes_update(entry.routes, entry.filename)
 			end
+		end
 
-			removed.each do |_removed|
-				@worker_pool.dispatch(RemovedEvent.new(File.expand_path(_removed)))
-			end
+		def set_entry(entry)
+			slug = { sha: entry.encoded_contents, data: entry.contents }
+
+			store(entry.filename, slug)
+		end
+
+		def store(key, object)
+			data = JSON.generate(object)
+
+			Logger.debug "cache#store" do "writing #{data.length} bytes" end
+
+			@redis.set key, data
+		end
+
+		def contains?(key)
+			@redis.exists key
+		end
+
+		def get(key)
+			data = @redis.get key
+			JSON.parse(data) if data
 		end
 
 		def dump!
-			@registry.semaphore.synchronize {
-				{ registry: @registry, queue: @worker_pool.queue }
-			}
+			Logger.info "cache#dump!" do "Beginning dump!" end
+
+			keys = @redis.keys
+
+			Logger.info "cache#dump!" do "Have #{keys.count} keys..." end
+
+			keys.each do |key|
+				value = @redis.get key
+				Logger.debug "cache#dump!" do "  #{key} => #{value}" end
+			end
 		end
 
 		protected
@@ -113,10 +180,6 @@ module Site
 			Dir[File.join(directory, '**', '*')].each do |f|
 				FileUtils.touch(f)
 			end
-		end
-
-		def spawn_workers!
-			@worker_pool.spawn_workers!(WORKER_COUNT)
 		end
 
 	end
