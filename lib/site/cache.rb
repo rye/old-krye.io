@@ -120,9 +120,6 @@ module Site
 
 		def store(key, object)
 			data = JSON.generate(object)
-
-			Logger.debug "cache#store" do "writing #{data.length} bytes" end
-
 			@redis.set key, data
 		end
 
