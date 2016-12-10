@@ -74,25 +74,35 @@ module Site
 
 		def self.routes_update(routes, entry_filename)
 			routes.each do |route|
-				Logger.debug "Server.routes_update" do "adding #{route}" end
+				if existing_route = @@routes[route]
+					Logger.debug "Server.routes_update" do "already have #{route}" end
+				else
+					Logger.debug "Server.routes_update" do "adding #{route}" end
 
-				@@routes[route] = self.get route do
-					entry = @@cache.get(entry_filename)
+					@@routes[route] = self.get route do
+						lambda do
+							slug = @@cache.get(entry_filename)
 
-					etag entry["sha"]
+							etag slug["sha"]
 
-					content_type MIME::Types.type_for(route).first.to_s
+							content_type MIME::Types.type_for(route).first.to_s
 
-					Base64.decode64(entry["data"])
+							Base64.decode64(slug["data"])
+						end.call
+					end
 				end
 			end
 		end
 
 		def self.routes_delete(routes)
 			routes.each do |route|
-				Logger.debug "Server.routes_delete" do "deleting #{route}" end
-
-				@@routes[route].deactivate if @@routes[route]
+				if @@routes[route]
+					Logger.debug "Server.routes_delete" do "deleting #{route}" end
+					@@routes[route].deactivate
+					@@routes.delete(route)
+				else
+					Logger.debug "Server.routes_delete" do "#{route} DNE, not deleting" end
+				end
 			end
 		end
 

@@ -92,7 +92,9 @@ module Site
 					Logger.warn "cache#handle_event" do "attempting to remove #{entry.relative_path_from_root} but not in cache. skip, no route delete" end
 				end
 			when AddedEvent, ModifiedEvent
-				if slug = get(entry.filename)
+				if contains?(entry.filename)
+					slug = get(entry.filename)
+
 					if slug["sha"] == entry.encoded_contents
 						Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: already in cache; no change" end
 					else
