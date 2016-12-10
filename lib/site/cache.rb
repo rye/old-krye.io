@@ -29,8 +29,6 @@ module Site
 			redis_opts[:port] = redis_port if redis_port
 			redis_opts[:password] = redis_password if redis_password
 
-			redis_opts[:timeout] = 120.0
-
 			redis_opts.tap do |hash|
 				filter_keys = [:password]
 
