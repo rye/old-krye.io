@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+require 'pty'
+
+DOCKER = `which docker`.strip
+
+raise "Docker does not seem to be installed.  Please make sure that it is.  (#{DOCKER})" unless $? == 0
+
+def run_command(options = ARGV)
+
+	command = "#{DOCKER} run #{options.join(' ')}"
+
+	puts command
+
+	command
+
+end
+
+
+pid = fork do
+
+	command = run_command ARGV
+
+	system(command)
+
+end
+
+puts "Child process spawned (pid: #{pid})"
+
+Process.waitpid(pid)
