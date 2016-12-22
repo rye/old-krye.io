@@ -31,5 +31,5 @@ RUN git fetch origin --unshallow --tags; \
 # Expose port 80 from the internal server.
 EXPOSE 80
 
-# Run the default command, binding to 127.0.0.1, or localhost.
-CMD ["bundle", "exec", "rackup", "-o", "127.0.0.1", "-p", "80"]
+# Run the default command, binding to 0.0.0.0, or localhost.
+CMD ["bundle", "exec", "rackup", "-o", "0.0.0.0", "-p", "80"]
