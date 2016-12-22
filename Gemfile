@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 # Server dependencies
+gem 'thin'
 gem 'sinatra'
 gem 'sinatra-advanced-routes'
 
