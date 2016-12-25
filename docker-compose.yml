@@ -12,29 +12,41 @@ services:
     image: kryestofer/krye.io:latest
     ports:
       - '9300:80'
+    environment:
+      - REDIS_PASSWORD
+      - REDIS_HOST=redis-server
     links:
-      - redis
+      - "redis:redis-server"
 
   web-production-9301:
     image: kryestofer/krye.io:latest
     ports:
       - '9301:80'
+    environment:
+      - REDIS_PASSWORD
+      - REDIS_HOST=redis-server
     links:
-      - redis
+      - "redis:redis-server"
 
   web-production-9302:
     image: kryestofer/krye.io:latest
     ports:
       - '9302:80'
+    environment:
+      - REDIS_PASSWORD
+      - REDIS_HOST=redis-server
     links:
-      - redis
+      - "redis:redis-server"
 
   web-production-9303:
     image: kryestofer/krye.io:latest
     ports:
       - '9303:80'
+    environment:
+      - REDIS_PASSWORD
+      - REDIS_HOST=redis-server
     links:
-      - redis
+      - "redis:redis-server"
 
   web-staging-9200:
     image: kryestofer/krye.io:HEAD
