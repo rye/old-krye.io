@@ -58,54 +58,28 @@ module Site
 		def dispatch(modified, added, removed)
 
 			modified.each do |file|
-				handle_dispatch_type :modified, file
+				handle_dispatch(entry = Entry.new(file), ModifiedEvent.new(entry.filename))
 			end
 
 			added.each do |file|
-				handle_dispatch_type :added, file
+				handle_dispatch(entry = Entry.new(file), AddedEvent.new(entry.filename))
 			end
 
 			removed.each do |file|
-				handle_dispatch_type :removed, file
+				handle_dispatch(entry = Entry.new(file), RemovedEvent.new(entry.filename))
 			end
+
 		end
 
 		def handle_event(event)
-			entry = Entry.new(event.filename)
 
 			case event
 			when RemovedEvent
-				if contains?(entry.filename)
-					Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: removing from cache, route delete" end
-					t0 = Time.now
-					@redis.delete entry.filename
-					@application.routes_delete(entry.routes)
-					t1 = Time.now
-					Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
-				else
-					Logger.warn "cache#handle_event" do "attempting to remove #{entry.relative_path_from_root} but not in cache. skip, no route delete" end
-				end
+				handle_delete event
 			when AddedEvent, ModifiedEvent
-				if contains?(entry.filename)
-					slug = get(entry.filename)
-
-					if slug["sha"] == entry.encoded_contents
-						Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: already in cache; no change" end
-					else
-						Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: already in cache; updating" end
-						set_entry(entry)
-						Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
-					end
-				else
-					Logger.warn "cache#handle_event" do "#{entry.relative_path_from_root}: not in cache, adding" end
-					t0 = Time.now
-					set_entry(entry)
-					t1 = Time.now
-					Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
-				end
-
-				@application.routes_update(entry.routes, entry.filename)
+				handle_modified event
 			end
+
 		end
 
 		def set_entry(entry)
@@ -143,18 +117,48 @@ module Site
 
 		protected
 
-		def handle_dispatch_type(type, file)
-			@event_type_mapping ||= {
-				:modified => ModifiedEvent,
-				:added => AddedEvent,
-				:removed => RemovedEvent
-			}
+		def handle_delete(event)
+			entry = Entry.new(event.filename)
 
-			raise "Unrecognized type" unless @event_type_mapping.keys.include? type
+			if contains?(entry.filename)
+				Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: removing from cache, route delete" end
+				t0 = Time.now
+				@redis.delete entry.filename
+				@application.routes_delete(entry.routes)
+				t1 = Time.now
+				Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
+			else
+				Logger.warn "cache#handle_event" do "attempting to remove #{entry.relative_path_from_root} but not in cache. skip, no route delete" end
+			end
+		end
 
-			entry = Entry.new(file)
-			Logger.info "cache#dispatch" do "#{type.to_s}: #{entry.relative_path_from_root}" end
-			handle_event @event_type_mapping[type].new(entry.filename)
+		def handle_modified(event)
+			entry = Entry.new(event.filename)
+
+			if contains?(entry.filename)
+				slug = get(entry.filename)
+
+				if slug["sha"] == entry.encoded_contents
+					Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: already in cache; no change" end
+				else
+					Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: already in cache; updating" end
+					set_entry(entry)
+					Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
+				end
+			else
+				Logger.warn "cache#handle_event" do "#{entry.relative_path_from_root}: not in cache, adding" end
+				t0 = Time.now
+				set_entry(entry)
+				t1 = Time.now
+				Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
+			end
+
+			@application.routes_update(entry.routes, entry.filename)
+		end
+
+		def handle_dispatch(entry, event)
+			Logger.info "cache#dispatch" do "#{event.class}: #{entry.relative_path_from_root}" end
+			handle_event event
 		end
 
 		def register_mimes!
