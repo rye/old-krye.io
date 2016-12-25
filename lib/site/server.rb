@@ -68,8 +68,6 @@ module Site
 			@@cache = Cache.new(env: ENV, application: self)
 
 			@@routes = {}
-
-			# @@cache.dump!
 		end
 
 		def self.routes_update(routes, entry_filename)
