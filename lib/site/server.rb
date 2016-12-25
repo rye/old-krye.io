@@ -114,8 +114,6 @@ module Site
 			super
 		end
 
-		protected
-
 		def self.register_mimes!
 			types = []
 
