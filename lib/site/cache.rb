@@ -1,122 +1,122 @@
-require 'listen'
-require 'mime-types'
-require 'thread'
 require 'fileutils'
-require 'pathname'
-require 'tilt'
 require 'digest'
-require 'colorize'
 
-require 'site/cache/event/modified_event'
-require 'site/cache/event/added_event'
-require 'site/cache/event/removed_event'
-require 'site/cache/file_entry'
-require 'site/cache/worker_pool'
-require 'site/cache/registry'
+require 'listen'
+require 'tilt'
 
+require 'site/cache/event'
+require 'site/cache/entry'
 require 'site/logger'
+
+require 'site/adapter'
+require 'site/redis_adapter'
 
 module Site
 
 	class Cache
 
-		WORKER_COUNT = 2
+		def initialize(env: ENV, application:)
+			@env, @application = env, application
 
-		attr_reader :registry, :application
-
-		def initialize(application:)
-			register_mimes!
-
-			@registry = Registry.new
-			@application = application
-
-			@worker_pool = CacheWorkerPool.new(@registry, @application)
+			@adapter = RedisAdapter.new @env
 
 			@listener = Listen.to(Site::STATIC_DIRECTORY, Site::VIEWS_DIRECTORY) do |modified, added, removed|
-				on(modified, added, removed)
+				dispatch(modified, added, removed)
 			end
 
 			@listener.start
 
-			spawn_workers!
-
-			until @worker_pool.workers.map { |t| t.stop? }.uniq == [true]
-				Site::Logger.info "waiting until all cache workers are sleepy to warm things up."
-				sleep 0.1
-			end
-
-			Site::Logger.warn "warming the cache."
+			sleep(0.1)
 
 			warm(Site::STATIC_DIRECTORY)
 			warm(Site::VIEWS_DIRECTORY)
-
-			Site::Logger.warn "cache warmed; fs should eventually notify listeners."
 		end
 
-		def fetch(file)
-			@registry.semaphore.synchronize do
-				@registry[file] || nil
+		def dispatch(modified, added, removed)
+
+			modified.each do |file|
+				handle_dispatch(entry = Entry.new(file), ModifiedEvent.new(entry.filename))
+			end
+
+			added.each do |file|
+				handle_dispatch(entry = Entry.new(file), AddedEvent.new(entry.filename))
+			end
+
+			removed.each do |file|
+				handle_dispatch(entry = Entry.new(file), RemovedEvent.new(entry.filename))
+			end
+
+		end
+
+		def handle_event(event)
+			case event
+			when RemovedEvent
+				handle_delete event
+			when AddedEvent, ModifiedEvent
+				handle_modified event
 			end
 		end
 
-		def on(modified, added, removed)
-			Site::Logger.info 'listener' do
-				"received event with #{modified.count} modified; #{added.count} added; #{removed.count} removed files."
-			end
-
-			modified.each do |_modified|
-				@worker_pool.dispatch(ModifiedEvent.new(File.expand_path(_modified)))
-			end
-
-			added.each do |_added|
-				@worker_pool.dispatch(AddedEvent.new(File.expand_path(_added)))
-			end
-
-			removed.each do |_removed|
-				@worker_pool.dispatch(RemovedEvent.new(File.expand_path(_removed)))
-			end
+		def get(key)
+			@adapter.get(key)
 		end
 
-		def dump!
-			@registry.semaphore.synchronize {
-				{ registry: @registry, queue: @worker_pool.queue }
-			}
+		def set_entry(entry)
+			slug = { sha: entry.encoded_contents, data: entry.contents }
+
+			@adapter.store(entry.filename, slug)
 		end
 
 		protected
 
-		def register_mimes!
-			types = []
+		def handle_delete(event)
+			entry = Entry.new(event.filename)
 
-			types << MIME::Type.new('application/x-eruby') do |t|
-				t.add_extensions 'html.erb'
-				t.add_extensions 'rhtml'
-				t.add_extensions 'erb'
+			if @adapter.contains?(entry.filename)
+				Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: removing from cache, route delete" end
+				t0 = Time.now
+				@adapter.delete entry.filename
+				@application.routes_delete(entry.routes)
+				t1 = Time.now
+				Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
+			else
+				Logger.warn "cache#handle_event" do "attempting to remove #{entry.relative_path_from_root} but not in cache. skip, no route delete" end
+			end
+		end
+
+		def handle_modified(event)
+			entry = Entry.new(event.filename)
+
+			if @adapter.contains?(entry.filename)
+				slug = @adapter.get(entry.filename)
+
+				if slug["sha"] == entry.encoded_contents
+					Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: already in cache; no change" end
+				else
+					Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: already in cache; updating" end
+					set_entry(entry)
+					Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
+				end
+			else
+				Logger.warn "cache#handle_event" do "#{entry.relative_path_from_root}: not in cache, adding" end
+				t0 = Time.now
+				set_entry(entry)
+				t1 = Time.now
+				Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
 			end
 
-			types << MIME::Type.new('application/x-sass') do |t|
-				t.add_extensions 'sass'
-			end
+			@application.routes_update(entry.routes, entry.filename)
+		end
 
-			types << MIME::Type.new('application/x-scss') do |t|
-				t.add_extensions 'scss'
-			end
-
-			types << MIME::Type.new('application/x-coffee') do |t|
-				t.add_extensions 'coffee'
-			end
-
-			MIME::Types.add(types)
+		def handle_dispatch(entry, event)
+			Logger.info "cache#dispatch" do "#{event.class}: #{entry.relative_path_from_root}" end
+			handle_event event
 		end
 
 		def warm(directory)
 			Dir[File.join(directory, '**', '*')].each do |f|
 				FileUtils.touch(f)
 			end
-		end
-
-		def spawn_workers!
-			@worker_pool.spawn_workers!(WORKER_COUNT)
 		end
 
 	end

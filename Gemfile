@@ -5,6 +5,9 @@ gem 'thin'
 gem 'sinatra'
 gem 'sinatra-advanced-routes'
 
+# Redis dependency
+gem 'redis', '~> 3.2'
+
 # Template-related dependencies
 gem 'sass'
 gem 'coffee-script'

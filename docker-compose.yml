@@ -1,0 +1,44 @@
+version: '2'
+services:
+  redis:
+    image: redis
+    volumes:
+      - "./config/redis.conf:/etc/redis.conf"
+    command: "redis-server /etc/redis.conf"
+
+  web-0:
+    image: kryestofer/krye.io:latest
+    ports:
+      - '9300:80'
+    links:
+      - redis
+
+  web-1:
+    image: kryestofer/krye.io:latest
+    ports:
+      - '9301:80'
+    links:
+      - redis
+
+  web-2:
+    image: kryestofer/krye.io:latest
+    ports:
+      - '9302:80'
+    links:
+      - redis
+
+  web-3:
+    image: kryestofer/krye.io:latest
+    ports:
+      - '9303:80'
+    links:
+      - redis
+
+  staging-0:
+    image: kryestofer/krye.io:HEAD
+    ports:
+      - '9200:80'
+    environment:
+      - REDIS_PASSWORD
+    links:
+      - redis

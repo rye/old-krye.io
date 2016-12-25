@@ -12,3 +12,6 @@
 
 # Ignore .patch files
 *.patch
+
+# Ignore actual redis.conf
+/config/redis.conf
