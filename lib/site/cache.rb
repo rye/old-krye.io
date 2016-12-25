@@ -58,21 +58,15 @@ module Site
 		def dispatch(modified, added, removed)
 
 			modified.each do |file|
-				entry = Entry.new(file)
-				Logger.info "cache#dispatch" do "modified: #{entry.relative_path_from_root}" end
-				handle_event ModifiedEvent.new(entry.filename)
+				handle_dispatch_type :modified, file
 			end
 
 			added.each do |file|
-				entry = Entry.new(file)
-				Logger.info "cache#dispatch" do "added: #{entry.relative_path_from_root}" end
-				handle_event AddedEvent.new(entry.filename)
+				handle_dispatch_type :added, file
 			end
 
 			removed.each do |file|
-				entry = Entry.new(file)
-				Logger.info "cache#dispatch" do "removed: #{entry.relative_path_from_root}" end
-				handle_event RemovedEvent.new(entry.filename)
+				handle_dispatch_type :removed, file
 			end
 		end
 
@@ -148,6 +142,20 @@ module Site
 		end
 
 		protected
+
+		def handle_dispatch_type(type, file)
+			@event_type_mapping ||= {
+				:modified => ModifiedEvent,
+				:added => AddedEvent,
+				:removed => RemovedEvent
+			}
+
+			raise "Unrecognized type" unless @event_type_mapping.keys.include? type
+
+			entry = Entry.new(file)
+			Logger.info "cache#dispatch" do "#{type.to_s}: #{entry.relative_path_from_root}" end
+			handle_event @event_type_mapping[type].new(entry.filename)
+		end
 
 		def register_mimes!
 			types = []
