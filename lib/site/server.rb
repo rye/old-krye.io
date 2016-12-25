@@ -74,7 +74,7 @@ module Site
 
 		def self.routes_update(routes, entry_filename)
 			routes.each do |route|
-				if existing_route = @@routes[route]
+				if @@routes[route]
 					Logger.debug "Server.routes_update" do "already have #{route}" end
 				else
 					Logger.debug "Server.routes_update" do "adding #{route}" end
