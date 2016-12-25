@@ -8,35 +8,35 @@ services:
       - "./config/redis.conf:/etc/redis.conf"
     command: "redis-server /etc/redis.conf"
 
-  web-0:
+  web-production-9300:
     image: kryestofer/krye.io:latest
     ports:
       - '9300:80'
     links:
       - redis
 
-  web-1:
+  web-production-9301:
     image: kryestofer/krye.io:latest
     ports:
       - '9301:80'
     links:
       - redis
 
-  web-2:
+  web-production-9302:
     image: kryestofer/krye.io:latest
     ports:
       - '9302:80'
     links:
       - redis
 
-  web-3:
+  web-production-9303:
     image: kryestofer/krye.io:latest
     ports:
       - '9303:80'
     links:
       - redis
 
-  staging-0:
+  web-staging-9200:
     image: kryestofer/krye.io:HEAD
     ports:
       - '9200:80'
