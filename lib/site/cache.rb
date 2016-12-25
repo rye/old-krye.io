@@ -2,7 +2,6 @@ require 'fileutils'
 require 'digest'
 
 require 'listen'
-require 'mime-types'
 require 'tilt'
 
 require 'site/cache/event'
@@ -17,8 +16,6 @@ module Site
 	class Cache
 
 		def initialize(env: ENV, application:)
-			register_mimes!
-
 			@env, @application = env, application
 
 			@adapter = RedisAdapter.new @env
@@ -114,30 +111,6 @@ module Site
 		def handle_dispatch(entry, event)
 			Logger.info "cache#dispatch" do "#{event.class}: #{entry.relative_path_from_root}" end
 			handle_event event
-		end
-
-		def register_mimes!
-			types = []
-
-			types << MIME::Type.new('application/x-eruby') do |t|
-				t.add_extensions 'html.erb'
-				t.add_extensions 'rhtml'
-				t.add_extensions 'erb'
-			end
-
-			types << MIME::Type.new('application/x-sass') do |t|
-				t.add_extensions 'sass'
-			end
-
-			types << MIME::Type.new('application/x-scss') do |t|
-				t.add_extensions 'scss'
-			end
-
-			types << MIME::Type.new('application/x-coffee') do |t|
-				t.add_extensions 'coffee'
-			end
-
-			MIME::Types.add(types)
 		end
 
 		def warm(directory)

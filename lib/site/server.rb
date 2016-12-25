@@ -1,6 +1,8 @@
 require 'sinatra/base'
 require 'sinatra/advanced_routes'
 
+require 'mime-types'
+
 require 'tilt/sass'
 require 'tilt/coffee'
 require 'tilt/erb'
@@ -50,6 +52,9 @@ module Site
 
 		# Sets up the server
 		def self.setup!
+			# Register some MIME types.
+			self.register_mimes!
+
 			# Set some settings so that Sinatra can find our static files.
 			set :root, Site::ROOT_DIRECTORY
 			set :public_folder, Site::STATIC_DIRECTORY
@@ -107,6 +112,32 @@ module Site
 		# Starts the Sinatra application.
 		def self.run!
 			super
+		end
+
+		protected
+
+		def self.register_mimes!
+			types = []
+
+			types << MIME::Type.new('application/x-eruby') do |t|
+				t.add_extensions 'html.erb'
+				t.add_extensions 'rhtml'
+				t.add_extensions 'erb'
+			end
+
+			types << MIME::Type.new('application/x-sass') do |t|
+				t.add_extensions 'sass'
+			end
+
+			types << MIME::Type.new('application/x-scss') do |t|
+				t.add_extensions 'scss'
+			end
+
+			types << MIME::Type.new('application/x-coffee') do |t|
+				t.add_extensions 'coffee'
+			end
+
+			MIME::Types.add(types)
 		end
 
 	end
