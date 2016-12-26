@@ -4,11 +4,24 @@ This is the code that powers [krye.io][krye.io], my personal website.
 It is a proof-of-concept project involving a great amount of work
 towards caching things and making it much lighter-weight.
 
+## Goals
+
+Caching responses to requests is a big goal of this project.
+Currently, we simply build files statically and store them in a cache,
+but it would be nice to cache requests whilst still maintaining
+support for dynamic pages.
+
+In the future, we will probably move from caching to more of a direct
+build-on-page-request type deal.  We can always use caching in Nginx
+or whatever is used as a load balancer.
+
 ## Setup
 
-This project has a Docker image at [`kryestofer/krye.io`](https://hub.docker.com/r/kryestofer/krye.io/).
+This project has a Docker image at
+[`kryestofer/krye.io`](https://hub.docker.com/r/kryestofer/krye.io/).
 
-Otherwise, simply run the following commands to set it up on your machine (with Ruby installed):
+Otherwise, simply run the following commands to set it up on your
+machine (with Ruby installed):
 
 ```sh
 $ bundle install
