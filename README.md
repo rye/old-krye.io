@@ -15,6 +15,13 @@ In the future, we will probably move from caching to more of a direct
 build-on-page-request type deal.  We can always use caching in Nginx
 or whatever is used as a load balancer.
 
+## Known Issues
+
+* This server still has an enormous footprint.  Despite being all
+  in-memory and using `redis` as a primary storage backend, the system
+  is still storing many things in-memory.  An in-depth look will be
+  required to take care of this.
+
 ## Setup
 
 This project has a Docker image at
