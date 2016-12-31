@@ -1,4 +1,4 @@
-# krye.io [![Dependency Status](https://gemnasium.com/badges/github.com/rye/krye.io.svg)](https://gemnasium.com/github.com/rye/krye.io)
+# krye.io [![Dependency Status](https://gemnasium.com/badges/github.com/rye/krye.io.svg)](https://gemnasium.com/github.com/rye/krye.io) [![Code Climate](https://codeclimate.com/github/rye/krye.io/badges/gpa.svg)](https://codeclimate.com/github/rye/krye.io) [![Test Coverage](https://codeclimate.com/github/rye/krye.io/badges/coverage.svg)](https://codeclimate.com/github/rye/krye.io/coverage)
 
 This is the code that powers [krye.io][krye.io], my personal website.
 It is a proof-of-concept project involving a great amount of work
