@@ -34,7 +34,6 @@ group :development do
 
 	# Inspection dependencies
 	gem 'pry'
-	gem 'pry-doc'
 
 	# Rollout dependencies
 	gem 'scientist'
