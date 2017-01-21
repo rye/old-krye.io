@@ -24,7 +24,7 @@ module Site
 		end
 
 		def encoded_contents
-			@encoded_contents ||= Digest::SHA1.base64digest(contents)
+			Digest::SHA1.base64digest(contents)
 		end
 
 		def mime_types
@@ -52,16 +52,16 @@ module Site
 		end
 
 		def contents
-			@contents ||= case type
-			              when :view
-				              begin
-					              Base64.encode64(Tilt.new(@filename, default_encoding: 'UTF-8').render)
-				              rescue => error
-					              Site::Logger.error("tilt") { "#{error.class}: #{error.message}\n\t" + error.backtrace.join("\n\t") }
-				              end
-			              else
-				              Base64.encode64(open(@filename, 'rb') { |io| io.read })
-			              end
+			case type
+			when :view
+				begin
+					Base64.encode64(Tilt.new(@filename, default_encoding: 'UTF-8').render)
+				rescue => error
+					Site::Logger.error("tilt") { "#{error.class}: #{error.message}\n\t" + error.backtrace.join("\n\t") }
+				end
+			else
+				Base64.encode64(open(@filename, 'rb') { |io| io.read })
+			end
 		end
 
 		def mime_type
