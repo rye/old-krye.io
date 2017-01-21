@@ -4,12 +4,12 @@ require 'digest'
 require 'listen'
 require 'tilt'
 
-require 'site/cache/event'
-require 'site/cache/entry'
 require 'site/logger'
 
-require 'site/adapter'
-require 'site/redis_adapter'
+require 'site/cache/event'
+require 'site/cache/entry'
+require 'site/cache/adapter'
+require 'site/cache/redis_adapter'
 
 module Site
 
