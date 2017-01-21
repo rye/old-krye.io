@@ -4,12 +4,12 @@ require 'digest'
 require 'listen'
 require 'tilt'
 
-require 'site/cache/event'
-require 'site/cache/entry'
 require 'site/logger'
 
-require 'site/adapter'
-require 'site/redis_adapter'
+require 'site/cache/event'
+require 'site/cache/entry'
+require 'site/cache/adapter'
+require 'site/cache/redis_adapter'
 
 module Site
 
@@ -33,7 +33,6 @@ module Site
 		end
 
 		def dispatch(modified, added, removed)
-
 			modified.each do |file|
 				handle_dispatch(entry = Entry.new(file), ModifiedEvent.new(entry.filename))
 			end
@@ -45,7 +44,6 @@ module Site
 			removed.each do |file|
 				handle_dispatch(entry = Entry.new(file), RemovedEvent.new(entry.filename))
 			end
-
 		end
 
 		def handle_event(event)

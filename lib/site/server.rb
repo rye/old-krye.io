@@ -20,10 +20,6 @@ module Site
 
 		register Sinatra::AdvancedRoutes
 
-		@@printing_semaphore = Mutex.new
-
-		Tilt.register :"html.erb", Tilt[:erb]
-
 		before '/' do
 			request.path_info = '/index.html'
 		end
