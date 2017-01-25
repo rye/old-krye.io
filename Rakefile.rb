@@ -4,7 +4,15 @@ require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec)
 
 task :tag do
-	IO.popen("ctags -eR --languages=ruby --verbose=yes --tag-relative=yes --exclude=.git --exclude=log .", "r") do |f|
-		$stdout.print f.read
+
+	require 'site/logger'
+
+	IO.popen(["ctags", "-eR", "--languages=ruby", "--verbose=yes", "--tag-relative=yes", "--exclude=.git", "--exclude=log", "."], "r") do |f|
+		f.readlines.each do |line|
+			Site::Logger.info 'ctags' do
+				line.chomp
+			end
+		end
 	end
+
 end
