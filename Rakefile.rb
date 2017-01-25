@@ -7,8 +7,8 @@ task :tag do
 
 	require 'site/logger'
 
-	IO.popen(["ctags", "-eR", "--languages=ruby", "--verbose=yes", "--tag-relative=yes", "--exclude=.git", "--exclude=log", "."], "r") do |f|
-		f.readlines.each do |line|
+	IO.popen(["ctags", "-eR", "--languages=ruby", "--verbose=yes", "--tag-relative=yes", "--exclude=.git", "--exclude=log", "."], "r") do |process|
+		process.readlines.each do |line|
 			Site::Logger.info 'ctags' do
 				line.chomp
 			end
