@@ -1,5 +1,5 @@
 # Use the latest version of Ruby (onbuild variant) available.
-FROM ruby:onbuild
+FROM ruby:alpine
 
 # That's me!
 MAINTAINER Kristofer Rye <kristofer.rye@gmail.com>
@@ -11,12 +11,7 @@ ADD . /krye.io/
 WORKDIR /krye.io
 
 # Update and install build-essential packages.
-RUN apt-get update \
-  && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-  && apt-get install -y nodejs git
-
-# Clean up
-RUN rm -rfv /var/lib/apt/lists/*
+RUN apk add --no-cache g++ musl-dev make nodejs git
 
 # Install app dependencies.
 RUN bundle install
@@ -26,7 +21,7 @@ RUN git status
 
 # Fetch the tags and do the things?
 RUN git fetch origin --unshallow --tags; \
-  git describe --tags --dirty || exit 0
+    git describe --tags --dirty || exit 0
 
 # Expose port 80 from the internal server.
 EXPOSE 80
