@@ -27,4 +27,4 @@ RUN git fetch origin --unshallow --tags; \
 EXPOSE 80
 
 # Run the default command, binding to 0.0.0.0, or localhost.
-CMD ['bundle', 'exec', 'rackup', '-o', '0.0.0.0', '-p', '80']
+CMD ["bundle", "exec", "rackup", "-o", "0.0.0.0", "-p", "80"]
