@@ -1,7 +1,7 @@
-# Use the latest version of Ruby (onbuild variant) available.
+# Use the latest version of ruby, `alpine` variant.
 FROM ruby:alpine
 
-# That's me!
+# Set MAINTAINER flag.
 MAINTAINER Kristofer Rye <kristofer.rye@gmail.com>
 
 # Add the current directory, containing everything, to /krye.io in the image.
@@ -16,7 +16,7 @@ RUN apk add --no-cache g++ musl-dev make nodejs git
 # Install app dependencies.
 RUN bundle install
 
-# Print out the git status for diagnostic purposes.
+# Print out git status for diagnostic purposes.
 RUN git status
 
 # Fetch the tags and do the things?
@@ -27,4 +27,4 @@ RUN git fetch origin --unshallow --tags; \
 EXPOSE 80
 
 # Run the default command, binding to 0.0.0.0, or localhost.
-CMD ["bundle", "exec", "rackup", "-o", "0.0.0.0", "-p", "80"]
+CMD ['bundle', 'exec', 'rackup', '-o', '0.0.0.0', '-p', '80']
