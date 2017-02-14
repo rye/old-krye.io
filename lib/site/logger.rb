@@ -11,4 +11,24 @@ module Site
 	Logger = Logger.new MultiDelegator.delegate(:write, :close).to(STDOUT, LOG_FILE)
 	self::Logger.level = ::Logger::INFO
 
+	def Logger.dump_exception(exception)
+		begin
+			filename, line, rest = caller[0].split(':')
+
+			file_pathname = Pathname.new(filename)
+			basename = file_pathname.relative_path_from(Pathname.new(Site::ROOT_DIRECTORY))
+
+			program_name = "#{basename}:#{line}"
+			prefix = "#{rest}: "
+
+			error(program_name) { "#{prefix}#{exception.message}" }
+
+			exception.backtrace.each do |line|
+				debug(program_name) { "#{prefix}#{line}" }
+			end
+		rescue Exception => exception
+			abort "got exception in dump_exception: #{exception.message}... agh"
+		end
+	end
+
 end
