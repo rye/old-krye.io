@@ -1,5 +1,7 @@
 require 'redis'
 
+require 'site/logger'
+
 module Site
 
 	class RedisAdapter < Adapter
@@ -29,6 +31,16 @@ module Site
 			end
 
 			@redis = Redis.new redis_opts
+
+			begin
+				result = @redis.ping
+				Logger.info "Redis responded to PING, ready to roll..."
+			rescue Exception => e
+				Logger.dump_exception e
+				Logger.warn "Closing on exception in DB connection."
+
+				exit 1
+			end
 		end
 
 		def store(key, object)
