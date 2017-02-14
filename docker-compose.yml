@@ -5,8 +5,8 @@ services:
     expose:
       - '6379'
     volumes:
-      - "./config/redis.conf:/etc/redis.conf"
-    command: "redis-server /etc/redis.conf"
+      - './config/redis.conf:/etc/redis.conf'
+    command: 'redis-server /etc/redis.conf'
 
   web-production-9300:
     image: kryestofer/krye.io:latest
@@ -16,7 +16,7 @@ services:
       - REDIS_PASSWORD
       - REDIS_HOST=redis-server
     links:
-      - "redis:redis-server"
+      - 'redis:redis-server'
 
   web-production-9301:
     image: kryestofer/krye.io:latest
@@ -26,7 +26,7 @@ services:
       - REDIS_PASSWORD
       - REDIS_HOST=redis-server
     links:
-      - "redis:redis-server"
+      - 'redis:redis-server'
 
   web-staging-9200:
     image: kryestofer/krye.io:HEAD
@@ -36,4 +36,4 @@ services:
       - REDIS_PASSWORD
       - REDIS_HOST=redis-server
     links:
-      - "redis:redis-server"
+      - 'redis:redis-server'
