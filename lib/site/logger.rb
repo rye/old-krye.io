@@ -12,6 +12,7 @@ module Site
 	self::Logger.level = ::Logger::INFO
 
 	def Logger.dump_exception(exception)
+
 		begin
 			filename, line, rest = caller[0].split(':')
 
@@ -29,6 +30,7 @@ module Site
 		rescue Exception => exception
 			abort "got exception in dump_exception: #{exception.message}... agh"
 		end
+
 	end
 
 end
