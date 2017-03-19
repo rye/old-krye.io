@@ -12,8 +12,6 @@ require 'site/logger'
 
 require 'base64'
 
-require 'thread'
-
 module Site
 
 	class Server < Sinatra::Base
