@@ -72,6 +72,8 @@ module Site
 		end
 
 		def self.routes_update(routes, entry_filename)
+			@@routes = {} if !@@routes
+
 			routes.each do |route|
 				if @@routes[route]
 					Logger.debug "Server.routes_update" do "already have #{route}" end
@@ -94,6 +96,8 @@ module Site
 		end
 
 		def self.routes_delete(routes)
+			@@routes = {} if !@@routes
+
 			routes.each do |route|
 				if @@routes[route]
 					Logger.debug "Server.routes_delete" do "deleting #{route}" end

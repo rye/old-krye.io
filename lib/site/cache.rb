@@ -68,42 +68,50 @@ module Site
 		protected
 
 		def handle_delete(event)
-			entry = Entry.new(event.filename)
+			begin
+				entry = Entry.new(event.filename)
 
-			if @adapter.contains?(entry.filename)
-				Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: removing from cache, route delete" end
-				t0 = Time.now
-				@adapter.delete entry.filename
-				@application.routes_delete(entry.routes)
-				t1 = Time.now
-				Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
-			else
-				Logger.warn "cache#handle_event" do "attempting to remove #{entry.relative_path_from_root} but not in cache. skip, no route delete" end
+				if @adapter.contains?(entry.filename)
+					Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: removing from cache, route delete" end
+					t0 = Time.now
+					@adapter.delete entry.filename
+					@application.routes_delete(entry.routes)
+					t1 = Time.now
+					Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
+				else
+					Logger.warn "cache#handle_event" do "attempting to remove #{entry.relative_path_from_root} but not in cache. skip, no route delete" end
+				end
+			rescue Exception => exception
+				Logger.dump_exception exception
 			end
 		end
 
 		def handle_modified(event)
-			entry = Entry.new(event.filename)
+			begin
+				entry = Entry.new(event.filename)
 
-			if @adapter.contains?(entry.filename)
-				slug = @adapter.get(entry.filename)
+				if @adapter.contains?(entry.filename)
+					slug = @adapter.get(entry.filename)
 
-				if slug["sha"] == entry.encoded_contents
-					Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: already in cache; no change" end
+					if slug["sha"] == entry.encoded_contents
+						Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: already in cache; no change" end
+					else
+						Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: already in cache; updating" end
+						set_entry(entry)
+						Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
+					end
 				else
-					Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: already in cache; updating" end
+					Logger.warn "cache#handle_event" do "#{entry.relative_path_from_root}: not in cache, adding" end
+					t0 = Time.now
 					set_entry(entry)
+					t1 = Time.now
 					Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
 				end
-			else
-				Logger.warn "cache#handle_event" do "#{entry.relative_path_from_root}: not in cache, adding" end
-				t0 = Time.now
-				set_entry(entry)
-				t1 = Time.now
-				Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
-			end
 
-			@application.routes_update(entry.routes, entry.filename)
+				@application.routes_update(entry.routes, entry.filename)
+			rescue Exception => exception
+				Logger.dump_exception exception
+			end
 		end
 
 		def handle_dispatch(entry, event)
