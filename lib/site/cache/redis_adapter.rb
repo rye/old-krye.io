@@ -27,7 +27,7 @@ module Site
 					filter_keys.include?(key) ? [key, "[FILTERED]"] : [key, value]
 				end.to_h
 
-				Logger.info "cache" do
+				Logger.info "redis_adapter" do
 					"Connecting to Redis with opts #{printable_opts}"
 				end
 			end
@@ -36,10 +36,14 @@ module Site
 
 			begin
 				result = @redis.ping
-				Logger.info "Redis responded to PING, ready to roll..."
+				Logger.info "redis_adapter" do
+					"Redis PONG-ed, ready to roll..."
+				end
 			rescue Exception => e
 				Logger.dump_exception e
-				Logger.warn "Closing on exception in DB connection."
+				Logger.warn "redis_adapter" do
+					"Aborting startup due to exception in connection to Redis."
+				end
 
 				exit 1
 			end
