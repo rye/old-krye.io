@@ -20,12 +20,10 @@ module Site
 			redis_opts[:port] = redis_port if redis_port
 			redis_opts[:password] = redis_password if redis_password
 
-			redis_opts.tap do |hash|
-				filter_keys = [:password]
+			redis_opts.tap do |opts|
+				filtered_opts = [:password]
 
-				printable_opts = hash.map do |key, value|
-					filter_keys.include?(key) ? [key, "[FILTERED]"] : [key, value]
-				end.to_h
+				printable_opts = replace_values(opts, filtered_opts, "[FILTERED]")
 
 				Logger.info "redis_adapter" do
 					"Connecting to Redis with opts #{printable_opts}"
@@ -65,6 +63,18 @@ module Site
 
 		def delete(key)
 			@redis.delete key
+		end
+
+		protected
+
+		# Replaces values in `hash` corresponding to any of the
+		# `filtered_keys` with `new_value`.
+		#
+		# Useful for situations like filtering plaintext passwords.
+		def replace_values(hash, filtered_keys = [], new_value = nil)
+			hash.map do |key, value|
+				(filtered_keys.include?(key) && new_value) ? [key, new_value] : [key, value]
+			end.to_h
 		end
 
 	end
