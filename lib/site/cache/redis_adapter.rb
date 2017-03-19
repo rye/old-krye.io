@@ -33,7 +33,8 @@ module Site
 			@redis = Redis.new redis_opts
 
 			begin
-				result = @redis.ping
+				ping
+
 				Logger.info "redis_adapter" do
 					"Redis PONG-ed, ready to roll..."
 				end
@@ -63,6 +64,10 @@ module Site
 
 		def delete(key)
 			@redis.delete key
+		end
+
+		def ping
+			@redis.ping
 		end
 
 		protected
