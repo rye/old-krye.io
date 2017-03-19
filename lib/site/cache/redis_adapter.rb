@@ -2,6 +2,8 @@ require 'redis'
 
 require 'site/logger'
 
+require 'site/cache/adapter'
+
 module Site
 
 	class RedisAdapter < Adapter
