@@ -129,7 +129,6 @@ module Site
 			MIME::Types.add(types)
 		end
 
-
 	end
 
 end
