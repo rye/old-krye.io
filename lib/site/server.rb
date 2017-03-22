@@ -120,9 +120,9 @@ module Site
 		end
 
 		def self.register_mimes_for(type, extensions)
-			types = MIME::Type.new(type) do |t|
-				extensions.each do |e|
-					t.add_extensions e
+			types = MIME::Type.new(type) do |mime_type|
+				extensions.each do |extension|
+					mime_type.add_extensions extension
 				end
 			end
 
