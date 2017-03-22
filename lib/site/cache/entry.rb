@@ -3,6 +3,7 @@ require 'pathname'
 require 'digest'
 require 'mime-types'
 require 'base64'
+
 require 'tilt'
 
 module Site
@@ -84,7 +85,6 @@ module Site
 				            Site::ROOT_DIRECTORY
 			            end
 		end
-
 
 		def type
 			@type ||= case relative_path_from_root.to_s
