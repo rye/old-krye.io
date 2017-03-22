@@ -113,28 +113,22 @@ module Site
 		end
 
 		def self.register_mimes!
-			types = []
+			register_mimes_for('application/x-eruby', ['html.erb', 'rhtml', 'erb'])
+			register_mimes_for('application/x-sass', ['sass'])
+			register_mimes_for('application/x-scss', ['scss'])
+			register_mimes_for('application/x-coffee', ['coffee'])
+		end
 
-			types << MIME::Type.new('application/x-eruby') do |t|
-				t.add_extensions 'html.erb'
-				t.add_extensions 'rhtml'
-				t.add_extensions 'erb'
-			end
-
-			types << MIME::Type.new('application/x-sass') do |t|
-				t.add_extensions 'sass'
-			end
-
-			types << MIME::Type.new('application/x-scss') do |t|
-				t.add_extensions 'scss'
-			end
-
-			types << MIME::Type.new('application/x-coffee') do |t|
-				t.add_extensions 'coffee'
+		def self.register_mimes_for(type, extensions)
+			types = MIME::Type.new(type) do |t|
+				extensions.each do |e|
+					t.add_extensions e
+				end
 			end
 
 			MIME::Types.add(types)
 		end
+
 
 	end
 
