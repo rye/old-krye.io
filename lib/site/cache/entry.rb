@@ -8,7 +8,7 @@ require 'tilt'
 
 module Site
 
-	class Entry
+	class Entry < Hash
 
 		attr_reader :filename
 
