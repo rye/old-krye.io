@@ -18,17 +18,12 @@ module Site
 
 		register Sinatra::AdvancedRoutes
 
-		before '/' do
-			request.path_info = '/index.html'
+		before do
 		end
 
 		# Before all requests, set the Cache Control headers.
 		before do
 			cache_control :public, :must_revalidate, :max_age => 60
-		end
-
-		get '/' do
-			redirect '/index.html'
 		end
 
 		# Runs all of the hooks necessary to prepare the server for execution.
