@@ -1,5 +1,8 @@
+<% self[:route] = '/resume.html' %>
+<% self[:aliases] = ['/resume'] %>
+<% self[:volatility] = :version %>
 <% @git_describe = `git describe --tags --dirty`.chomp %>
-
+<!-- File <%= File.basename(__FILE__) %> rendered by <%= self[:worker_id] || "worker-unknown" %> -->
 <!doctype html>
 <html>
 	<head>

@@ -23,11 +23,11 @@ module Site
 
 			error(program_name) { "#{prefix}#{exception.message}" }
 
-			exception.backtrace.each do |line|
-				debug(program_name) { "#{prefix}#{line}" }
+			exception.backtrace.respond_to?(:each) && exception.backtrace.each do |line|
+				debug(program_name) { "#{prefix}  #{line}" }
 			end
 		rescue Exception => exception
-			abort "got exception in dump_exception: #{exception.message}... agh"
+			abort "Site::Logger encountered exception in dump_exception: #{exception.message}... agh!"
 		end
 	end
 
