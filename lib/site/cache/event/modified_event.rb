@@ -4,8 +4,8 @@ module Site
 
 	class ModifiedEvent < Event
 
-		def initialize(filename)
-			super(filename)
+		def initialize(entry)
+			super(entry)
 		end
 
 	end

@@ -2,10 +2,10 @@ module Site
 
 	class Event
 
-		attr_reader :filename
+		attr_reader :entry
 
-		def initialize(filename)
-			@filename = filename
+		def initialize(entry)
+			@entry = entry
 		end
 
 	end
