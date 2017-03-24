@@ -13,6 +13,9 @@ require 'site/cache/entry'
 require 'site/cache/adapter'
 require 'site/cache/redis_adapter'
 
+require 'site/cache/worker_pool'
+require 'site/cache/worker'
+
 module Site
 
 	class Cache
@@ -29,98 +32,71 @@ module Site
 
 			@listener.start
 
-			sleep(0.1)
+			@worker_pool = WorkerPool.new
+			@worker_pool.spawn(2, Worker) do |worker, event|
+				case event
+				when ModifiedEvent, AddedEvent
+					entry = event.entry
+					entry[:worker_id] = "worker-#{worker.id}"
+
+					filename = entry.filename
+
+					tag = entry.sha1_tag
+					slug = entry.slug
+					route = entry.route
+					aliases = entry.aliases
+
+					@adapter.store(tag, slug)
+					@adapter.expire(tag, entry.ttl)
+					@application.set_routes(filename, tag, route, aliases)
+				end
+			end
+
+			sleep 0.1
 
 			@listened_directories.each do |directory|
 				warm(directory)
+
+				sleep 0.1
 			end
 		end
 
-		def dispatch(modified, added, removed)
-			modified.each do |file|
-				handle_dispatch(entry = Entry.new(file), ModifiedEvent.new(entry.filename))
+		def get(filename, tag)
+			begin
+				result = @adapter.get(tag)
+
+				raise RuntimeError, "Tag not in Redis" unless result
+
+				result
+			rescue RuntimeError => error
+				Logger.dump_exception(error)
+
+				entry = Entry.new(filename)
+				entry[:worker_id] = "worker-SPECIAL"
+
+				tag = entry.tag
+
+				@adapter.store(tag, entry.slug)
+				retry
 			end
-
-			added.each do |file|
-				handle_dispatch(entry = Entry.new(file), AddedEvent.new(entry.filename))
-			end
-
-			removed.each do |file|
-				handle_dispatch(entry = Entry.new(file), RemovedEvent.new(entry.filename))
-			end
-		end
-
-		def handle_event(event)
-			case event
-			when RemovedEvent
-				handle_delete event
-			when AddedEvent, ModifiedEvent
-				handle_modified event
-			end
-		end
-
-		def get(key)
-			@adapter.get(key)
-		end
-
-		def set_entry(entry)
-			slug = { sha: entry.encoded_contents, data: entry.contents }
-
-			@adapter.store(entry.filename, slug)
 		end
 
 		protected
 
-		def handle_delete(event)
-			begin
-				entry = Entry.new(event.filename)
-
-				if @adapter.contains?(entry.filename)
-					Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: removing from cache, route delete" end
-					t0 = Time.now
-					@adapter.delete entry.filename
-					@application.routes_delete(entry.routes)
-					t1 = Time.now
-					Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
-				else
-					Logger.warn "cache#handle_event" do "attempting to remove #{entry.relative_path_from_root} but not in cache. skip, no route delete" end
-				end
-			rescue Exception => exception
-				Logger.dump_exception exception
+		def dispatch(modified, added, removed)
+			modified.each do |filename|
+				@worker_pool.queue << ModifiedEvent.new(Entry.new(filename))
 			end
-		end
 
-		def handle_modified(event)
-			begin
-				entry = Entry.new(event.filename)
-
-				if @adapter.contains?(entry.filename)
-					slug = @adapter.get(entry.filename)
-
-					if slug["sha"] == entry.encoded_contents
-						Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: already in cache; no change" end
-					else
-						Logger.debug "cache#handle_event" do "#{entry.relative_path_from_root}: already in cache; updating" end
-						set_entry(entry)
-						Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
-					end
-				else
-					Logger.warn "cache#handle_event" do "#{entry.relative_path_from_root}: not in cache, adding" end
-					t0 = Time.now
-					set_entry(entry)
-					t1 = Time.now
-					Logger.debug "cache#handle_event" do "ok (#{t1 - t0}s)" end
-				end
-
-				@application.routes_update(entry.routes, entry.filename)
-			rescue Exception => exception
-				Logger.dump_exception exception
+			added.each do |filename|
+				@worker_pool.queue << AddedEvent.new(Entry.new(filename))
 			end
-		end
 
-		def handle_dispatch(entry, event)
-			Logger.info "cache#dispatch" do "#{event.class}: #{entry.relative_path_from_root}" end
-			handle_event event
+			removed.each do |filename|
+				@worker_pool.queue << RemovedEvent.new(Entry.new(filename))
+			end
+
+			Logger.info("Cache#dispatch") do "~#{modified.count}, +#{added.count}, -#{removed.count}" end
 		end
 
 		def warm(directory)

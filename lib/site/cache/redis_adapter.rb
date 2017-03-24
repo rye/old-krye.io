@@ -66,6 +66,10 @@ module Site
 			@redis.delete key
 		end
 
+		def expire(key, ttl)
+			@redis.expire(key, ttl)
+		end
+
 		def ping
 			@redis.ping
 		end

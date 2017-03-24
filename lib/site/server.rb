@@ -18,17 +18,15 @@ module Site
 
 		register Sinatra::AdvancedRoutes
 
-		before '/' do
-			request.path_info = '/index.html'
+		before do
+			if @@aliases[request.path_info]
+				request.path_info = @@aliases[request.path_info]
+			end
 		end
 
 		# Before all requests, set the Cache Control headers.
 		before do
 			cache_control :public, :must_revalidate, :max_age => 60
-		end
-
-		get '/' do
-			redirect '/index.html'
 		end
 
 		# Runs all of the hooks necessary to prepare the server for execution.
@@ -67,44 +65,93 @@ module Site
 			@@cache = Cache.new(env: ENV, application: self)
 
 			@@routes = {}
+			@@aliases = {}
 		end
 
-		def self.routes_update(routes, entry_filename)
+		def self.set_routes(filename, tag, route, aliases)
 			@@routes = {} if !@@routes
+			@@aliases = {} if !@@aliases
 
-			routes.each do |route|
-				if @@routes[route]
-					Logger.debug "Server.routes_update" do "already have #{route}" end
-				else
-					Logger.debug "Server.routes_update" do "adding #{route}" end
+			if existing_route = @@routes[route]
+				# Route to be updated already exists.
+				if existing_route[:tag] == tag
+					# Route to be updated is identical to new version, NOOP.
+				elsif !existing_route[:tag] != tag
+					# Route to be updated has different tag.
+					#
+					# Then, deactivate and set new tag.
+					existing_route[:route].deactivate if existing_route[:route].respond_to?(deactivate)
 
-					@@routes[route] = self.get route do
+					@@aliases.select do |key, value|
+						value == route
+					end.each do |alyas|
+						@@aliases.delete(alyas)
+					end
+
+					@@routes.delete(route)
+					@@routes[route] = {tag: tag}
+					@@routes[route][:route] = self.get(route.to_s) do
 						lambda do
-							slug = @@cache.get(entry_filename)
+							slug = @@cache.get(filename, tag)
 
-							etag slug["sha"]
+							etag slug["digest"]
 
 							content_type MIME::Types.type_for(route).first.to_s
 
 							Base64.decode64(slug["data"])
 						end.call
 					end
+
+					aliases.each do |alyas|
+						@@aliases[alyas] = route
+					end
+				end
+			else
+				# Route to be updated does not already exist.
+				@@routes[route] = {tag: tag}
+				@@routes[route][:route] = self.get(route.to_s) do
+					lambda do
+						slug = @@cache.get(filename, tag)
+
+						etag slug["digest"]
+
+						content_type MIME::Types.type_for(route).first.to_s
+
+						Base64.decode64(slug["data"])
+					end.call
+				end
+
+				aliases.each do |alyas|
+					@@aliases[alyas] = route
 				end
 			end
 		end
 
-		def self.routes_delete(routes)
+		def self.deactivate_route(route, aliases)
 			@@routes = {} if !@@routes
+			@@routes[route][:route].deactivate if @@routes[:route].respond_to?(:deactivate)
+			@@routes.delete(route)
 
-			routes.each do |route|
-				if @@routes[route]
-					Logger.debug "Server.routes_delete" do "deleting #{route}" end
-					@@routes[route].deactivate
-					@@routes.delete(route)
-				else
-					Logger.debug "Server.routes_delete" do "#{route} DNE, not deleting" end
-				end
+			aliases.select do |key, value|
+				value == route
+			end.each do |alyas|
+				@@aliases.delete(alyas)
 			end
+		end
+
+		get '/aliases.json' do
+			content_type :json
+			JSON.generate(@@aliases)
+		end
+
+		get '/routes.json' do
+			content_type :json
+
+			routes_filtered = @@routes.dup.map do |route, spec|
+				[route, spec[:tag]]
+			end.to_h
+
+			JSON.generate(routes_filtered)
 		end
 
 		# Starts the Sinatra application.
@@ -113,24 +160,17 @@ module Site
 		end
 
 		def self.register_mimes!
-			types = []
+			register_mimes_for('application/x-eruby', ['html.erb', 'rhtml', 'erb'])
+			register_mimes_for('application/x-sass', ['sass'])
+			register_mimes_for('application/x-scss', ['scss'])
+			register_mimes_for('application/x-coffee', ['coffee'])
+		end
 
-			types << MIME::Type.new('application/x-eruby') do |t|
-				t.add_extensions 'html.erb'
-				t.add_extensions 'rhtml'
-				t.add_extensions 'erb'
-			end
-
-			types << MIME::Type.new('application/x-sass') do |t|
-				t.add_extensions 'sass'
-			end
-
-			types << MIME::Type.new('application/x-scss') do |t|
-				t.add_extensions 'scss'
-			end
-
-			types << MIME::Type.new('application/x-coffee') do |t|
-				t.add_extensions 'coffee'
+		def self.register_mimes_for(type, extensions)
+			types = MIME::Type.new(type) do |mime_type|
+				extensions.each do |extension|
+					mime_type.add_extensions extension
+				end
 			end
 
 			MIME::Types.add(types)
