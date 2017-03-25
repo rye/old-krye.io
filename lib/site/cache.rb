@@ -3,8 +3,6 @@ require 'digest'
 
 require 'tilt'
 
-require 'site'
-
 require 'site/logger'
 
 require 'site/cache/event'
@@ -13,8 +11,8 @@ require 'site/cache/adapter'
 require 'site/cache/listener'
 require 'site/cache/redis_adapter'
 
-require 'site/cache/worker_pool'
 require 'site/cache/worker'
+require 'site/cache/worker_pool'
 
 module Site
 
