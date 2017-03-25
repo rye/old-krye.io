@@ -1,7 +1,6 @@
 require 'fileutils'
 require 'digest'
 
-require 'listen'
 require 'tilt'
 
 require 'site'
@@ -11,6 +10,7 @@ require 'site/logger'
 require 'site/cache/event'
 require 'site/cache/entry'
 require 'site/cache/adapter'
+require 'site/cache/listener'
 require 'site/cache/redis_adapter'
 
 require 'site/cache/worker_pool'
@@ -24,9 +24,9 @@ module Site
 			@env, @application = env, application
 
 			@adapter = RedisAdapter.new @env
-			@listened_directories = [Site::STATIC_DIRECTORY, Site::VIEWS_DIRECTORY]
 
-			@listener = Listen.to(*@listened_directories) do |modified, added, removed|
+			@listener = Listener.new(Site::STATIC_DIRECTORY, Site::VIEWS_DIRECTORY)
+			@listener.listen! do |modified, added, removed|
 				dispatch(modified, added, removed)
 			end
 
@@ -54,7 +54,8 @@ module Site
 
 			sleep 0.1
 
-			@listened_directories.each do |directory|
+			# TODO `@listener.each_directory` method
+			@listener.directories.each do |directory|
 				warm(directory)
 
 				sleep 0.1
