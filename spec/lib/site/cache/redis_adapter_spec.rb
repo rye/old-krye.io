@@ -15,6 +15,8 @@ require 'site/cache/redis_adapter'
 describe Site::RedisAdapter do
 
 	it 'is a Site::Adapter' do
+		require 'site/cache/adapter'
+
 		expect(Site::RedisAdapter).to be < Site::Adapter
 	end
 
