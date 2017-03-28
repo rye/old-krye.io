@@ -10,7 +10,7 @@ require 'site/logger'
 
 DOCKER_TAG_REGEXP = /([\w\.\/]+):?([\w\.\/]+)?/
 
-docker_flags = ENV["DOCKER_FLAGS"] || []
+docker_flags = ENV["DOCKER_FLAGS"] || ""
 tag = ARGV.grep(DOCKER_TAG_REGEXP).first
 command = ARGV - [tag]
 
