@@ -24,6 +24,7 @@ script:
 deploy:
   - provider: script
     script:
+      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
       - script/docker-build $DOCKER_IMAGE:HEAD
       - script/docker-deploy $DOCKER_IMAGE:HEAD
     on:
@@ -32,6 +33,7 @@ deploy:
 
   - provider: script
     script:
+      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
       - script/docker-build $DOCKER_IMAGE:$TRAVIS_TAG
       - script/docker-deploy $DOCKER_IMAGE:$TRAVIS_TAG
     on:
