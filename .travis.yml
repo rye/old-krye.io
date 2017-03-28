@@ -10,7 +10,7 @@ services:
   - docker
 
 install:
-  - script/bootstrap
+  - script/bootstrap no-update
 
 script:
   - bundle exec rake spec

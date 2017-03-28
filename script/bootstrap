@@ -12,9 +12,11 @@ Site::Logger.info "Starting bootstrapping process..."
 
 Site::Logger.info "Running `script/update`"
 
-# Run `script/update` to make sure everything is up-to-date.
-Runner.run("script/update") do |output_line|
-	Site::Logger.debug output_line.chomp
+unless ARGV.include('no-update')
+	# Run `script/update` to make sure everything is up-to-date.
+	Runner.run("script/update") do |output_line|
+		Site::Logger.debug output_line.chomp
+	end
 end
 
 Site::Logger.info "Running `bundle install`"
