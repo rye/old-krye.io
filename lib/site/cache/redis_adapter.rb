@@ -2,6 +2,8 @@ require 'redis'
 
 require 'site/logger'
 
+require 'site/cache/adapter'
+
 module Site
 
 	class RedisAdapter < Adapter
@@ -18,14 +20,12 @@ module Site
 			redis_opts[:port] = redis_port if redis_port
 			redis_opts[:password] = redis_password if redis_password
 
-			redis_opts.tap do |hash|
-				filter_keys = [:password]
+			redis_opts.tap do |opts|
+				filtered_opts = [:password]
 
-				printable_opts = hash.map do |key, value|
-					filter_keys.include?(key) ? [key, "[FILTERED]"] : [key, value]
-				end.to_h
+				printable_opts = replace_values(opts, filtered_opts, "[FILTERED]")
 
-				Logger.info "cache" do
+				Logger.info "redis_adapter" do
 					"Connecting to Redis with opts #{printable_opts}"
 				end
 			end
@@ -33,11 +33,16 @@ module Site
 			@redis = Redis.new redis_opts
 
 			begin
-				result = @redis.ping
-				Logger.info "Redis responded to PING, ready to roll..."
+				ping
+
+				Logger.info "redis_adapter" do
+					"Redis PONG-ed, ready to roll..."
+				end
 			rescue Exception => e
 				Logger.dump_exception e
-				Logger.warn "Closing on exception in DB connection."
+				Logger.warn "redis_adapter" do
+					"Aborting startup due to exception in connection to Redis."
+				end
 
 				exit 1
 			end
@@ -59,6 +64,26 @@ module Site
 
 		def delete(key)
 			@redis.delete key
+		end
+
+		def expire(key, ttl)
+			@redis.expire(key, ttl)
+		end
+
+		def ping
+			@redis.ping
+		end
+
+		protected
+
+		# Replaces values in `hash` corresponding to any of the
+		# `filtered_keys` with `new_value`.
+		#
+		# Useful for situations like filtering plaintext passwords.
+		def replace_values(hash, filtered_keys = [], new_value = nil)
+			hash.map do |key, value|
+				(filtered_keys.include?(key) && new_value) ? [key, new_value] : [key, value]
+			end.to_h
 		end
 
 	end

@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), 'lib')))
+$LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
+
+# Require the entire `script` lib tree.
+require 'script'
+
+require 'site/logger'
+
+Site::Logger.info "Starting update process..."
+
+Site::Logger.info "Running `git fetch`"
+
+Runner.run("git", "fetch") do |output_line|
+	Site::Logger.debug output_line.chomp
+end
+
+Site::Logger.info "Running `git merge`"
+Site::Logger.debug "Note: This will fail if you happen to not have your MERGE_HEAD set on your current branch."
+
+Runner.run("git", "merge") do |output_line|
+	Site::Logger.debug output_line.chomp
+end
+
+Site::Logger.info "Running `bundle`"
+
+Runner.run("bundle") do |output_line|
+	Site::Logger.debug output_line.chomp
+end
+
+Site::Logger.info "Running `bundle exec rspec`"
+
+begin
+	Runner.run("bundle", "exec rspec") do |output_line|
+		Site::Logger.debug output_line.chomp
+	end
+
+rescue Exception => error
+	Site::Logger.dump_exception error
+end
