@@ -8,8 +8,6 @@ require 'script'
 
 require 'site/logger'
 
-Site::Logger.level = :debug
-
 Site::Logger.info "Running test suite..."
 
 Site::Logger.info "Running `bundle exec rake spec`"
