@@ -1,8 +1,37 @@
+sudo: false
 language: ruby
+
 rvm:
-  - 2.4.0
+  - 2.4.1
   - 2.3.3
-  - 2.3.2
+  - 2.2.7
 
+services:
+  - docker
 
-script: bundle exec rake spec
+install:
+  - script/bootstrap
+
+script:
+  - bundle exec rake spec
+  - script/build kryestofer/krye.io:$TRAVIS_COMMIT
+  - script/docker-exec kryestofer/krye.io:$TRAVIS_COMMIT script/self-check
+
+deploy:
+  - provider: script
+    script:
+      - script/build kryestofer/krye.io:HEAD
+      - script/deploy kryestofer/krye.io:HEAD
+    on:
+      rvm:
+        - 2.4.1
+      branch: master
+
+  - provider: script
+    script:
+      - script/build kryestofer/krye.io:$TRAVIS_TAG
+      - script/deploy kryestofer/krye.io:$TRAVIS_TAG
+    on:
+      rvm:
+        - 2.4.1
+      tags: true
