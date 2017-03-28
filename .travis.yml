@@ -11,12 +11,14 @@ services:
   - docker
 
 install:
+  - script/bootstrap no-update
   - script/docker-build $DOCKER_IMAGE:$TRAVIS_COMMIT
 
 env:
   - DOCKER_IMAGE=kryestofer/krye.io
 
 script:
+  - script/test
   - script/docker-exec $DOCKER_IMAGE:$TRAVIS_COMMIT script/test
 
 deploy:
