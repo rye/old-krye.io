@@ -27,8 +27,7 @@ deploy:
       - script/docker-build $DOCKER_IMAGE:HEAD
       - script/docker-deploy $DOCKER_IMAGE:HEAD
     on:
-      rvm:
-        - 2.4.1
+      ruby: 2.4.1
       branch: master
 
   - provider: script
@@ -36,6 +35,5 @@ deploy:
       - script/docker-build $DOCKER_IMAGE:$TRAVIS_TAG
       - script/docker-deploy $DOCKER_IMAGE:$TRAVIS_TAG
     on:
-      rvm:
-        - 2.4.1
+      ruby: 2.4.1
       tags: true
