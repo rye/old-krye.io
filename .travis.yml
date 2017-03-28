@@ -18,14 +18,14 @@ env:
 
 script:
   - bundle exec rake spec
-  - script/build kryestofer/krye.io:$TRAVIS_COMMIT
-  - script/docker-exec kryestofer/krye.io:$TRAVIS_COMMIT script/self-check
+  - script/build $DOCKER_IMAGE:$TRAVIS_COMMIT
+  - script/docker-exec $DOCKER_IMAGE:$TRAVIS_COMMIT script/self-check
 
 deploy:
   - provider: script
     script:
-      - script/build kryestofer/krye.io:HEAD
-      - script/deploy kryestofer/krye.io:HEAD
+      - script/build $DOCKER_IMAGE:HEAD
+      - script/deploy $DOCKER_IMAGE:HEAD
     on:
       rvm:
         - 2.4.1
@@ -33,8 +33,8 @@ deploy:
 
   - provider: script
     script:
-      - script/build kryestofer/krye.io:$TRAVIS_TAG
-      - script/deploy kryestofer/krye.io:$TRAVIS_TAG
+      - script/build $DOCKER_IMAGE:$TRAVIS_TAG
+      - script/deploy $DOCKER_IMAGE:$TRAVIS_TAG
     on:
       rvm:
         - 2.4.1
