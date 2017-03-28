@@ -47,5 +47,5 @@ deploy:
       - script/docker-deploy $DOCKER_IMAGE:latest
     on:
       ruby: 2.4.1
-      condition: `script/github-latest-release` == "$TRAVIS_TAG"
+      condition: $(script/github-latest-release) == $TRAVIS_TAG
       tags: true
