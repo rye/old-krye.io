@@ -13,6 +13,9 @@ services:
 install:
   - script/bootstrap no-update
 
+env:
+  - DOCKER_IMAGE=kryestofer/krye.io
+
 script:
   - bundle exec rake spec
   - script/build kryestofer/krye.io:$TRAVIS_COMMIT
