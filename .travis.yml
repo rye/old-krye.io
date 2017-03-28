@@ -17,7 +17,6 @@ env:
   - DOCKER_IMAGE=kryestofer/krye.io
 
 script:
-  - bundle exec rake spec
   - script/docker-build $DOCKER_IMAGE:$TRAVIS_COMMIT
   - script/docker-exec $DOCKER_IMAGE:$TRAVIS_COMMIT script/test
 
