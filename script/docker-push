@@ -8,17 +8,17 @@ require 'script'
 
 require 'site/logger'
 
-Site::Logger.info "Starting build process..."
+Site::Logger.info "Starting Docker push process..."
 
 DOCKER_TAG_REGEXP = /([\w\.\/]+):?([\w\.\/]+)?/
 
 files = `git ls-files`.split("\n")
 tags = ARGV.grep(DOCKER_TAG_REGEXP)
 
-Site::Logger.info "Bulding #{tags.count} tags..."
+Site::Logger.info "Pushing #{tags.count} tags..."
 
 tags.each_with_index do |tag, tag_index|
-	command = ["docker", "build", "-t", "#{tag}", "."]
+	command = ["docker", "push", "#{tag}"]
 
 	Site::Logger.info "(Tag #{tag_index + 1}/#{tags.count}) Running `#{command.join(' ')}`"
 

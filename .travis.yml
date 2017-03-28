@@ -1,8 +1,51 @@
+sudo: false
 language: ruby
+
 rvm:
+  - 2.4.1
   - 2.4.0
   - 2.3.3
-  - 2.3.2
+  - ruby-head
 
+services:
+  - docker
 
-script: bundle exec rake spec
+install:
+  - script/bootstrap no-update
+  - script/docker-build $DOCKER_IMAGE:$TRAVIS_COMMIT
+
+env:
+  - DOCKER_IMAGE=kryestofer/krye.io
+
+script:
+  - script/test
+  - script/docker-exec $DOCKER_IMAGE:$TRAVIS_COMMIT script/test
+
+deploy:
+  - provider: script
+    script:
+      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - script/docker-build $DOCKER_IMAGE:HEAD
+      - script/docker-deploy $DOCKER_IMAGE:HEAD
+    on:
+      ruby: 2.4.1
+      branch: master
+
+  - provider: script
+    script:
+      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - script/docker-build $DOCKER_IMAGE:$TRAVIS_TAG
+      - script/docker-deploy $DOCKER_IMAGE:$TRAVIS_TAG
+    on:
+      ruby: 2.4.1
+      tags: true
+
+  - provider: script
+    script:
+      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - script/docker-build $DOCKER_IMAGE:latest
+      - script/docker-deploy $DOCKER_IMAGE:latest
+    on:
+      ruby: 2.4.1
+      condition: $(script/github-latest-release) == $TRAVIS_TAG
+      tags: true
