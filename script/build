@@ -1,1 +1,28 @@
 #!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), 'lib')))
+$LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
+
+# Require the entire `script` lib tree.
+require 'script'
+
+require 'site/logger'
+
+Site::Logger.info "Starting build process..."
+
+DOCKER_TAG_REGEXP = /([\w\.\/]+):?([\w\.\/]+)?/
+
+files = `git ls-files`.split("\n")
+tags = ARGV.grep(DOCKER_TAG_REGEXP)
+
+Site::Logger.info "Bulding #{tags.count} tags..."
+
+tags.each_with_index do |tag, tag_index|
+	command = ["docker", "build", "-t", "#{tag}", "."]
+
+	Site::Logger.info "(Tag #{tag_index + 1}/#{tags.count}) Running `#{command.join(' ')}`"
+
+	Runner.run(command) do |output_line|
+		Site::Logger.debug output_line.chomp
+	end
+end
