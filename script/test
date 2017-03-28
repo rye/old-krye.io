@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), 'lib')))
+$LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
+
+# Require the entire `script` lib tree.
+require 'script'
+
+require 'site/logger'
+
+Site::Logger.level = :debug
+
+Site::Logger.info "Running test suite..."
+
+Site::Logger.info "Running `bundle exec rake spec`"
+
+command = ["bundle", "exec", "rake", "spec"]
+
+Runner.run(command) do |output_line|
+	Site::Logger.debug output_line.chomp
+end
