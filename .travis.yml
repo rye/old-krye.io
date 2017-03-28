@@ -39,3 +39,13 @@ deploy:
     on:
       ruby: 2.4.1
       tags: true
+
+  - provider: script
+    script:
+      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - script/docker-build $DOCKER_IMAGE:latest
+      - script/docker-deploy $DOCKER_IMAGE:latest
+    on:
+      ruby: 2.4.1
+      tags: true
+      condition: "$(script/github-latest-release)" == "$TRAVIS_TAG"
