@@ -23,19 +23,19 @@ script:
 
 deploy:
   - provider: script
-    script: script/docker-build-and-deploy $DOCKER_IMAGE:HEAD
+    script: script/docker-deploy $DOCKER_IMAGE:$TRAVIS_COMMIT $DOCKER_IMAGE:HEAD
     on:
       ruby: 2.4.1
       branch: master
 
   - provider: script
-    script: script/docker-build-and-deploy $DOCKER_IMAGE:$TRAVIS_TAG
+    script: script/docker-deploy $DOCKER_IMAGE:$TRAVIS_COMMIT $DOCKER_IMAGE:$TRAVIS_TAG
     on:
       ruby: 2.4.1
       tags: true
 
   - provider: script
-    script: script/docker-build-and-deploy $DOCKER_IMAGE:latest
+    script: script/docker-deploy $DOCKER_IMAGE:$TRAVIS_COMMIT $DOCKER_IMAGE:$TRAVIS_TAG $DOCKER_IMAGE:latest
     on:
       ruby: 2.4.1
       condition: $(script/github-latest-release) == $TRAVIS_TAG
