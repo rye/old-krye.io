@@ -10,8 +10,10 @@ rvm:
 services:
   - docker
 
+cache: bundler
+
 install:
-  - script/bootstrap no-update
+  - BUNDLE_PATH=vendor/bundle script/bootstrap no-update
   - script/docker-build $DOCKER_IMAGE:$TRAVIS_COMMIT
 
 env:
