@@ -170,11 +170,11 @@ module Site
 		def default_ttl
 			case volatility
 			when :version
-				1
+				604800
 			when :contents
-				1
+				86400
 			when :instance
-				1 # seconds
+				60 # seconds
 			else
 				1 # seconds
 			end
