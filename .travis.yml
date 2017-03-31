@@ -23,19 +23,13 @@ script:
 
 deploy:
   - provider: script
-    script:
-      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-      - script/docker-build $DOCKER_IMAGE:HEAD
-      - script/docker-deploy $DOCKER_IMAGE:HEAD
+    script: script/docker-build-and-deploy $DOCKER_IMAGE:HEAD
     on:
       ruby: 2.4.1
       branch: master
 
   - provider: script
-    script:
-      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-      - script/docker-build $DOCKER_IMAGE:$TRAVIS_TAG
-      - script/docker-deploy $DOCKER_IMAGE:$TRAVIS_TAG
+    script: script/docker-build-and-deploy $DOCKER_IMAGE:$TRAVIS_TAG
     on:
       ruby: 2.4.1
       tags: true
