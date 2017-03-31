@@ -33,3 +33,10 @@ deploy:
     on:
       ruby: 2.4.1
       tags: true
+
+  - provider: script
+    script: script/docker-build-and-deploy $DOCKER_IMAGE:latest
+    on:
+      ruby: 2.4.1
+      condition: $(script/github-latest-release) == $TRAVIS_TAG
+      tags: true
