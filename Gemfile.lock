@@ -13,7 +13,7 @@ GEM
     execjs (2.7.0)
     ffi (1.9.18)
     formatador (0.2.5)
-    github-markup (1.4.4)
+    github-markup (1.6.0)
     guard (2.14.1)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -88,22 +88,22 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  coffee-script
-  colorize
-  github-markup
-  guard
-  guard-rspec
-  listen
-  mime-types
-  pry
-  rake
+  coffee-script (~> 2.4)
+  colorize (~> 0.8)
+  github-markup (~> 1.6)
+  guard (~> 2.14)
+  guard-rspec (~> 4.7)
+  listen (~> 3.1)
+  mime-types (~> 3.1)
+  pry (~> 0.10)
+  rake (~> 12.0)
   redis (~> 3.2)
-  rspec
-  sass
-  scientist
-  sinatra
-  sinatra-advanced-routes
-  thin
+  rspec (~> 3.5)
+  sass (~> 3.4)
+  scientist (~> 1.0)
+  sinatra (~> 1.4)
+  sinatra-advanced-routes (~> 0.5)
+  thin (~> 1.7)
 
 BUNDLED WITH
    1.14.6
