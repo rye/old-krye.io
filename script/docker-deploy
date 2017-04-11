@@ -8,6 +8,15 @@ require 'script'
 
 require 'site/logger'
 
+Site::Logger.info "Verifying credentials..."
+
+raise RuntimeError, "DOCKER_USERNAME not set!" unless ENV['DOCKER_USERNAME']
+raise RuntimeError, "DOCKER_PASSWORD not set!" unless ENV['DOCKER_PASSWORD']
+
+`docker login -u="#{ENV['DOCKER_USERNAME']}" -p="#{ENV['DOCKER_PASSWORD']}"`
+
+raise RuntimeError, "Docker login failed!" unless $? == 0
+
 Site::Logger.info "Starting Docker push process..."
 
 DOCKER_TAG_REGEXP = /([\w\.\/]+):?([\w\.\/]+)?/
