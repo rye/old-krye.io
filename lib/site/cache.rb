@@ -60,6 +60,8 @@ module Site
 			end
 		end
 
+		# TODO Use a thread for storing stuff instead of doing this in
+		# request-time.
 		def get(filename, tag)
 			begin
 				result = @adapter.get(tag)
