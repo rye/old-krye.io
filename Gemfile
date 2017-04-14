@@ -35,4 +35,8 @@ group :development do
 
 	# Rollout dependencies
 	gem 'scientist', '~> 1.0'
+
+	# Code Climate coverage reporting
+	gem 'simplecov', '~> 0.13'
+	gem 'codeclimate-test-reporter', '~> 1.0'
 end
