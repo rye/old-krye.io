@@ -76,7 +76,7 @@ module Site
 		end
 
 		def sha1_tag
-			Digest::SHA1.base64digest(tag)
+			Entry.digest(tag)
 		end
 
 		def digest
