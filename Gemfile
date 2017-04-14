@@ -13,8 +13,7 @@ gem 'sass', '~> 3.4'
 gem 'coffee-script', '~> 2.4'
 gem 'github-markup', '~> 1.6'
 
-# Internal dependencies related
-# to the file system
+# Internal dependencies related to the file system
 gem 'listen', '~> 3.1'
 gem 'mime-types', '~> 3.1'
 
@@ -22,9 +21,8 @@ gem 'mime-types', '~> 3.1'
 gem 'colorize', '~> 0.8'
 
 group :development do
-	# We should always have Rake available,
-	# but explicitly specify dependency
-	# just in case.
+	# We should always have Rake available, but explicitly specify
+	# dependency just in case.
 	gem 'rake', '~> 12.0'
 
 	# Spec-related dependencies
