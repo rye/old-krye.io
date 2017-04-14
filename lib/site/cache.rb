@@ -23,7 +23,7 @@ module Site
 
 			@adapter = RedisAdapter.new @env
 
-			@listener = Listener.new(Site::STATIC_DIRECTORY, Site::VIEWS_DIRECTORY)
+			@listener = Listener.new(Site.static_directory, Site.views_directory)
 			@listener.listen! do |modified, added, removed|
 				dispatch(modified, added, removed)
 			end

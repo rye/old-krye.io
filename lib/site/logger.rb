@@ -16,7 +16,7 @@ module Site
 			filename, line, rest = caller[0].split(':')
 
 			file_pathname = Pathname.new(filename)
-			basename = file_pathname.relative_path_from(Pathname.new(Site::ROOT_DIRECTORY))
+			basename = file_pathname.relative_path_from(Pathname.new(Site.root_directory))
 
 			program_name = "#{basename}:#{line}"
 			prefix = "#{rest}: "

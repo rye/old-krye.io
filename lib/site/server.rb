@@ -48,9 +48,9 @@ module Site
 			self.register_mimes!
 
 			# Set some settings so that Sinatra can find our static files.
-			set :root, Site::ROOT_DIRECTORY
-			set :public_folder, Site::STATIC_DIRECTORY
-			set :views, Site::VIEWS_DIRECTORY
+			set :root, Site.root_directory
+			set :public_folder, Site.static_directory
+			set :views, Site.views_directory
 
 			# Don't show exceptions. (This could get ugly and bad in production)
 			set :show_exceptions, false
