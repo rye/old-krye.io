@@ -1,7 +1,7 @@
 <% self[:route] = '/resume.html' %>
 <% self[:aliases] = ['/resume'] %>
 <% self[:volatility] = :version %>
-<% @git_describe = `git describe --tags --dirty`.chomp %>
+<% @git_describe = Site.git_version_string %>
 <!-- File <%= File.basename(__FILE__) %> rendered by <%= self[:worker_id] || "worker-unknown" %> -->
 <!doctype html>
 <html>
@@ -10,8 +10,6 @@
 		<link rel="stylesheet" href="css/roboto.css" />
 		<link rel="stylesheet" href="css/global.css" />
 		<link rel="stylesheet" href="css/resume.css" />
-		<link rel="stylesheet" href="css/resume-body.css" />
-		<link rel="stylesheet" href="css/resume-header.css" />
 		<link rel="stylesheet" href="css/resume-print.css" />
 
 		<!-- Load the CMU Serif font -->
@@ -37,7 +35,7 @@
 					</div>
 
 					<div class="tagline">
-						CS Student, Ruby/JS developer
+						Student <span class="small">of</span> Computer Science, Mathematics <span class="small">at</span> St. Olaf College
 					</div>
 				</div>
 			</div>
@@ -54,6 +52,14 @@
 
 							<span class="email">
 								<a href="mailto:kristofer.rye@gmail.com">kristofer.rye@gmail.com</a>
+							</span>
+						</div>
+
+						<div class="phone">
+							<span class="label">phone</span>
+
+							<span class="phone">
+								<a href="tel:+17654040640">+1 (765) 404-0640</a>
 							</span>
 						</div>
 
@@ -126,7 +132,7 @@
 						<div class="resume-item">
 							<div class="header">
 								<div class="title">St. Olaf College</div>
-								<div class="date">Sep. 2016 - 2020</div>
+								<div class="date">Sep. 2016 - May 2020</div>
 							</div>
 
 							<div class="description">
@@ -229,7 +235,7 @@
 			</div>
 		</div>
 
-		<p class="sha1-marker">(<%= @git_describe %>)</p>
+		<p class="sha1-marker">(<%= @git_describe %>, rendered <%= Time.now.strftime "%Y-%m-%d %H:%M:%S"%>)</p>
 
 		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-77379897-1','auto');ga('set','appVersion','<%= @git_describe %>');ga('send','pageview');</script>
 	</body>

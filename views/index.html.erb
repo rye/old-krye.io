@@ -1,7 +1,7 @@
 <% self[:route] = '/index.html' %>
 <% self[:aliases] = ['/'] %>
 <% self[:volatility] = :instance %>
-<% @git_describe = `git describe --tags --dirty`.chomp %>
+<% @git_describe = Site.git_version_string %>
 <!-- File <%= File.basename(__FILE__) %> rendered by <%= self[:worker_id] || "worker-unknown" %> -->
 <!doctype html>
 <html>

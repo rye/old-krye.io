@@ -27,6 +27,192 @@ body {
 	}
 }
 
+.resume-container {
+	.body-container {
+		flex: 8 0 auto;
+		display: flex;
+		flex-direction: row;
+		font-family: 'Roboto', sans-serif;
+
+		> * {
+			font-size: 12pt;
+			padding: 0.85em;
+
+			border-right: 1pt solid #000;
+		}
+
+		> *:last-child {
+			border-right: none;
+		}
+
+		> .pane {
+			display: flex;
+			flex-direction: column;
+
+			> .container:not(:first-child) {
+				padding-top: 16pt;
+			}
+
+			> .container {
+				a {
+					text-decoration: none;
+					color: initial;
+				}
+
+				flex: 0 1 auto;
+
+				display: flex;
+				flex-direction: column;
+
+				> .header {
+					font-size: 16pt;
+					font-weight: bold;
+					text-align: center;
+					text-transform: uppercase;
+
+					padding: 0.125em;
+					border-bottom: 2pt solid #000;
+				}
+
+				.resume-item {
+					font-size: 12pt;
+
+					border-bottom: none;
+
+					div.header {
+						display: block;
+
+						div.title {
+							font-size: 13pt;
+							float: left;
+							font-weight: bold;
+						}
+
+						div.date {
+							font-size: 11pt;
+							float: right;
+							font-weight: 500;
+						}
+
+						div.position {
+							clear: both;
+							font-size: 10pt;
+							float: left;
+							margin-left: 2em;
+							font-style: italic;
+							line-height: 110%;
+						}
+					}
+
+					div.description {
+						font-size: 10pt;
+						display: block;
+						clear: both;
+
+						font-weight: 300;
+						line-height: 130%;
+						padding: 4pt;
+					}
+				}
+
+				> * {
+					border-bottom: 1pt solid #000;
+
+					padding: 3pt 2pt 2pt 2pt;
+
+					line-height: 150%;
+					font-weight: 300;
+					font-size: 11pt;
+
+					span.label {
+						font-size: 12pt;
+						font-weight: 400;
+						text-transform: uppercase;
+
+						padding: 1pt 3pt 1pt 3pt;
+					}
+				}
+
+				> *:last-child {
+					border-bottom: none;
+				}
+			}
+		}
+
+		> .pane.minor {
+			flex: 1 1 auto;
+
+			> .container {
+			}
+
+			> .container {
+				> div {
+					> span:not(.label):after {
+						content: ", ";
+					}
+
+					> span:not(.label):last-child:after {
+						content: none;
+					}
+				}
+			}
+
+		}
+
+		> .pane.major {
+			flex: 1 1 auto;
+		}
+	}
+}
+
+.resume-container {
+	span.small {
+		font-size: 85%;
+	}
+
+	.header-container {
+		flex: 1 0 auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+
+		.header {
+			flex: 0 1 auto;
+
+			font-size: 12pt;
+			border: 2pt solid #000;
+			padding: 1.5em;
+
+			> * {
+				border-bottom: 1pt solid #333;
+			}
+
+			> *:last-child {
+				border-bottom: none;
+			}
+
+			> .name {
+				font-size: 32pt;
+				text-align: center;
+				font-weight: bold;
+
+				padding-top: 0pt;
+				padding-bottom: 0pt;
+			}
+
+			> .tagline {
+				font-size: 18pt;
+				text-align: center; // obsolete because flexbox is adjusted to this width
+				padding-top: 2pt;
+				padding-bottom: 0;
+				font-variant: small-caps;
+
+			}
+		}
+	}
+}
+
 @media screen and (max-width: 500pt) {
 	.resume-container {
 		margin: 1em 0% 1em 0%;
