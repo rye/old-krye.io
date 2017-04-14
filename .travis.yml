@@ -20,7 +20,7 @@ env:
   - DOCKER_IMAGE=kryestofer/krye.io
 
 script:
-  - BUNDLE_PATH=vendor/bundle script/test
+  - BUNDLE_PATH=vendor/bundle bundle exec rake ci
   - script/docker-exec $DOCKER_IMAGE:$TRAVIS_COMMIT script/test
 
 deploy:
