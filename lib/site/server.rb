@@ -80,7 +80,7 @@ module Site
 					# Route to be updated has different tag.
 					#
 					# Then, deactivate and set new tag.
-					existing_route[:route].deactivate if existing_route[:route].respond_to?(deactivate)
+					existing_route[:route].deactivate if existing_route[:route].respond_to?(:deactivate)
 
 					@@aliases.select do |key, value|
 						value == route
