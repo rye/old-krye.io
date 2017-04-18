@@ -222,9 +222,6 @@ body {
 	}
 
 
-	span.small {
-		font-size: 85%;
-	}
 }
 
 .categorized {
@@ -304,6 +301,10 @@ div.gpa:after {
 }
 
 div.gpa {
+}
+
+.small {
+	font-size: 85%;
 }
 
 @media screen and (max-width: 500pt) {
