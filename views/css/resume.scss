@@ -301,6 +301,10 @@ div.description .categorized:not(:last-child) {
 	margin-bottom: 0.65em;
 }
 
+div.description > div.caveat {
+	text-align: center;
+	font-size: 85%;
+}
 
 div.gpa:before {
 	font-weight: 500;
