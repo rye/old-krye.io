@@ -293,6 +293,10 @@ div.description .categorized > .category-item {
 	margin-left: 1em;
 }
 
+.category-item.loose {
+	line-height: 150%;
+}
+
 div.description .categorized:not(:last-child) {
 	margin-bottom: 0.65em;
 }
