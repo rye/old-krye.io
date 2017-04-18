@@ -127,11 +127,12 @@ body {
 				}
 
 				div.location:before {
+					font-size: 13pt;
 					content: ", ";
 				}
 
 				div.location {
-					font-size: 13pt;
+					font-size: 8pt;
 					float: left;
 					font-style: italic;
 					font-weight: 100;
