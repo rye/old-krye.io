@@ -69,7 +69,7 @@ module Site
 				raise "Tag not in Redis" unless result
 
 				result
-			rescue Exception => error
+			rescue StandardError => error
 				Logger.dump_exception(error)
 
 				entry = Entry.new(filename)
