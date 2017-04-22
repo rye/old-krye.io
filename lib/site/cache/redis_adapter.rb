@@ -38,7 +38,7 @@ module Site
 				Logger.info "redis_adapter" do
 					"Redis PONG-ed, ready to roll..."
 				end
-			rescue Exception => e
+			rescue Redis::BaseConnectionError => e
 				Logger.dump_exception e
 				Logger.warn "redis_adapter" do
 					"Aborting startup due to exception in connection to Redis."
