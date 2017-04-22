@@ -25,7 +25,7 @@ module Site
 
 				printable_opts = replace_values(opts, filtered_opts, "[FILTERED]")
 
-				Logger.info "redis_adapter" do
+				Logger.info "RedisAdapter#initialize" do
 					"Connecting to Redis with opts #{printable_opts}"
 				end
 			end
@@ -35,12 +35,12 @@ module Site
 			begin
 				ping
 
-				Logger.info "redis_adapter" do
+				Logger.info "RedisAdapter#initialize" do
 					"Redis PONG-ed, ready to roll..."
 				end
-			rescue Exception => e
+			rescue Redis::BaseConnectionError => e
 				Logger.dump_exception e
-				Logger.warn "redis_adapter" do
+				Logger.warn "RedisAdapter#initialize" do
 					"Aborting startup due to exception in connection to Redis."
 				end
 
