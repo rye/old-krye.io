@@ -14,6 +14,7 @@ module Site
 		def initialize(pool, id)
 			@pool, @id = pool, id
 			@thread = nil
+
 			Logger.debug("worker-#{id}") do "Initialized!" end
 		end
 
