@@ -66,10 +66,10 @@ module Site
 			begin
 				result = @adapter.get(tag)
 
-				raise RuntimeError, "Tag not in Redis" unless result
+				raise "Tag not in Redis" unless result
 
 				result
-			rescue RuntimeError => error
+			rescue Exception => error
 				Logger.dump_exception(error)
 
 				entry = Entry.new(filename)
