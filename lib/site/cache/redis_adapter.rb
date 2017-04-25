@@ -32,24 +32,39 @@ module Site
 
 			@redis = Redis.new redis_opts
 
-			begin
+			with_connection_guard(max_tries: 16) do
 				ping
 
-				Logger.info "RedisAdapter#initialize" do
-					"Redis PONG-ed, ready to roll..."
-				end
+				Logger.info "RedisAdapter#initialize" do "Redis PONG-ed, ready to roll..." end
+			end
+		end
+
+		def with_connection_guard(*args, max_tries: 8, interval: 1.0, &block)
+			try_count = 0
+
+			begin
+				try_count += 1
+
+				return block.call(*args)
 			rescue Redis::BaseConnectionError => e
 				Logger.dump_exception e
-				Logger.warn "RedisAdapter#initialize" do
-					"Aborting startup due to exception in connection to Redis."
-				end
+				if try_count < max_tries
+					Logger.warn "RedisAdapter#with_connection_guard" do "Sleeping 1s and trying again..." end
 
-				exit 1
+					sleep 1.0
+
+					retry
+				else
+					Logger.fatal "RedisAdapter#with_connection_guard" do "Number of failed tries (#{try_count}) meets or exceeds the maximum number of tries (#{max_tries})... aborting." end
+
+					exit 1
+				end
 			end
 		end
 
 		def store(key, object)
 			data = JSON.generate(object)
+
 			@redis.set key, data
 		end
 
@@ -59,6 +74,7 @@ module Site
 
 		def get(key)
 			data = @redis.get key
+
 			JSON.parse(data) if data
 		end
 
