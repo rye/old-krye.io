@@ -39,7 +39,7 @@ module Site
 			end
 		end
 
-		def with_connection_guard(*args, max_tries: 8, exit_status_on_fail: nil, interval: 1.0, &block)
+		def with_connection_guard(*args, max_tries: 8, exit_status_on_fail: nil, sleep_period: 1.0, &block)
 			try_count = 0
 
 			begin
