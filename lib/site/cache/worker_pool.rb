@@ -21,6 +21,18 @@ module Site
 			end
 		end
 
+		def worker_threads
+			@pool.map do |worker|
+				worker.thread || nil
+			end
+		end
+
+		def statuses
+			worker_threads.map do |worker_thread|
+				worker_thread.status
+			end
+		end
+
 	end
 
 end
