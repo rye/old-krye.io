@@ -32,7 +32,7 @@ module Site
 
 			@redis = Redis.new redis_opts
 
-			with_connection_guard(max_tries: 16) do
+			with_connection_guard(max_tries: 16, exit_status_on_fail: 1) do
 				ping
 
 				Logger.info "RedisAdapter#initialize" do "Redis PONG-ed, ready to roll..." end
