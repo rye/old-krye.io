@@ -12,20 +12,6 @@ module Site
 
 		attr_reader :filename
 
-		@@git_describe ||= `git describe --tags --dirty`.chomp
-
-		def self.root_directory
-			Site::ROOT_DIRECTORY
-		end
-
-		def self.views_directory
-			Site::VIEWS_DIRECTORY
-		end
-
-		def self.static_directory
-			Site::STATIC_DIRECTORY
-		end
-
 		def self.encode(data)
 			Base64.encode64(data)
 		end
@@ -45,9 +31,9 @@ module Site
 		def tag(volatility = self.volatility)
 			case volatility
 			when :version
-				"#{relative_path}-#{@@git_describe}"
+				"#{relative_path}-#{Site.git_version_string}"
 			when :instance
-				"#{relative_path}-#{Process.pid}-#{@@git_describe}"
+				"#{relative_path}-#{Process.pid}-#{Site.git_version_string}"
 			when :contents
 				"#{relative_path}-#{digest}"
 			else
@@ -92,7 +78,7 @@ module Site
 		end
 
 		def relative_path
-			relative_path_from(Entry.root_directory)
+			relative_path_from(Site.root_directory)
 		end
 
 		def relative_path_from_parent(file = @filename, parent = self.parent)
@@ -183,9 +169,9 @@ module Site
 		def parent(file = @filename)
 			case type(file)
 			when :static
-				Entry.static_directory
+				Site.static_directory
 			when :view
-				Entry.views_directory
+				Site.views_directory
 			end
 		end
 
@@ -195,11 +181,11 @@ module Site
 		end
 
 		def static?(file = @filename)
-			!(relative_path_between(Entry.static_directory, file).to_s =~ /^\.\.\//)
+			!(relative_path_between(Site.static_directory, file).to_s =~ /^\.\.\//)
 		end
 
 		def view?(file = @filename)
-			!(relative_path_between(Entry.views_directory, file).to_s =~ /^\.\.\//)
+			!(relative_path_between(Site.views_directory, file).to_s =~ /^\.\.\//)
 		end
 
 		def dirname(file = @filename)

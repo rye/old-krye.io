@@ -34,7 +34,7 @@ module Site
 						t0 = Time.now
 
 						print_mutex.synchronize do
-							Logger.info("worker-#{id}") do "Handling event for #{event.entry.relative_path_from(Entry.root_directory)}." end
+							Logger.info("worker-#{id}") do "Handling event for #{event.entry.relative_path_from(Site.root_directory)}." end
 						end
 
 						block.call(self, event)

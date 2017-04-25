@@ -1,7 +1,7 @@
 <% self[:route] = '/resume.html' %>
 <% self[:aliases] = ['/resume'] %>
-<% self[:volatility] = :version %>
-<% @git_describe = `git describe --tags --dirty`.chomp %>
+<% self[:volatility] = :contents %>
+<% @git_describe = Site.git_version_string %>
 <!-- File <%= File.basename(__FILE__) %> rendered by <%= self[:worker_id] || "worker-unknown" %> -->
 <!doctype html>
 <html>
@@ -10,8 +10,6 @@
 		<link rel="stylesheet" href="css/roboto.css" />
 		<link rel="stylesheet" href="css/global.css" />
 		<link rel="stylesheet" href="css/resume.css" />
-		<link rel="stylesheet" href="css/resume-body.css" />
-		<link rel="stylesheet" href="css/resume-header.css" />
 		<link rel="stylesheet" href="css/resume-print.css" />
 
 		<!-- Load the CMU Serif font -->
@@ -31,14 +29,18 @@
 	<body class="computer-modern">
 		<div class="resume-container">
 			<div class="header-container">
-				<div class="header">
+				<div class="resume-header">
 					<div class="name">
 						Kristofer Rye
 					</div>
 
 					<div class="tagline">
-						CS Student, Ruby/JS developer
+						Student <span class="small">of</span> Computer Science, Mathematics <span class="small">at</span> St. Olaf College
 					</div>
+					<!--
+							 <div class="tagline">
+							 Ruby, JavaScript Developer <span class="small">seeking</span> Hire
+							 </div> -->
 				</div>
 			</div>
 
@@ -49,19 +51,49 @@
 							Contact
 						</div>
 
-						<div class="email">
-							<span class="label">Email</span>
+						<ul class="categorized">
+							<li class="category-item">
+								<div class="label float-left">Email</div>
+								<div class="text float-right"><a href="mailto:kristofer.rye@gmail.com">kristofer.rye@gmail.com</a></div>
+							</li>
 
-							<span class="email">
-								<a href="mailto:kristofer.rye@gmail.com">kristofer.rye@gmail.com</a>
-							</span>
-						</div>
+							<li class="category-item">
+								<div class="label float-left">Phone</div>
+								<div class="text float-right"><a href="tel:+17654040640">+1 (765) 404-0640</a></div>
+							</li>
 
-						<div class="github">
-							<span class="label">GitHub</span>
-							<span class="github">
-								<a href="https://github.com/rye">rye</a>
-							</span>
+							<li class="category-item category-assorted">
+								<!-- <div class="label float-left">GitHub</div> -->
+								<div class="text item"><a href="https://github.com/rye"><img height="16pt" style="margin-bottom: -0.320em" src="/mark-github.svg" />: rye</a></div>
+							</li>
+						</ul>
+					</div>
+
+					<div class="container education">
+						<div class="header">Education</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">St. Olaf College</div>
+								<!-- <div class="location">Northfield, MN</div> -->
+								<div class="date"><span class="from">Sep. 2016</span> &ndash; <span class="to">May 2020</span></div>
+							</div>
+
+							<div class="description">
+								<ul class="categorized">
+									<li class="category-item">
+										<div class="name float-left">B.A. in Computer Science</div>
+										<div class="date float-right">2020</div>
+									</li>
+
+									<li class="category-item">
+										<div class="name float-left">B.A. in Mathematics</div>
+										<div class="date float-right">2020</div>
+									</li>
+								</ul>
+
+								<div class="gpa">3.69</div>
+							</div>
 						</div>
 					</div>
 
@@ -70,94 +102,111 @@
 							Skills
 						</div>
 
-						<div class="languages">
-							<span class="label">Languages</span>
+						<div class="description">
+							<ul class="languages categorized">
+								<li class="category">Programming Languages</li>
 
-							<span class="language">Ruby</span>
-							<span class="language">JS</span>
-							<span class="language">C/C++</span>
-							<span class="language">HTML</span>
-							<span class="language">CSS</span>
-							<span class="language">Java</span>
-							<span class="language">Python</span>
+								<li class="category-item">
+									<ul class="categorized">
+										<li class="category">Proficient</li>
+										<li class="category-item category-assorted">
+											<div class="text item">Ruby</div>
+											<div class="text item">JavaScript</div>
+											<div class="text item">C</div>
+											<div class="text item">HTML</div>
+											<div class="text item">CSS</div>
+										</li>
+
+										<li class="category">Other</li>
+										<li class="category-item category-assorted">
+											<div class="text item">C++</div>
+											<div class="text item">Java</div>
+											<div class="text item">Python</div>
+											<div class="text item">R</div>
+										</li>
+									</ul>
+								</li>
+
+								<li class="category">Services/Frameworks</li>
+
+								<li class="category-item">
+									<ul class="categorized">
+										<li class="category">Proficient</li>
+										<li class="category-item category-assorted">
+											<div class="text item">Sinatra</div>
+											<div class="text item">Ruby on Rails</div>
+											<div class="text item">Git</div>
+											<div class="text item">Redis</div>
+											<div class="text item">Linux</div>
+											<div class="text item">Polymer</div>
+											<div class="text item">Bootstrap</div>
+										</li>
+
+										<li class="category">Other</li>
+										<li class="category-item category-assorted">
+											<div class="text item">AngularJS</div>
+											<div class="text item">Polymer</div>
+											<div class="text item">Bootstrap</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
 						</div>
+						<!-- TODO: Awards/Certifications -->
 
-						<div class="frameworks">
-							<span class="label">Frameworks</span>
-
-							<span class="framework">Ruby on Rails</span>
-							<span class="framework">Sinatra</span>
-							<span class="framework">AngularJS</span>
-							<span class="framework">Bootstrap</span>
-						</div>
-
-						<div class="services">
-							<span class="label">Services</span>
-
-							<span class="service">GitHub</span>
-							<span class="service">Git</span>
-							<span class="service">Redis</span>
-							<span class="service">SSH</span>
-							<span class="service">MongoDB</span>
-							<span class="service">RSpec</span>
-							<span class="service">Guard</span>
-							<span class="service">Google Analytics</span>
-							<span class="service">SQL</span>
-						</div>
-
-						<div class="other">
-							<span class="label">Other</span>
-
-							<span class="item">Linux</span>
-							<span class="item">Slack</span>
-							<span class="item">macOS</span>
-
-							<span class="item">Private Pilot</span>
-						</div>
 					</div>
 				</div>
 
 				<div class="pane major">
-					<div class="container education">
+					<div class="container experience">
 						<div class="header">
-							Education
+							Work Experience
 						</div>
 
 						<div class="resume-item">
 							<div class="header">
-								<div class="title">St. Olaf College</div>
-								<div class="date">Sep. 2016 - 2020</div>
+								<div class="title">St. Olaf Broadcast Media Services</div>
+								<div class="date">Sep. 2016 - current</div>
+								<div class="position">Audio/Video Engineer</div>
 							</div>
 
 							<div class="description">
-								Majoring in Computer Science and Mathematics.
-							</div>
-						</div>
-					</div>
+								<ul class="categorized">
+									<li class="category-item loose">Working various roles: from camera operator, audio engineer, to technical director.</li>
+									<li class="category-item loose">Trained as a Chapel operator; streaming multiple Chapel services per day.</li>
+								</ul>
 
-					<div class="container experience">
-						<div class="header">
-							Experience
+								<div class="caveat tiny">Details to come upon completion.</div>
+							</div>
 						</div>
 
 						<div class="resume-item">
 							<div class="header">
-								<div class="title">St. Olaf Broadcast Media</div>
-								<div class="date">Sep. 2016 - current</div>
-								<div class="position">Audio/Video Engineer</div>
+								<div class="title">St. Olaf Department of Computer Science</div>
+								<div class="date">Feb. 2017 - current</div>
+								<div class="position">Course Assistant</div>
+							</div>
+
+							<div class="description">
+								<ul class="categorized">
+									<li class="category-item loose">Worked as a course assistant for CSCI 251, Software Design.</li>
+									<li class="category-item loose">Graded homework and ran multiple help sessions per week for students.</li>
+								</ul>
+								<div class="caveat tiny">Details to come upon completion.</div>
 							</div>
 						</div>
 
 						<div class="resume-item">
 							<div class="header">
 								<div class="title">FReCon</div>
-								<div class="date">Summer 2013 - current</div>
+								<div class="date">Summer 2013 - Fall 2016</div>
 								<div class="position">Head Project Maintainer and Developer</div>
 							</div>
 
 							<div class="description">
-								A Ruby JSON API, using the Sinatra framework and MongoDB; designed for scouting at <i>FIRST</i> robotics competitions.
-								Also helped to design WeBCa, the web interface to the FReCon API.
+								<ul class="categorized">
+									<li class="category-item loose">Worked as lead developer and maintainer, keeping things up-to-date and responding to new features.</li>
+								</ul>
 							</div>
 						</div>
 
@@ -229,7 +278,7 @@
 			</div>
 		</div>
 
-		<p class="sha1-marker">(<%= @git_describe %>)</p>
+		<p class="sha1-marker">(<%= @git_describe %>, rendered <%= Time.now.strftime "%Y-%m-%d %H:%M:%S"%>)</p>
 
 		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-77379897-1','auto');ga('set','appVersion','<%= @git_describe %>');ga('send','pageview');</script>
 	</body>
