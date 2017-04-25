@@ -39,7 +39,7 @@ module Site
 			end
 		end
 
-		def with_connection_guard(*args, max_tries: 8, interval: 1.0, &block)
+		def with_connection_guard(*args, max_tries: 8, exit_status_on_fail: nil, interval: 1.0, &block)
 			try_count = 0
 
 			begin
@@ -57,7 +57,7 @@ module Site
 				else
 					Logger.fatal "RedisAdapter#with_connection_guard" do "Number of failed tries (#{try_count}) meets or exceeds the maximum number of tries (#{max_tries})... aborting." end
 
-					exit 1
+					exit exit_status_on_fail.to_i if !!exit_status_on_fail
 				end
 			end
 		end
