@@ -88,6 +88,8 @@ module Site
 			opts[:host] = host if host
 			opts[:port] = port if port
 			opts[:password] = password if password
+
+			opts
 		end
 
 	end
