@@ -62,10 +62,10 @@ module Site
 			# Do log to the console.
 			set :logging, true
 
-			@@cache = Cache.new(env: ENV, application: self)
-
 			@@routes = {}
 			@@aliases = {}
+
+			@@cache = Cache.new(env: ENV, application: self)
 		end
 
 		def self.set_routes(filename, tag, route, aliases)
