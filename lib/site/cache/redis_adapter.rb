@@ -48,10 +48,11 @@ module Site
 				return block.call(*args)
 			rescue Redis::BaseConnectionError => e
 				Logger.dump_exception e
+
 				if try_count < max_tries
 					Logger.warn "RedisAdapter#with_connection_guard" do "Sleeping 1s and trying again..." end
 
-					sleep 1.0
+					sleep sleep_period
 
 					retry
 				else
