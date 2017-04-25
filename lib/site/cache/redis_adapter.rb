@@ -43,7 +43,7 @@ module Site
 				Logger.dump_exception e
 
 				if try_count < max_tries
-					Logger.warn "RedisAdapter#with_connection_guard" do "Sleeping 1s and trying again..." end
+					Logger.warn "RedisAdapter#with_connection_guard" do "Sleeping #{sleep_period}s and trying again..." end
 
 					sleep sleep_period
 
