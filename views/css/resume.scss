@@ -5,6 +5,8 @@
 body {
 	background-color: #fff;
 	color: #000;
+
+	font-size: 12pt;
 }
 
 .resume-container {
@@ -35,7 +37,7 @@ body {
 
 		.resume-header {
 			flex: 0 1 auto;
-			font-size: 12pt;
+			font-size: 100%;
 			padding: 1.0em 0 0 0;
 		}
 	}
@@ -52,7 +54,7 @@ body {
 		}
 
 		> div.name {
-			font-size: 32pt;
+			font-size: 270%;
 			text-align: center;
 			font-weight: bold;
 
@@ -61,7 +63,7 @@ body {
 		}
 
 		> div.tagline {
-			font-size: 16pt;
+			font-size: 125%;
 			text-align: center; // obsolete because flexbox is adjusted to this width
 			font-variant: small-caps;
 		}
@@ -72,7 +74,7 @@ body {
 		display: flex;
 		flex-direction: row;
 		font-family: 'Roboto', sans-serif;
-		font-size: 12pt;
+		font-size: 100%;
 	}
 
 	.body-container > .pane {
@@ -103,7 +105,7 @@ body {
 		}
 
 		> .header {
-			font-size: 16pt;
+			font-size: 125%;
 			font-weight: bold;
 			text-align: center;
 			text-transform: uppercase;
@@ -113,7 +115,7 @@ body {
 		}
 
 		.resume-item {
-			font-size: 12pt;
+			font-size: 100%;
 
 			border-bottom: none;
 
@@ -121,32 +123,32 @@ body {
 				display: block;
 
 				div.title {
-					font-size: 13pt;
+					font-size: 110%;
 					float: left;
 					font-weight: bold;
 				}
 
 				div.location:before {
-					font-size: 13pt;
+					font-size: 110%;
 					content: ", ";
 				}
 
 				div.location {
-					font-size: 8pt;
+					font-size: 66%;
 					float: left;
 					font-style: italic;
 					font-weight: 100;
 				}
 
 				div.date {
-					font-size: 11pt;
+					font-size: 90%;
 					float: right;
 					font-weight: 500;
 				}
 
 				div.position {
 					clear: both;
-					font-size: 10pt;
+					font-size: 80%;
 					float: left;
 					margin-left: 2em;
 					font-style: italic;
@@ -155,7 +157,7 @@ body {
 			}
 
 			div.description {
-				font-size: 10pt;
+				font-size: 80%;
 				display: block;
 				clear: both;
 
@@ -177,10 +179,10 @@ body {
 
 			line-height: 150%;
 			font-weight: 300;
-			font-size: 11pt;
+			font-size: 90%;
 
 			span.label {
-				font-size: 12pt;
+				font-size: 100%;
 				font-weight: 400;
 				text-transform: uppercase;
 
@@ -229,7 +231,7 @@ body {
 	display: block;
 
 	> .category {
-		font-size: 12pt;
+		font-size: 100%;
 		font-style: italic;
 		font-variant: small-caps;
 
@@ -239,7 +241,6 @@ body {
 	> .category-item {
 		display: block;
 		clear: both;
-		font-size: 10pt;
 
 		> div.name {
 			font-weight: 500;
@@ -258,10 +259,10 @@ body {
 		}
 	}
 
-	> .category-assorted {
+	> .category-item.assorted {
 		display: block;
 		clear: both;
-		font-size: 10pt;
+		font-size: 80%;
 
 		> div.item {
 			display: inline;
@@ -298,6 +299,16 @@ div.description .categorized > .category-item {
 	line-height: 150%;
 }
 
+.pane.minor {
+	.category-item.loose {
+		padding-top: 0.5em;
+		padding-bottom: 0.5em;
+	}
+}
+
+.category-item.loose:first-child { padding-top: 0; }
+.category-item.loose:last-child { padding-bottom: 0; }
+
 div.description .categorized:not(:last-child) {
 	margin-bottom: 0.65em;
 }
@@ -325,6 +336,18 @@ div.gpa {
 
 .tiny {
 	font-size: 60%;
+}
+
+.lh-tight {
+	line-height: 105%;
+}
+
+.lh-normal {
+	line-height: 115%;
+}
+
+.lh-loose {
+	line-height: 150%;
 }
 
 @media screen and (max-width: 500pt) {
