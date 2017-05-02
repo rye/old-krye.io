@@ -1,0 +1,374 @@
+<% self[:route] = '/resume2.html' %>
+<% self[:aliases] = ['/resume2'] %>
+<% self[:volatility] = :contents %>
+<% @git_describe = Site.git_version_string %>
+<!-- File <%= File.basename(__FILE__) %> rendered by <%= self[:worker_id] || "worker-unknown" %> -->
+<!doctype html>
+<html>
+	<head>
+		<!-- Load all of the stylesheets -->
+		<link rel="stylesheet" href="css/roboto.css" />
+		<link rel="stylesheet" href="css/global.css" />
+		<link rel="stylesheet" href="css/resume2.css" />
+		<link rel="stylesheet" href="css/resume2-print.css" />
+
+		<!-- Load the CMU Serif font -->
+		<link rel="stylesheet" href="fonts/Computer Modern/Serif/cmun-serif.css" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="version" content="<%= @git_describe %>" />
+
+		<meta name="author" content="Kristofer Rye" />
+
+		<meta name="description" content="Kristofer Rye" />
+		<meta name="keywords" content="Kristofer,Rye,Kris,Programmer,Developer,Ruby,HTML,CSS,JavaScript,Sass,Rails,Private,Pilot,Cello,Resume" />
+
+		<title>R&eacute;sum&eacute;</title>
+	</head>
+
+	<body class="computer-modern">
+		<div class="container vertical" id="resume-container">
+			<div class="container vertical centered" id="resume-header-container">
+				<div id="resume-header">
+					<p class="name" id="name">
+						Kristofer Rye
+					</p>
+
+					<p class="tagline" id="main-tagline">
+						Student <span class="small">of</span> Computer Science, Mathematics <span class="small">at</span> St. Olaf College
+					</p>
+				</div>
+			</div>
+
+			<div class="container horizontal" id="resume-body-container">
+
+				<div class="pane" id="side-pane">
+
+					<div class="container" id="contact-container">
+
+						<p class="header" id="contact-header">
+							Contact
+						</p>
+
+						<ul class="categorized" id="contact-information">
+							<li class="category-item">
+								<p class="label" id="address-label">Address</p>
+								<p class="text lh-tight" id="address-text">Kristofer Rye<br />1500 St. Olaf Avenue<br/>Northfield, MN 55057</p>
+							</li>
+
+							<li class="category-item">
+								<p class="label" id="email-label">Email</p>
+								<p class="text" id="email-text"><a href="mailto:kristofer.rye@gmail.com">kristofer.rye@gmail.com</a></p>
+							</li>
+
+							<li class="category-item">
+								<p class="label" id="phone-label">Phone</p>
+								<p class="text" id="phone-text"><a href="tel:+17654040640">+1 (765) 404-0640</a></p>
+							</li>
+
+							<li class="category-item">
+								<p class="label" id="github-label">GitHub</p>
+								<p class="text" id="github-text"><a href="https://github.com/rye">rye</a></p>
+							</li>
+
+						</ul>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="resume-container">
+			<!-- <div class="header-container">
+					 <div class="resume-header">
+					 <div class="name">
+					 Kristofer Rye
+					 </div>
+
+					 <div class="tagline">
+					 Student <span class="small">of</span> Computer Science, Mathematics <span class="small">at</span> St. Olaf College
+					 </div>
+					 </div>
+					 </div>
+				 -->
+			<div class="body-container">
+				<div class="pane minor">
+					<div class="container contact">
+						<!-- <div class="header">
+								 Contact
+								 </div> -->
+
+						<!-- <ul class="categorized">
+								 <!-- <li class="category-item loose lh-tight">
+								 <div class="label float-left">Address</div>
+								 <div class="text float-right">Kristofer Rye<br />1500 St. Olaf Avenue<br/>Northfield, MN 55057</div>
+								 </li>
+							 -->
+						<!-- <li class="category-item loose">
+								 <div class="label float-left">Email</div>
+								 <div class="text float-right"><a href="mailto:kristofer.rye@gmail.com">kristofer.rye@gmail.com</a></div>
+								 </li>
+							 -->
+						<!-- <li class="category-item loose">
+								 <div class="label float-left">Phone</div>
+								 <div class="text float-right"><a href="tel:+17654040640">+1 (765) 404-0640</a></div>
+								 </li>
+							 -->
+						<!-- <li class="category-item loose">
+								 <div class="label float-left">GitHub</div>
+								 <div class="text float-right"><a href="https://github.com/rye">rye</a></div>
+								 </li>
+						</ul> -->
+					</div>
+
+					<div class="container education">
+						<div class="header">Education</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">St. Olaf College</div>
+								<!-- <div class="location">Northfield, MN</div> -->
+								<div class="date"><span class="from">Sep. 2016</span> &ndash; <span class="to">May 2020</span></div>
+							</div>
+
+							<div class="description">
+								<ul class="categorized">
+									<li class="category-item">
+										<div class="name float-left">B.A. in Computer Science</div>
+										<div class="date float-right">2020</div>
+									</li>
+
+									<li class="category-item">
+										<div class="name float-left">B.A. in Mathematics</div>
+										<div class="date float-right">2020</div>
+									</li>
+								</ul>
+
+								<div class="gpa">3.69</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="container skills">
+						<div class="header">
+							Skills
+						</div>
+
+						<div class="description">
+							<ul class="languages categorized">
+								<li class="category">Programming Languages</li>
+
+								<li class="category-item">
+									<ul class="categorized">
+										<li class="category">Proficient in</li>
+										<li class="category-item assorted">
+											<div class="text item">Ruby</div>
+											<div class="text item">JavaScript</div>
+											<div class="text item">C</div>
+											<div class="text item">HTML</div>
+											<div class="text item">CSS</div>
+										</li>
+
+										<li class="category">Other</li>
+										<li class="category-item assorted">
+											<div class="text item">C++</div>
+											<div class="text item">Java</div>
+											<div class="text item">Python</div>
+											<div class="text item">R</div>
+										</li>
+									</ul>
+								</li>
+
+								<li class="category">Services and Frameworks</li>
+
+								<li class="category-item">
+									<ul class="categorized">
+										<li class="category">Proficient in</li>
+										<li class="category-item assorted">
+											<div class="text item">Sinatra</div>
+											<div class="text item">Docker</div>
+											<div class="text item">Ruby on Rails</div>
+											<div class="text item">Git</div>
+											<div class="text item">Redis</div>
+											<div class="text item">Linux</div>
+											<div class="text item">Polymer</div>
+											<div class="text item">Bootstrap</div>
+										</li>
+
+										<li class="category">Other</li>
+										<li class="category-item assorted">
+											<div class="text item">AngularJS</div>
+											<div class="text item">Polymer</div>
+											<div class="text item">Bootstrap</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+
+					<div class="container awards-certs">
+						<div class="header">
+							Honors
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">Private Pilot Certificate (Airplane, Single-Engine Land)</div>
+								<div class="date">2016</div>
+							</div>
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">National AP Scholar</div>
+								<div class="date">2016</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="pane major">
+					<div class="container experience">
+						<div class="header">
+							Experience
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">St. Olaf Department of Computer Science</div>
+								<div class="date">Feb. 2017 - current</div>
+								<div class="position">Course Assistant</div>
+							</div>
+
+							<div class="description">
+								<ul class="categorized">
+									<li class="category-item loose">Worked as a course assistant for CSCI 251, Software Design.</li>
+									<li class="category-item loose">Graded homework and ran multiple help sessions per week for students.</li>
+								</ul>
+								<div class="caveat tiny">Details to come upon completion.</div>
+							</div>
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">St. Olaf Department of Computer Science</div>
+								<div class="date">Feb. 2017 - current</div>
+								<div class="position">Cluster Management Trainee</div>
+							</div>
+
+							<div class="description">
+								<ul class="categorized">
+									<li class="category-item loose">Collaborated with existing cluster managers on deploying software projects.</li>
+									<li class="category-item loose">Graded homework and ran multiple help sessions per week for students.</li>
+								</ul>
+								<div class="caveat tiny">Details to come upon completion.</div>
+							</div>
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">St. Olaf Broadcast Media Services</div>
+								<div class="date">Sep. 2016 - Apr. 2017</div>
+								<div class="position">Audio/Video Engineer</div>
+							</div>
+
+							<div class="description">
+								<ul class="categorized">
+									<li class="category-item loose">Worked various roles: from camera operator, audio engineer, to technical director.</li>
+									<li class="category-item loose">Trained as a Chapel operator; streamed multiple Chapel services per week.</li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">FReCon</div>
+								<div class="date">Summer 2013 - Fall 2016</div>
+								<div class="position">Head Project Maintainer and Developer</div>
+							</div>
+
+							<div class="description">
+								<ul class="categorized">
+									<li class="category-item loose">Worked as lead developer and maintainer, keeping things up-to-date and responding to new features.</li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">Lord of Life Lutheran Church</div>
+								<div class="date">Fall 2015 - Fall 2016</div>
+								<div class="position">Volunteer Audio-Visual Technician</div>
+							</div>
+
+							<div class="description">
+								Helped to clean up the audio-visual system, and helped to redesign slide presentations as well as streamline worship services.
+							</div>
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">Brainerd Guide Service</div>
+								<div class="date">Jan. 2016 - Jun. 2016</div>
+								<div class="position">Web Developer</div>
+							</div>
+
+							<div class="description">
+								Assisted with rollover to new cloud hosting service and wrote a streamlined deployment framework.
+							</div>
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">Warrior Robotics</div>
+								<div class="date">Sep. 2014 - Jun. 2016</div>
+								<div class="position">Lead Software Engineer</div>
+							</div>
+
+							<div class="description">
+								<i>FIRST</i> Robotics Team.
+								Designed r2015 and r2016, the two main code bases for the 2015 and 2016 seasons.
+								Won Rockwell Collins' Innovation in Control Award at the Lake Superior Regional in Duluth. (March 2016)
+							</div>
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">Spensa Technologies, Inc.</div>
+								<div class="date">Fall 2014 - Summer 2015</div>
+								<div class="position">Software Developer Intern</div>
+							</div>
+
+							<div class="description">
+								Built a marketing dashboard in HTML, CSS, and JavaScript.
+								Worked on API.
+							</div>
+						</div>
+
+						<div class="resume-item">
+							<div class="header">
+								<div class="title">West Lafayette High School</div>
+								<div class="date">Fall 2012 - Summer 2014</div>
+								<div class="position">Student Technology Volunteer</div>
+							</div>
+
+							<div class="description">
+								Assisted with IT rollover process between school seasons, managed inventory.
+								Designed and wrote in-house applications to be used by IT staff and school faculty.
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<p class="sha1-marker">(<%= @git_describe %>, rendered <%= Time.now.strftime "%Y-%m-%d %H:%M:%S"%>)</p>
+
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-77379897-1','auto');ga('set','appVersion','<%= @git_describe %>');ga('send','pageview');</script>
+	</body>
+</html>
