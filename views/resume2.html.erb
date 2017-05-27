@@ -6,14 +6,20 @@
 <!doctype html>
 <html>
 	<head>
-		<!-- Load all of the stylesheets -->
+
+		<!-- Preload known required fonts. -->
+		<link rel="preload" href="fonts/Computer Modern/Serif/cmunrm.woff" as="font" type="font/woff" crossorigin />
+		<link rel="preload" href="fonts/Computer Modern/Serif/cmunbx.woff" as="font" type="font/woff" crossorigin />
+		<link rel="preload" href="fonts/Computer Modern/Serif/cmunti.woff" as="font" type="font/woff" crossorigin />
+
+		<!-- Load and use these preloaded fonts. (Required to be here specifically because this is where font-family setup takes place.) -->
 		<link rel="stylesheet" href="css/roboto.css" />
+		<link rel="stylesheet" href="fonts/Computer Modern/Serif/cmun-serif.css" />
+
+		<!-- Load all of the stylesheets -->
 		<link rel="stylesheet" href="css/global.css" />
 		<link rel="stylesheet" href="css/resume2.css" />
 		<link rel="stylesheet" href="css/resume2-print.css" />
-
-		<!-- Load the CMU Serif font -->
-		<link rel="stylesheet" href="fonts/Computer Modern/Serif/cmun-serif.css" />
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="version" content="<%= @git_describe %>" />
@@ -24,6 +30,7 @@
 		<meta name="keywords" content="Kristofer,Rye,Kris,Programmer,Developer,Ruby,HTML,CSS,JavaScript,Sass,Rails,Private,Pilot,Cello,Resume" />
 
 		<title>R&eacute;sum&eacute;</title>
+
 	</head>
 
 	<body class="computer-modern">
@@ -41,13 +48,11 @@
 			</div>
 
 			<div class="container flex horizontal" id="resume-body-container">
-
 				<div class="pane computer-modern" id="side-pane">
-
 					<div class="container" id="contact-container">
 						<h1 class="header" id="contact-header">
 							Contact
-						</h2>
+						</h1>
 
 						<ul class="list labels-texts" id="contact-information">
 							<li class="label-text">
