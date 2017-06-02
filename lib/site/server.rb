@@ -106,9 +106,7 @@ module Site
 						default_route_for(filename, tag, route).call
 					end
 
-					aliases.each do |alyas|
-						@@aliases[alyas] = route
-					end
+					alias_routes_to(aliases, routes)
 				end
 			else
 				# Route to be updated does not already exist.
@@ -117,9 +115,7 @@ module Site
 					default_route_for(filename, tag, route).call
 				end
 
-				aliases.each do |alyas|
-					@@aliases[alyas] = route
-				end
+				alias_routes_to(aliases, route)
 			end
 		end
 
@@ -170,6 +166,12 @@ module Site
 			end
 
 			MIME::Types.add(types)
+		end
+
+		def self.alias_routes_to(aliases, route)
+			aliases.each do |alyas|
+				@@aliases[alyas] = route
+			end
 		end
 
 	end
