@@ -68,6 +68,18 @@ module Site
 			@@cache = Cache.new(env: ENV, application: self)
 		end
 
+		def self.default_route_for(filename, tag, route)
+			lambda do
+				slug = @@cache.get(filename, tag)
+
+				etag slug["digest"]
+
+				content_type MIME::Types.type_for(route).first.to_s
+
+				Base64.decode64(slug["data"])
+			end
+		end
+
 		def self.set_routes(filename, tag, route, aliases)
 			@@routes = {} if !@@routes
 			@@aliases = {} if !@@aliases
@@ -91,15 +103,7 @@ module Site
 					@@routes.delete(route)
 					@@routes[route] = {tag: tag}
 					@@routes[route][:route] = self.get(route.to_s) do
-						lambda do
-							slug = @@cache.get(filename, tag)
-
-							etag slug["digest"]
-
-							content_type MIME::Types.type_for(route).first.to_s
-
-							Base64.decode64(slug["data"])
-						end.call
+						default_route_for(filename, tag, route).call
 					end
 
 					aliases.each do |alyas|
@@ -110,15 +114,7 @@ module Site
 				# Route to be updated does not already exist.
 				@@routes[route] = {tag: tag}
 				@@routes[route][:route] = self.get(route.to_s) do
-					lambda do
-						slug = @@cache.get(filename, tag)
-
-						etag slug["digest"]
-
-						content_type MIME::Types.type_for(route).first.to_s
-
-						Base64.decode64(slug["data"])
-					end.call
+					default_route_for(filename, tag, route).call
 				end
 
 				aliases.each do |alyas|
