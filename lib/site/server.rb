@@ -102,18 +102,14 @@ module Site
 
 					@@routes.delete(route)
 					@@routes[route] = {tag: tag}
-					@@routes[route][:route] = self.get(route.to_s) do
-						default_route_for(filename, tag, route).call
-					end
+					@@routes[route][:route] = self.get(route.to_s, &Server.default_route_for(filename, tag, route))
 
 					alias_routes_to(aliases, routes)
 				end
 			else
 				# Route to be updated does not already exist.
 				@@routes[route] = {tag: tag}
-				@@routes[route][:route] = self.get(route.to_s) do
-					default_route_for(filename, tag, route).call
-				end
+				@@routes[route][:route] = self.get(route.to_s, &Server.default_route_for(filename, tag, route))
 
 				alias_routes_to(aliases, route)
 			end
