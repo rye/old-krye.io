@@ -56,7 +56,7 @@ jobs:
         - BUNDLE_PATH=vendor/bundle bundle exec rake ci
       after_success:
         - BUNDLE_PATH=vendor/bundle bundle exec codeclimate-test-reporter 
-   - <<: *test_base
+    - <<: *test_base
       rvm: 2.4.1
     - <<: *test_base
       rvm: 2.4.0
