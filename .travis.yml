@@ -51,7 +51,7 @@ jobs:
       rvm: ruby-head
       cache: bundler
       install:
-        - BUNDLE_PATH=vendor/bundler script/boostrap no-update
+        - BUNDLE_PATH=vendor/bundler script/bootstrap no-update
       script:
         - BUNDLE_PATH=vendor/bundle bundle exec rake ci
       after_success:
