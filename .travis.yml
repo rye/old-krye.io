@@ -52,7 +52,7 @@ jobs:
             tags: true
 
         - provider: script
-          script: script/docker-deploy $DOCKER_IMAGE:$TRAVIS_COMIT $DOCKER_IMAGE:$TRAVIS_TAG $DOCKER_IMAGE:latest
+          script: script/docker-deploy $DOCKER_IMAGE:$TRAVIS_COMMIT $DOCKER_IMAGE:$TRAVIS_TAG $DOCKER_IMAGE:latest
           on:
             condition: $(script/github-latest-release) == $TRAVIS_TAG
             tags: true
