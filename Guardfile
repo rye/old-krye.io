@@ -14,3 +14,10 @@ guard :rspec, cmd: 'bundle exec rspec' do
 	dsl.watch_spec_files_for(ruby.lib_files)
 
 end
+
+guard :rubocop do
+
+	watch(%r{.+\.rb$})
+	watch(%r{(?:.+/)?\.rubocop\.yml$}) { |m| File.dirname(m[0]) }
+
+end

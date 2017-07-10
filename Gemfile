@@ -27,6 +27,7 @@ group :development, :test do
 
 	# Spec-related dependencies
 	gem 'rspec', '~> 3.5'
+	gem 'rubocop', '~> 0.49'
 
 	# Rollout dependencies
 	gem 'scientist', '~> 1.0'
@@ -40,6 +41,7 @@ group :development do
 	# Automated development-environment testing dependencies
 	gem 'guard', '~> 2.14'
 	gem 'guard-rspec', '~> 4.7'
+	gem 'guard-rubocop', '~> 1.3'
 
 	# Inspection dependencies
 	gem 'pry', '~> 0.10'
