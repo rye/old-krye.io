@@ -55,16 +55,22 @@ jobs:
       script:
         - BUNDLE_PATH=vendor/bundle bundle exec rake ci
       after_success:
-        - BUNDLE_PATH=vendor/bundle bundle exec codeclimate-test-reporter 
+        - BUNDLE_PATH=vendor/bundle bundle exec codeclimate-test-reporter
     - <<: *test_base
       rvm: 2.4.1
+      after_success: skip
     - <<: *test_base
       rvm: 2.4.0
+      after_success: skip
     - <<: *test_base
       rvm: 2.3.3
+      after_success: skip
 
     - stage: build and deploy
+      sudo: required
+      dist: trusty
       rvm: 2.4.1
+
       services:
         - docker
 
@@ -90,4 +96,3 @@ jobs:
           on:
             condition: $(script/github-latest-release) == $TRAVIS_TAG
             tags: true
-
