@@ -1,44 +1,93 @@
-sudo: false
+---
+# sudo: false
 language: ruby
 
-rvm:
-  - 2.4.1
-  - 2.4.0
-  - 2.3.3
-  - ruby-head
+#rvm:
+#  - 2.4.1
+#  - 2.4.0
+#  - 2.3.3
+#  - ruby-head
 
-services:
-  - docker
+#services:
+#  - docker
 
-cache: bundler
+# cache: bundler
 
-install:
-  - BUNDLE_PATH=vendor/bundle script/bootstrap no-update
-  - script/docker-build $DOCKER_IMAGE:$TRAVIS_COMMIT
+#install:
+#  - BUNDLE_PATH=vendor/bundle script/bootstrap no-update
+#  - script/docker-build $DOCKER_IMAGE:$TRAVIS_COMMIT
 
 env:
   - DOCKER_IMAGE=kryestofer/krye.io
 
-script:
-  - BUNDLE_PATH=vendor/bundle bundle exec rake ci
-  - script/docker-exec $DOCKER_IMAGE:$TRAVIS_COMMIT script/test
+#script:
+#  - BUNDLE_PATH=vendor/bundle bundle exec rake ci
+#  - script/docker-exec $DOCKER_IMAGE:$TRAVIS_COMMIT script/test
 
-deploy:
-  - provider: script
-    script: script/docker-deploy $DOCKER_IMAGE:$TRAVIS_COMMIT $DOCKER_IMAGE:HEAD
-    on:
-      ruby: 2.4.1
-      branch: master
+#deploy:
+#  - provider: script
+#    script: script/docker-deploy $DOCKER_IMAGE:$TRAVIS_COMMIT $DOCKER_IMAGE:HEAD
+#    on:
+#      ruby: 2.4.1
+#      branch: master
 
-  - provider: script
-    script: script/docker-deploy $DOCKER_IMAGE:$TRAVIS_COMMIT $DOCKER_IMAGE:$TRAVIS_TAG
-    on:
-      ruby: 2.4.1
-      tags: true
+#  - provider: script
+#    script: script/docker-deploy $DOCKER_IMAGE:$TRAVIS_COMMIT $DOCKER_IMAGE:$TRAVIS_TAG
+#    on:
+#      ruby: 2.4.1
+#      tags: true
 
-  - provider: script
-    script: script/docker-deploy $DOCKER_IMAGE:$TRAVIS_COMMIT $DOCKER_IMAGE:$TRAVIS_TAG $DOCKER_IMAGE:latest
-    on:
-      ruby: 2.4.1
-      condition: $(script/github-latest-release) == $TRAVIS_TAG
-      tags: true
+#  - provider: script
+#    script: script/docker-deploy $DOCKER_IMAGE:$TRAVIS_COMMIT $DOCKER_IMAGE:$TRAVIS_TAG $DOCKER_IMAGE:latest
+#    on:
+#      ruby: 2.4.1
+#      condition: $(script/github-latest-release) == $TRAVIS_TAG
+#      tags: true
+
+jobs:
+  include:
+    - &test_base
+      stage: test
+      rvm: ruby-head
+      cache: bundler
+      install:
+        - BUNDLE_PATH=vendor/bundler script/boostrap no-update
+      script:
+        - BUNDLE_PATH=vendor/bundle bundle exec rake ci
+      after_success:
+        - BUNDLE_PATH=vendor/bundle bundle exec codeclimate-test-reporter 
+   - <<: *test_base
+      rvm: 2.4.1
+    - <<: *test_base
+      rvm: 2.4.0
+    - <<: *test_base
+      rvm: 2.3.3
+
+    - stage: build and deploy
+      rvm: 2.4.1
+      services:
+        - docker
+
+      install:
+        - BUNDLE_PATH=vendor/bundle script/bootstrap no-update
+        - script/docker-build $DOCKER_IMAGE:$TRAVIS_COMMIT
+
+      script: skip
+
+      deploy:
+        - provider: script
+          script: script/docker-deploy $DOCKER_IMAGE:$TRAVIS_COMMIT $DOCKER_IMAGE:HEAD
+          on:
+            branch: master
+
+        - provider: script
+          script: script/docker-deploy $DOCKER_IMAGE:$TRAVIS_COMMIT $DOCKER_IMAGE:$TRAVIS_TAG
+          on:
+            tags: true
+
+        - provider: script
+          script: script/docker-deploy $DOCKER_IMAGE:$TRAVIS_COMIT $DOCKER_IMAGE:$TRAVIS_TAG $DOCKER_IMAGE:latest
+          on:
+            condition: $(script/github-latest-release) == $TRAVIS_TAG
+            tags: true
+
