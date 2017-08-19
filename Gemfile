@@ -9,7 +9,7 @@ gem 'sinatra-advanced-routes', '~> 0.5'
 gem 'redis', '~> 3.2'
 
 # Template-related dependencies
-gem 'sass', '~> 3.4'
+gem 'sass', '~> 3.5'
 gem 'coffee-script', '~> 2.4'
 gem 'github-markup', '~> 1.6'
 
