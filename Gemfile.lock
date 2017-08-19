@@ -134,7 +134,7 @@ DEPENDENCIES
   redis (~> 3.2)
   rspec (~> 3.5)
   rubocop (~> 0.49)
-  sass (~> 3.4)
+  sass (~> 3.5)
   scientist (~> 1.0)
   simplecov (~> 0.13)
   sinatra (~> 1.4)
