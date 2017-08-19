@@ -48,9 +48,9 @@ module Site
 			self.register_mimes!
 
 			# Set some settings so that Sinatra can find our static files.
-			set :root, Site::ROOT_DIRECTORY
-			set :public_folder, Site::STATIC_DIRECTORY
-			set :views, Site::VIEWS_DIRECTORY
+			set :root, Site.root_directory
+			set :public_folder, Site.static_directory
+			set :views, Site.views_directory
 
 			# Don't show exceptions. (This could get ugly and bad in production)
 			set :show_exceptions, false
@@ -66,6 +66,18 @@ module Site
 			@@aliases = {}
 
 			@@cache = Cache.new(env: ENV, application: self)
+		end
+
+		def self.default_route_for(filename, tag, route)
+			lambda do
+				slug = @@cache.get(filename, tag)
+
+				etag slug["digest"]
+
+				content_type MIME::Types.type_for(route).first.to_s
+
+				Base64.decode64(slug["data"])
+			end
 		end
 
 		def self.set_routes(filename, tag, route, aliases)
@@ -90,34 +102,16 @@ module Site
 
 					@@routes.delete(route)
 					@@routes[route] = {tag: tag}
-					@@routes[route][:route] = self.default_get_route(filename, tag, route.to_s)
+					@@routes[route][:route] = self.get(route.to_s, &Server.default_route_for(filename, tag, route))
 
-					aliases.each do |alyas|
-						@@aliases[alyas] = route
-					end
+					alias_routes_to(aliases, routes)
 				end
 			else
 				# Route to be updated does not already exist.
 				@@routes[route] = {tag: tag}
-				@@routes[route][:route] = self.default_get_route(filename, tag, route.to_s)
+				@@routes[route][:route] = self.get(route.to_s, &Server.default_route_for(filename, tag, route))
 
-				aliases.each do |alyas|
-					@@aliases[alyas] = route
-				end
-			end
-		end
-
-		def self.default_get_route(filename, tag, path)
-			self.get(path) do
-				lambda do
-					slug = @@cache.get(filename, tag)
-
-					etag slug["digest"]
-
-					content_type MIME::Types.type_for(path).first.to_s
-
-					Base64.decode64(slug["data"])
-				end.call
+				alias_routes_to(aliases, route)
 			end
 		end
 
@@ -168,6 +162,12 @@ module Site
 			end
 
 			MIME::Types.add(types)
+		end
+
+		def self.alias_routes_to(aliases, route)
+			aliases.each do |alyas|
+				@@aliases[alyas] = route
+			end
 		end
 
 	end

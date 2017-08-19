@@ -11,14 +11,7 @@ module Site
 		def initialize(env)
 			super(env)
 
-			redis_host = ENV['REDIS_HOST']
-			redis_port = ENV['REDIS_PORT']
-			redis_password = ENV['REDIS_PASSWORD']
-
-			redis_opts = {}
-			redis_opts[:host] = redis_host if redis_host
-			redis_opts[:port] = redis_port if redis_port
-			redis_opts[:password] = redis_password if redis_password
+			redis_opts = redis_options
 
 			redis_opts.tap do |opts|
 				filtered_opts = [:password]
@@ -30,7 +23,7 @@ module Site
 				end
 			end
 
-			@redis = Redis.new redis_opts
+			@redis = Redis.new(redis_opts)
 
 			with_connection_guard(max_tries: 16, exit_status_on_fail: 1) do
 				ping
@@ -50,7 +43,7 @@ module Site
 				Logger.dump_exception e
 
 				if try_count < max_tries
-					Logger.warn "RedisAdapter#with_connection_guard" do "Sleeping 1s and trying again..." end
+					Logger.warn "RedisAdapter#with_connection_guard" do "Sleeping #{sleep_period}s and trying again..." end
 
 					sleep sleep_period
 
@@ -101,6 +94,19 @@ module Site
 			hash.map do |key, value|
 				(filtered_keys.include?(key) && new_value) ? [key, new_value] : [key, value]
 			end.to_h
+		end
+
+		def redis_options(env = ENV)
+			host = env['REDIS_HOST']
+			port = env['REDIS_PORT']
+			password = env['REDIS_PASSWORD']
+
+			opts = {}
+			opts[:host] = host if host
+			opts[:port] = port if port
+			opts[:password] = password if password
+
+			opts
 		end
 
 	end
