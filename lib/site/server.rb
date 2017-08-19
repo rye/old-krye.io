@@ -127,6 +127,20 @@ module Site
 			end
 		end
 
+		def self.default_get_route(filename, tag, path)
+			self.get(path) do
+				lambda do
+					slug = @@cache.get(filename, tag)
+
+					etag slug["digest"]
+
+					content_type MIME::Types.type_for(route.first.to_s)
+
+					Base64.decode64(slug["data"])
+				end.call
+			end
+		end
+
 		def self.deactivate_route(route, aliases)
 			@@routes = {} if !@@routes
 			@@routes[route][:route].deactivate if @@routes[:route].respond_to?(:deactivate)
