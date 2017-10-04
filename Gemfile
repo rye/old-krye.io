@@ -4,6 +4,12 @@ source 'https://rubygems.org'
 gem 'thin', '~> 1.7'
 gem 'sinatra', '~> 1.4'
 
+# Template-related dependencies
+gem 'github-markup', '~> 1.6'
+
+# MIME Type registry
+gem 'mime-types', '~> 3.1'
+
 # Colored output
 gem 'colorize', '~> 0.8'
 
