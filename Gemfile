@@ -3,19 +3,6 @@ source 'https://rubygems.org'
 # Server dependencies
 gem 'thin', '~> 1.7'
 gem 'sinatra', '~> 1.4'
-gem 'sinatra-advanced-routes', '~> 0.5'
-
-# Redis dependency
-gem 'redis', '~> 3.2'
-
-# Template-related dependencies
-gem 'sass', '~> 3.5'
-gem 'coffee-script', '~> 2.4'
-gem 'github-markup', '~> 1.6'
-
-# Internal dependencies related to the file system
-gem 'listen', '~> 3.1'
-gem 'mime-types', '~> 3.1'
 
 # Colored output
 gem 'colorize', '~> 0.8'
