@@ -15,7 +15,7 @@ unless ARGV.include?('no-update')
 	end
 end
 
-Site::Logger.info "Running `bundle install`"
+puts "Running `bundle install`"
 
 # Run `bundle install` to install our dependencies.
 Runner.run("bundle", "install") do |output_line|
