@@ -6,20 +6,18 @@ $LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib
 # Require the entire `script` lib tree.
 require 'script'
 
-require 'site/logger'
-
 DOCKER_TAG_REGEXP = /([\w\.\/]+):?([\w\.\/]+)?/
 
 docker_flags = ENV["DOCKER_FLAGS"] || ""
 tag = ARGV.grep(DOCKER_TAG_REGEXP).first
 command = ARGV - [tag]
 
-Site::Logger.info "Running #{command.join(" ")} in #{tag}..."
+puts "Running #{command.join(" ")} in #{tag}..."
 
 command = ["docker", "run", [docker_flags.split(' ')], tag, command].flatten
 
-Site::Logger.debug "Full command: #{command.inspect}"
+puts "Full command: #{command.inspect}"
 
 Runner.run(command) do |output_line|
-	Site::Logger.debug output_line.chomp
+	puts output_line.chomp
 end
