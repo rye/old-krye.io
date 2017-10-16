@@ -34,6 +34,6 @@ begin
 		puts output_line.chomp
 	end
 
-rescue Exception => error
+rescue StandardError => error
 	puts error
 end
