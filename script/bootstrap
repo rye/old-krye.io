@@ -6,23 +6,18 @@ $LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib
 # Require the entire `script` lib tree.
 require 'script'
 
-require 'site/logger'
-
-Site::Logger.info "Starting bootstrapping process..."
-
+puts "Starting bootstrap process..."
 
 unless ARGV.include?('no-update')
-	Site::Logger.info "Running `script/update`"
-
 	# Run `script/update` to make sure everything is up-to-date.
 	Runner.run("script/update") do |output_line|
-		Site::Logger.debug output_line.chomp
+		puts output_line.chomp
 	end
 end
 
-Site::Logger.info "Running `bundle install`"
+puts "Running `bundle install`"
 
 # Run `bundle install` to install our dependencies.
 Runner.run("bundle", "install") do |output_line|
-	Site::Logger.debug output_line.chomp
+	puts output_line.chomp
 end

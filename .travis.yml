@@ -17,19 +17,16 @@ jobs:
       after_success:
         - BUNDLE_PATH=vendor/bundle bundle exec codeclimate-test-reporter
     - <<: *test_base
-      rvm: 2.4.1
+      rvm: 2.4.2
       after_success: skip
     - <<: *test_base
-      rvm: 2.4.0
-      after_success: skip
-    - <<: *test_base
-      rvm: 2.3.3
+      rvm: 2.3.5
       after_success: skip
 
     - stage: build and deploy
       sudo: required
       dist: trusty
-      rvm: 2.4.1
+      rvm: 2.4.2
 
       services:
         - docker
